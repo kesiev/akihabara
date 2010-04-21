@@ -1,0 +1,1247 @@
+<html>
+<head>
+	<script type="text/javascript" src="akihabara/gbox.js"></script>
+	<script type="text/javascript" src="akihabara/iphopad.js"></script>
+	<script type="text/javascript" src="akihabara/trigo.js"></script>
+	<script type="text/javascript" src="akihabara/toys.js"></script>
+	<script type="text/javascript" src="akihabara/help.js"></script>
+	<script type="text/javascript" src="akihabara/tool.js"></script>
+	<script type="text/javascript" src="akihabara/gamecycle.js"></script>
+	<style>BODY { -webkit-user-select:none; margin:0px}</style>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+</head>
+<body>
+</body>
+<script>
+// ---
+// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
+// ---
+
+
+		  // Game-specific
+		  
+		  var tilemaps;
+		  var maingame;
+		  var dialogues;
+		  var faces;
+		  
+		  // In games like Zelda, object are alive also outside of the screen.
+		  // So, let's calculate a distance threshold from the camera
+		  function objectIsAlive(th) {
+		  	return trigo.getDistance(th,gbox.getCamera())<800;
+		  }
+		  
+		  
+
+		  function go() {
+		  
+		 	gbox.setGroups(["background","player","bonus","foes","walls","playerbullets","foesbullets","sparks","foreground","gamecycle"]);
+		 	// player, walls, bullets and foes are under z-index layer
+		   	gbox.setRenderOrder(["background",gbox.ZINDEX_LAYER,"sparks","foreground","gamecycle"]);
+		  
+			maingame=gamecycle.createMaingame("gamecycle","gamecycle");	
+		  	
+		  	// Title intro
+		  maingame.gameTitleIntroAnimation=function(reset) {
+			  	if (reset) {
+			  		toys.resetToy(this,"rising");
+		  		} else {
+		  			gbox.blitFade(gbox.getBufferContext(),{alpha:1,color:"rgb(150,150,150)"});
+		  			toys.logos.rising(this,"rising",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,speed:1,gapx:250,reflex:0.1});
+		  		}
+		  	},
+		  	 // No level intro animation
+		 	 maingame.gameIntroAnimation=function() { return true; }
+		 	 // No end level animation
+		 	 maingame.endlevelIntroAnimation=function() { return true; }
+		 	 // Level animation
+		 	 maingame.levelIntroAnimation=function(reset) {
+		 	 	if (reset) {
+		  			toys.resetToy(this,"default-blinker");
+		  		} else {
+		  			gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+		  			return toys.text.fixed(this,"default-blinker",gbox.getBufferContext(),{font:"big",text:tilemaps[maingame.getNextLevel().level].title,valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),time:50});
+		  		}
+		 	 }
+		 	 // Game is ever over, if the player dies the first time. No life check, since is energy-based.
+		  	maingame.gameIsOver=function() { return true; }
+		  	// Game ending
+		  maingame.gameEndingIntroAnimation=function(reset){
+		  	if (reset) {
+		  		toys.resetToy(this,"intro-animation");
+		  	} else {
+		  		gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+		  		return toys.dialogue.render(this,"intro-animation",dialogues.titles);
+		  	}
+		  }
+		  	
+		  	// Game events are decided by the map.
+		  	maingame.gameEvents=function() {
+		  		tilemaps[tilemaps.current].mapActions();
+		  	}
+	
+			// Change level
+			  maingame.changeLevel=function(level) {
+			  	// Cleanup the level
+			  	gbox.trashGroup("playerbullets");
+			  	gbox.trashGroup("foesbullets");
+			  	gbox.trashGroup("foes");
+			  	gbox.trashGroup("bonus");
+			  	gbox.trashGroup("walls");
+			  	gbox.purgeGarbage(); // Since we're starting, we can purge all now
+			  	
+				if (level==null) {
+					level={level:"yard",x:300,y:270}; // First stage
+					maingame.startDialogue("intro"); // game introduction.
+				}
+				//if (level==null) level={level:"floor1",x:580,y:590}; // First stage
+				tilemaps.current=level.level;
+				gbox.createCanvas("tileslayer",{w:tilemaps[tilemaps.current].w,h:tilemaps[tilemaps.current].h});
+				gbox.blitTilemap(gbox.getCanvasContext("tileslayer"),tilemaps[tilemaps.current]);
+				toys.topview.spawn(gbox.getObject("player","player"),{x:level.x,y:level.y});
+			  	tilemaps[tilemaps.current].addObjects();
+			  }
+		  
+		 	 // Game initialization
+	 		  maingame.initializeGame=function() {
+	 		  
+	 		  	// Prepare hud
+		 		maingame.hud.setWidget("weapon",{widget:"radio",value:0,tileset:"items",frames:[0],dx:10,dy:10});
+	 		  	maingame.hud.setWidget("health",{widget:"symbols",tiles:[3,2,1,0],minvalue:0,maxvalue:20,value:12-(maingame.difficulty*4),maxshown:4,tileset:"hud",emptytile:4,dx:40,dy:10,gapx:20,gapy:0});
+	 		  	maingame.hud.setWidget("cash",{widget:"label",font:"small",value:0,minvalue:0,maxvalue:100,dx:gbox.getScreenW()-60,dy:gbox.getScreenH()-24,prepad:3,padwith:" ",clear:true});
+		 		maingame.hud.setWidget("SMALLKEY",{widget:"label",font:"small",value:0,minvalue:0,maxvalue:999,dx:gbox.getScreenW()-60,dy:gbox.getScreenH()-43,prepad:3,padwith:" ",clear:true});
+		 		maingame.hud.setWidget("BOSSKEY",{widget:"bool",value:0,tileset:"hud",frame:5,dx:gbox.getScreenW()-30,dy:gbox.getScreenH()-66}); // This is shown if value is true or >0		
+				
+		 		maingame.hud.setWidget("lblkey",{widget:"blit",value:6,tileset:"hud",dx:gbox.getScreenW()-30,dy:gbox.getScreenH()-50});
+		 		maingame.hud.setWidget("lblcoin",{widget:"blit",value:7,tileset:"hud",dx:gbox.getScreenW()-30,dy:gbox.getScreenH()-30});
+		 	
+		 		// We are not going to use faces for dialogues
+		 		faces={ noone:{ x:10, y:170,box:{x:0,y:160,w:gbox.getScreenW(),h:60,alpha:0.5} } };
+		 		
+		 		dialogues={
+		  			questdonetutorial:{ istutorial:true, font:"smalltut", skipkey:"a", esckey:"b", who: faces,
+		  				scenes:[
+		  					{ speed:1, who:"noone", talk:["The <QUEST CLEAR> message indicates","that something nearby is changed.","Try to have a look around!"]}
+		  				]
+		  			},
+		  			arrowstutorial:{ istutorial:true, font:"smalltut", skipkey:"a", esckey:"b", who: faces,
+		  				scenes:[
+		  					{ speed:1, who:"noone", talk:["Use the B button to switch between","weapons. Now you can fire lighting","arrows! Try to hit the B button and","then fire with A!"]}
+		  				]
+		  			},
+		  			usebtutorial:{ istutorial:true, font:"smalltut", skipkey:"a", esckey:"b", who: faces,
+		  				scenes:[
+		  					{ speed:1, who:"noone", talk:["Use the B button to interact","with objects, that means that you can","open doors, tresaure chests, talk","with villagers etc."]}
+		  				]
+		  			},
+		  			oldman:{ font:"small", skipkey:"a", esckey:"b", who: faces,
+		  				scenes:[
+		  					{ speed:1, who:"noone", talk:["Oh no... no...","Not again!"]},
+		  					{ speed:1, who:"noone", talk:["They tricked you too!","There isn't any monster here...","70 years ago the villagers sent me","here saying that I was the hero","of the legend..."]},
+		  					{ speed:1, who:"noone", talk:["But all I've found here was a bunch","of bones...","I'm sure that was who was sent here","before me!"]},
+		  					{ speed:1, who:"noone", talk:["So now... is your turn! You'll get","old here all alone and die!","I'm really sorry but is true.","There isn't any way to go out...","Poor guy!"]},
+		  				]
+		  			},
+		  			soul:{ endgame:true, font:"small", skipkey:"a", esckey:null, who: faces,
+		  				scenes:[
+		  					{ speed:1, who:"noone", talk:["Your eyes... I know you, my little","guy..."]},
+		  					{ speed:1, who:"noone", talk:["I'm the guardian of all the souls","who died here, tricked by the evil","villagers of the Kariko village."]},
+		  					{ speed:1, who:"noone", talk:["I'll teach everything I know. A","day you'll be able to go out","and bring the rage of the tricked."]},
+		  					{ speed:6, who:"noone", talk:["You are the Hero of the Legend.","The Legend of Sadness."]},
+		  				]
+		  			},
+		  			villager:{ font:"small", skipkey:"a", esckey:"b", who: faces,
+		  				scenes:[
+		  					{ speed:1, who:"noone", talk:["You have to hurry! Go into the","cave and save all of us","from the monster!"]},
+		  					{ speed:1, who:"noone", talk:["Believe in yourself!","You are the Hero of the Legend!"]}
+		  				]
+		  			},
+		  			wife:{ font:"small", skipkey:"a", esckey:"b", who: faces,
+		  				scenes:[
+		  					{ speed:1, who:"noone", talk:["The monster of the cave is","giving us a lot of troubles","as my husband says. But..."]},
+		  					{ speed:1, who:"noone", talk:["I feel that something","strange is happening, in Kariko","village..." ]},
+		  					{ speed:1, who:"noone", talk:["Keep your eyes wide open,", "Klin. Your enemy is very strong." ]},
+		  				]
+		  			},
+		  			intro:{ font:"smalltut", skipkey:"a", esckey:"b", who: faces,
+		  				scenes:[
+		  					{ speed:1, who:"noone", talk:["It is said that there is a terrible","Monster hiding on the north of","the little Kariko village that", "every 70 years slays Kariko","children."]},
+		  					{ speed:1, who:"noone", talk:["All the strongest and fearless among","the villagers have been sent to the","the Dark Cave to try to kill the","Monster." ]},
+		  					{ speed:1, who:"noone", talk:["Today is the 15th birthday of Klin,","a brave kid from that little village."]},
+		  					{ speed:1, who:"noone", talk:["Klin received his first sword and","shield and is ready to put the word","end to this terrible legend." ]},
+		  				]
+		  			},
+		  			// ENDING CREDITS
+		  			titles:{ font:"small", skipkey:"a", esckey:null,scenes:[
+		  			{
+		  				speed:2,
+		  				spacing:2,
+		  				push:gbox.getScreenHH(),
+		  				scroller:[
+		  					"THE LEGEND OF SADNESS",
+		  					"A SHORT ACTION-RPG BY KESIEV",
+		  					"","","",
+		  					"JS-CODE BY",
+		  					"KESIEV",
+		  					"",
+		  					"GRAPHICS BY",
+		  					"KESIEV",
+		  					"",
+		  					"STORY BY",
+		  					"KESIEV",
+		  					"","","",
+		  					"CREATED USING THE AKIHABARA ENGINE",
+		  					"BY KESIEV (c)2010",
+		  					"WWW.KESIEV.COM",
+		  					"","","","","","","","","","","",
+							"THANK YOU FOR PLAYING!",
+							"BE THE OWNER OF YOUR LIFE.",
+							"",
+							"THE END"
+		  				]
+		  			}
+		  			]}
+		  		}
+		 	
+				tilemaps={
+					_defaultblock:100, // The block that is over the borders (a wall)
+					queststatus:{}, // Every step the player does, is marked here (opened doors, sections cleared etc)
+					yard:help.finalizeTilemap({
+						title:"Kariko Village",
+						tileset:"tiles",
+						map:[
+							[  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,  15],
+							[  15,  15,  15,  15,  15,  15,  15,  15,  15,  15,   3,   3,   3,  15,  15,  15],
+							[  14,  14,  14,  14,  14,  14,  14,  14,  14,  14,   2,   2,   2,  14,  14,  14],
+							[   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  12,  13],
+							[   0,   0,   0,   0,  12,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  12],
+							[   0,   0,   0,  13,  13,  13,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0],
+							[   0,   0,   0,  13,  13,   0,   0,   0,   0,   0,  13,  13,   0,   0,   0,   0],
+							[   0,   0,   0,  12,   0,   0,   0,   0,   0,   0,   0,  13,   0,   0,   0,   0],
+							[   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0],
+							[   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0],
+							[   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0],
+							
+						  ],
+						 playerSpawnX:40,
+						 playerSpawnY:180,
+						 addObjects:function() {
+							maingame.addBlock(360,150,"house",0);
+							maingame.addNpc(390,220,[4],"villager",null,[4,5]);
+							maingame.addNpc(150,180,[6],"wife",null,[6,7]);
+						 },
+						 mapActions:function() {
+						 	var pl=gbox.getObject("player","player");
+						 	var ontile=help.getTileInMap(pl.x+pl.colx+pl.colhw,pl.y+pl.coly+pl.colhh,tilemaps[tilemaps.current],tilemaps._defaultblock,"map");
+						 	if (ontile==2) maingame.gotoLevel({level:"floor1",x:580,y:590});
+						 },
+						tileIsSolid:function(obj,t){ return (obj._bullet?(t!=20)&&(t!=19):true)&&(t>11) }
+					}),
+					floor1:help.finalizeTilemap({
+						title:"Floor 1",
+						tileset:"tiles",
+						map:[
+							[  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18],
+							[  18,  17,  17,  17,  17,  17,  17,  17,  17,  17,  18,  18,  17,  17,  17,  18,  18,  17,  17,  17,  17,  17,  17,  18],
+							[  18,  16,  16,  16,  16,  16,  16,  16,  16,  16,  18,  18,  19,  19,  19,  18,  18,  19,  19,  19,  19,  19,  19,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  18,  18,  20,  20,  20,  20,  20,  20,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  18,  18,  20,  20,  20,  20,  20,  20,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  18,  18,  20,  20,   4,   4,  20,  20,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  18,  18,  20,  20,   4,   4,  20,  20,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  18,  18,  20,  20,   4,   4,  20,  20,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  18,  18,  20,  20,   4,   4,  20,  20,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  18,  18,  20,  20,   4,   4,  20,  20,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  18,  18,  20,  20,   4,   4,  20,  20,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  18,  18,   4,   4,   4,   4,   4,   4,  18],
+							[  18,  18,  18,  18,   1,   1,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,   1,   1,  18,  18,  18],
+							[  18,  17,  17,  17,   1,   1,  17,  17,  17,  17,  17,  18,  18,  17,  17,  17,  17,  17,  17,   1,   1,  17,  17,  18],
+							[  18,  16,  16,  16,   1,   1,  16,  16,  16,  16,  16,  18,  18,  16,  16,  16,  16,  16,  16,   1,   1,  16,  16,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  17,  17,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  16,  16,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18],
+							[  18,   1,   6,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18],
+							[  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,   9,   9,  18,  18,  18]							
+						  ],
+						 playerSpawnX:40,
+						 playerSpawnY:180,
+						 addObjects:function() {
+						 	if (!tilemaps.queststatus["treasure1"]) maingame.addChest(1,11,"treasure1",true,"coin");
+						 	if (!tilemaps.queststatus["treasure2"]) maingame.addChest(2,11,"treasure2",true,"coin");
+						 	if (!tilemaps.queststatus["treasure3"]) maingame.addChest(8,11,"treasure3",true,"coin");
+						 	if (!tilemaps.queststatus["treasure4"]) maingame.addChest(9,11,"treasure4",true,"coin");
+						 	if (tilemaps.queststatus["trappedforever"]) maingame.addDoor("dungeondoor","door",19,21,false);
+						 	maingame.addEnemy("floor1eyeswitch","eyeswitch",20,2).changeSwitch(tilemaps.queststatus["floor1eyeswitch"]); // Makes a switch and the switch on/off based on quest status
+						 	if (!tilemaps.queststatus["floor1bossdoor"]) { // If not opened
+								maingame.addDoor("floor1bossdoor","door",4,12,false,"BOSSKEY");
+								maingame.addNpc(160,120,[2],"oldman","oldmanstory",[2,3]);
+							}
+							if (!tilemaps.queststatus["openfrontdoor"])
+								if (!tilemaps.queststatus["floor1frontdoor"]) // If not opened
+									maingame.addDoor("floor1frontdoor","door",19,12,false,"SMALLKEY");
+							if (!tilemaps.queststatus["beatenfirst"]) {
+								maingame.addDoor("sidedoor","doorv",12,15,false);
+								maingame.addEnemy("first1","octo",15,15);
+								maingame.addEnemy("first2","octo",20,15);
+							}
+							if (!tilemaps.queststatus["beatensecond"]) {
+								maingame.setTileInMap(2,19,1,false); // Hide stairs
+								maingame.addEnemy("second1","octo",4,15);
+								maingame.addEnemy("second2","octo",8,15);
+								maingame.addEnemy("second3","octo",10,15);
+							}
+							if (tilemaps.queststatus["floor2untrapped"]&&!tilemaps.queststatus["fl1smallkey"]) {
+								maingame.addEnemy("four1","octo",4,15);
+								maingame.addEnemy("four2","octo",8,15);
+								maingame.addEnemy("four3","octo",10,15);
+								maingame.addEnemy("four4","octo",10,17);
+								tilemaps.queststatus["_tmpsmallkey"]=false;
+							}
+						 },
+						 mapActions:function() {
+						 	if (!tilemaps.queststatus["beatenfirst"]) { // if the first 2 enemies are around
+						 		if (!gbox.getObject("foes","first1")&&!gbox.getObject("foes","first2")) { // check them. If beaten...
+						 			gbox.getObject("walls","sidedoor").doOpen(); // Open the door...
+						 			tilemaps.queststatus["beatenfirst"]=true; // Set the quest as done...
+						 			maingame.startDialogue("questdonetutorial"); // Explain what [QUEST CLEAR] is
+						 			maingame.addQuestClear(); // Arcade-ish message "QUEST CLEAR"!
+						 		}
+						 	}
+						 	if (!tilemaps.queststatus["beatensecond"]) { // if the first 2 enemies are around
+						 		if (!gbox.getObject("foes","second1")&&!gbox.getObject("foes","second2")&&!gbox.getObject("foes","second3")) { // check them. If beaten...
+						 			maingame.setTileInMap(2,19,6,true); // open the stairs, with smoke
+						 			tilemaps.queststatus["beatensecond"]=true; // Set the quest as done...
+						 			maingame.addQuestClear(); // Arcade-ish message "QUEST CLEAR"!
+						 		}
+						 	}
+						 	if (tilemaps.queststatus["floor2untrapped"]&&!tilemaps.queststatus["fl1smallkey"]&&!tilemaps.queststatus["_tmpsmallkey"]) { // With arrows
+						 		if (!gbox.getObject("foes","four1")&&!gbox.getObject("foes","four2")&&!gbox.getObject("foes","four3")&&!gbox.getObject("foes","four4")) { // check them. If beaten...
+						 			tilemaps.queststatus["_tmpsmallkey"]=true; // temporary the quest is done...
+						 			maingame.addChest(7,15,null,true,"SMALLKEY","fl1smallkey",0);
+						 			maingame.addQuestClear(); // Arcade-ish message "QUEST CLEAR"!
+						 		}
+						 	}
+						 	if (!tilemaps.queststatus["trappedforever"]&&tilemaps.queststatus["floor1bossdoor"]) {
+						 		maingame.addDoor("dungeondoor","door",19,21,false);
+						 		tilemaps.queststatus["trappedforever"]=true; // The trap is on
+						 	}
+						 	
+						 	var pl=gbox.getObject("player","player");
+						 	var ontile=help.getTileInMap(pl.x+pl.colx+pl.colhw,pl.y+pl.coly+pl.colhh,tilemaps[tilemaps.current],tilemaps._defaultblock,"map");
+						 	if (ontile==6) maingame.gotoLevel({level:"floor2",x:90,y:240});
+						 	if (ontile==9) maingame.gotoLevel({level:"yard",x:330,y:90});
+						 },
+						tileIsSolid:function(obj,t){ return (obj._bullet?(t!=20)&&(t!=19):true)&&(t>11) }
+					}),
+					floor2:help.finalizeTilemap({
+						title:"Floor 2",
+						tileset:"tiles",
+						map:[
+							[  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18],
+							[  18,  17,  17,  17,  17,  17,  17,  17,  17,  17,  18,  18,  17,  17,  17,  17,  17,  17,  17,  17,  17,  17,  17,  18],
+							[  18,  16,  16,  16,  16,  16,  16,  16,  16,  16,  18,  18,   4,   4,  19,  19,  19,  19,  19,  19,  19,   4,   4,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,   4,   4,  20,  20,  20,  20,   1,   1,  20,   4,   4,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  17,  17,  19,  19,  20,  20,  20,  20,   1,   1,  20,  19,  19,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  16,  16,  20,  20,  20,  20,  20,  20,   1,   1,  20,  20,  20,  18],
+							[  18,   1,   1,   1,   4,   4,   4,   1,   1,   1,   1,   1,   1,   1,   7,   1,   1,   1,   1,   1,  20,  20,  20,  18],
+							[  18,   1,   1,   1,   4,   4,   4,   1,   1,   1,  18,  18,  19,  19,  19,  19,  19,  19,   1,   1,  20,  20,  20,  18],
+							[  18,   1,   1,   1,   4,   4,   4,   1,   1,   1,  18,  18,  20,  20,  20,  20,  20,  20,   1,   1,  20,  20,  20,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,  20,  20,  20,  20,  20,  20,   1,   1,  20,  20,  20,  18],
+							[  18,   1,   5,   1,   1,   1,   1,   1,   1,   1,  18,  18,   4,   4,  20,  20,  20,  20,   1,   1,  20,   4,   4,  18],
+							[  18,   1,   1,   1,   1,   1,   1,   1,   1,   1,  18,  18,   4,   4,  20,  20,  20,  20,  19,  19,  20,   4,   4,  18],
+							[  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18,  18]
+						  ],
+						 playerSpawnX:40,
+						 playerSpawnY:180,
+						 addObjects:function() {
+						 	if (tilemaps.queststatus["oldmanstory"]) // If you've heard the old man story...
+						 		maingame.addNpc(555,180,[8,9],"soul"); // The soul of the tricked appears.
+						 	if (!tilemaps.queststatus["floor2trapped"]) {
+						 		maingame.setTileInMap(14,6,8,false);
+						 	}
+						 	if (!tilemaps.queststatus["floor2arrows"]) {
+						 		maingame.addChest(19,6,null,false,"arrow",null,0);
+						 	}
+						 	if (tilemaps.queststatus["floor1eyeswitch"]&&!tilemaps.queststatus["bosskey"]) {
+						 		maingame.addEnemy("fifth1","octo",3,4,true);
+							 	maingame.addEnemy("fifth2","octo",5,4,true);
+							 	maingame.addEnemy("fifth3","octo",6,4,true);
+							 	maingame.addEnemy("fifth4","octo",7,4,true);
+							 	tilemaps.queststatus["_tmpbosskey"]=false;
+						 	}
+						 },
+						 mapActions:function() {
+					 		var pl=gbox.getObject("player","player");
+					 		var ontile=help.getTileInMap(pl.x+pl.colx+pl.colhw,pl.y+pl.coly+pl.colhh,tilemaps[tilemaps.current],tilemaps._defaultblock,"map");
+						 	if (!tilemaps.queststatus["floor2trapped"]&&!tilemaps.queststatus["floor2untrapped"]) // the trap on floor 2
+							 	if (ontile==8) {
+							 		maingame.addDoor("sidedoor","doorv",10,4,true);
+							 		maingame.addEnemy("third1","octo",13,2,true);
+							 		maingame.addEnemy("third2","octo",21,2,true);
+							 		maingame.addEnemy("third3","octo",13,10,true);
+							 		maingame.addEnemy("third4","octo",21,10,true);
+									tilemaps.queststatus["floor2trapped"]=true; // Trap on
+									maingame.addQuestClear("TRAPPED!");
+									maingame.startDialogue("usebtutorial"); // Explain how to open the first tresaure chest.
+									maingame.setTileInMap(14,6,7,true);
+								 }
+							if (tilemaps.queststatus["floor2trapped"]&&!tilemaps.queststatus["floor2untrapped"]) {
+								if (!gbox.getObject("foes","third1")&&!gbox.getObject("foes","third2")&&!gbox.getObject("foes","third3")&&!gbox.getObject("foes","third4")) { // check them. If beaten...
+						 			gbox.getObject("walls","sidedoor").doOpen();
+						 			tilemaps.queststatus["floor2untrapped"]=true; // Set the quest as done...
+						 			maingame.addQuestClear(); // Arcade-ish message "QUEST CLEAR"!
+						 		}
+							}
+							if (tilemaps.queststatus["floor1eyeswitch"]&&!tilemaps.queststatus["bosskey"]&&!tilemaps.queststatus["_tmpbosskey"]) {
+								if (!gbox.getObject("foes","fifth1")&&!gbox.getObject("foes","fifth2")&&!gbox.getObject("foes","fifth3")&&!gbox.getObject("foes","fifth4")) { // check them. If beaten...
+						 			maingame.addQuestClear(); // Quest clear
+						 			maingame.addChest(5,7,null,true,"BOSSKEY","bosskey",0);
+						 			tilemaps.queststatus["_tmpbosskey"]=true;
+						 		}
+							}
+							var pl=gbox.getObject("player","player");
+						 	var ontile=help.getTileInMap(pl.x+pl.colx+pl.colhw,pl.y+pl.coly+pl.colhh,tilemaps[tilemaps.current],tilemaps._defaultblock,"map");
+						 	if (ontile==5) maingame.gotoLevel({level:"floor1",x:60,y:530});
+						 	
+						 },
+						tileIsSolid:function(obj,t){ return (obj._bullet?(t!=20)&&(t!=19):true)&&(t>11) }
+					})
+				};
+			
+				 gbox.addObject({
+					id:"bg",
+					group:"background",
+					blit:function() {
+						gbox.centerCamera(gbox.getObject("player","player"),{w:tilemaps[tilemaps.current].w,h:tilemaps[tilemaps.current].h});
+						gbox.blit(gbox.getBufferContext(),gbox.getCanvas("tileslayer"),{dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),sourcecamera:true});
+					},
+				  });
+			  
+				gbox.addObject({
+					id:"player",
+					group:"player",
+					tileset:"player",
+					zindex:0, // Needed for zindexed objects
+					stilltimer:0, // is used to block the player while attacking (a la zelda!)
+					invultimer:0, // Custom attribute. A timer that keep invulnerable.
+					isPaused:false, // Pauses the player during dialogues, cutscenes etc.
+					
+					doPause:function(p) {
+						this.isPaused=p;
+					},
+					
+					initialize:function() {
+						toys.topview.initialize(this,{
+							haspushing:true,
+							shadow:{tileset:"shadows",tile:0},
+							frames:{
+								standup:{ speed:1, frames:[0] },
+								standdown:{ speed:1, frames:[3] },
+								standleft:{ speed:1, frames:[6] },
+								standright:{ speed:1, frames:[6] },
+								movingup:{speed:3,frames:[0,1,0,2] },
+								movingdown:{speed:3,frames:[3,4,3,5] },
+								movingleft:{speed:3,frames:[6,7] },
+								movingright:{speed:3,frames:[6,7] },
+								pushingup:{speed:6,frames:[0,1,0,2] },
+								pushingdown:{speed:6,frames:[3,4,3,5] },
+								pushingleft:{speed:6,frames:[6,7] },
+								pushingright:{speed:6,frames:[6,7] }
+							}
+						});
+					},
+					
+					collisionEnabled:function() { // Disable collisions when the game is on hold, the player is dead or invulnerable
+						return !maingame.gameIsHold()&&!this.killed&&!this.invultimer&&!this.isPaused;
+					},
+					
+					hitByBullet:function(by) {
+						if (this.collisionEnabled()) { // If collison are enabled...
+							maingame.hud.addValue("health","value",-by.power); // Decrease power
+							if (maingame.hud.getValue("health","value")<=0) // If dead..
+								this.kill(); // Kill...
+							else { // Else is just hit
+								this.accz=-5; // A little jump...
+								this.invultimer=30; // Stay invulnerable for a while...
+								this.stilltimer=10; // Stay still for a while...
+							}
+							return by.undestructable; // Destroy or not a bullet (decided by the bullet itself)
+						} else return true; // Bullets are ignored
+					},
+					
+					kill:function(by){
+						this.frame=8;
+						this.accz=-8;
+						maingame.addSmoke(this,"flame-red");
+						this.killed=true;
+						maingame.playerDied({wait:50});
+					},
+					
+					attack:function() {
+						this.stilltimer=10; // Stay still for a while
+						this.frame=(this.facing==toys.FACE_UP?9:(this.facing==toys.FACE_DOWN?10:11));
+						
+						switch (maingame.hud.getValue("weapon","value")) {
+							case 0: { // Sword
+								toys.topview.fireBullet("playerbullets",null,{
+									fullhit:true,
+									collidegroup:"foes",
+									undestructable:true, // Custom attribute. Is not destroyed by the hitted object.
+									power:1, // Custom attribute. Is the damage value of this weapon.
+									from:this,
+									sidex:this.facing,
+									sidey:this.facing,
+									tileset:((this.facing==toys.FACE_LEFT)||(this.facing==toys.FACE_RIGHT)?"lefthit":"uphit"),
+									frames:{speed:1,frames:[0,1,2,3]},
+									duration:4,
+									acc:5,
+									fliph:(this.facing==toys.FACE_RIGHT),
+									flipv:(this.facing==toys.FACE_DOWN),
+									angle:toys.FACES_ANGLE[this.facing]
+								});
+								break;
+							}
+							case 1: { // Arrows
+								toys.topview.fireBullet("playerbullets",null,{
+									_canhitswitch:true, // Arrows can hit switchs and turn them on
+									fullhit:true,
+									collidegroup:"foes",
+									map:tilemaps[tilemaps.current], // Map is specified, since collides with walls
+									mapindex:"map",
+									defaulttile:tilemaps._defaultblock,
+									undestructable:false, // Custom attribute. Is destroyed by the hitted object.
+									power:2, // Custom attribute. Is the damage value of this weapon.
+									from:this,
+									sidex:this.facing,
+									sidey:this.facing,
+									tileset:((this.facing==toys.FACE_LEFT)||(this.facing==toys.FACE_RIGHT)?"leftarrow":"uparrow"),
+									frames:{speed:1,frames:[0,1]},
+									acc:5,
+									fliph:(this.facing==toys.FACE_RIGHT),
+									flipv:(this.facing==toys.FACE_DOWN),
+									angle:toys.FACES_ANGLE[this.facing],
+									spritewalls:"walls",
+									gapy:8 // Avoid wall collision on start
+								}); 
+								break;
+							}
+						}
+						
+					},
+					
+					first:function() {
+						if (this.stilltimer) this.stilltimer--;
+						if (this.invultimer) this.invultimer--;
+						
+						// Counter
+						this.counter=(this.counter+1)%60;
+						if (this.stilltimer||maingame.gameIsHold()||this.isPaused||this.killed)
+							toys.topview.controlKeys(this,{}); // Stays still. No key is moving! :)
+						else
+							toys.topview.controlKeys(this,{left:"left",right:"right",up:"up",down:"down"}); // Moves (if not attacking)
+						toys.topview.handleAccellerations(this);
+						toys.topview.handleGravity(this); // z-gravity					
+						toys.topview.applyForces(this); // Apply forces
+						toys.topview.applyGravity(this); // z-gravity
+						toys.topview.tileCollision(this,tilemaps[tilemaps.current],"map",tilemaps._defaultblock); // tile collisions
+						toys.topview.floorCollision(this); // Collision with the floor (for z-gravity)
+						toys.topview.spritewallCollision(this,{group:"walls"}); // Doors and tresaure chests are sprites that acts like a wall.
+						toys.topview.adjustZindex(this);
+						if (!this.stilltimer&&!this.killed) toys.topview.setFrame(this); // set the right animation frame (if not attacking)
+						
+						if (!this.stilltimer&&!this.isPaused&&!maingame.gameIsHold()&&!this.killed)
+							if (gbox.keyIsHit("a"))
+								this.attack();
+							else if (gbox.keyIsHit("b")) {
+								var ahead=toys.topview.getAheadPixel(this,{distance:5});
+								ahead.group="walls";
+								ahead.call="doPlayerAction";
+								if (!toys.topview.callInColliding(this,ahead)) // if any action is done
+									maingame.hud.addValue("weapon","value",1);
+							}
+						
+					},
+					blit:function() {
+					
+						if ((this.invultimer%2)==0) {
+							// Shadowed object. First draws the shadow...
+							gbox.blitTile(gbox.getBufferContext(),{tileset:this.shadow.tileset,tile:this.shadow.tile,dx:this.x,dy:this.y+this.h-gbox.getTiles(this.shadow.tileset).tileh+4,camera:this.camera});
+							// Then the object. Notes that the y is y+z to have the "over the floor" effect.
+							gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
+						}
+					}
+	
+			  });
+			
+			};
+			
+		// Add a bonus item. It jumps a while and then disappear.
+		maingame.addBonus=function(x,y,type,id,expire) {
+				var frames;
+				
+				switch (type) {
+					case "coin": {frames={ standdown:{ speed:2, frames:[0,1,2,3,4,5] }  }; break } // Rotating coin
+					case "arrow": {frames={ standdown:{ speed:3, frames:[6,7] }  }; break } // Blinking arrow icon
+					case "SMALLKEY": {frames={ standdown:{ speed:3, frames:[8,9] }  }; break } // Blinking small key
+					case "BOSSKEY": {frames={ standdown:{ speed:3, frames:[10,11] }  }; break } // Blinking small key
+				}
+				
+				
+				 gbox.addObject({
+					group:"bonus",
+					questid:id,
+					tileset:"bonus",
+					zindex:0, // Needed for zindexed objects
+					x:x,
+					y:y,
+					accz:-10, // Bounces
+					bonustype:type,
+					expiretime:(expire==null?100:(expire==0?null:expire)),
+					unpicktime:10,
+					frames:frames, // You can specify attributes outside from the initialization. Are kept instead the default one.
+							
+					initialize:function() {
+						toys.topview.initialize(this,{
+							shadow:{tileset:"shadows",tile:0}
+						});
+					},
+					
+					first:function() {
+						if ((this.expiretime!=null)&&this.expiretime) this.expiretime--;
+						if (this.unpicktime) this.unpicktime--;
+						if (this.expiretime===0) {
+							gbox.trashObject(this);
+						} else if (objectIsAlive(this)) {
+							
+							// Counter
+							this.counter=(this.counter+1)%60;
+							toys.topview.handleAccellerations(this);
+							toys.topview.handleGravity(this); // z-gravity
+							toys.topview.applyForces(this); // Apply forces
+							toys.topview.applyGravity(this); // z-gravity
+							toys.topview.floorCollision(this,{bounce:2}); // Collision with the floor (for z-gravity)
+							toys.topview.adjustZindex(this); // Set the right zindex
+							toys.topview.setFrame(this); // set the right animation frame (if not attacking - which has still frame)
+							if (!this.unpicktime) {
+								var pl=gbox.getObject("player","player");
+								if (pl.collisionEnabled()&&(toys.topview.collides(this,pl))) {
+									switch (this.bonustype) {
+										case "coin": {
+											maingame.hud.addValue("cash","value",1);
+											maingame.addQuestClear("1 GOLD");
+											break;
+										}
+										case "arrow": {
+											maingame.addQuestClear("ARROWS");
+											if (!tilemaps.queststatus["arrowstutorial"]) { // If the first time...
+												maingame.startDialogue("arrowstutorial"); // Explain how to use arrows
+												tilemaps.queststatus["arrowstutorial"]=true;
+											}
+											
+											tilemaps.queststatus["floor2arrows"]=true; // Arrows picked
+											maingame.hud.setValue("weapon","frames",[0,1]); // Add arrows to the inventory (0: sword, 1: arrows)
+											break;
+										}
+										case "BOSSKEY":
+										case "SMALLKEY": {
+											maingame.addQuestClear(this.bonustype);
+											if (this.questid) tilemaps.queststatus[this.questid]=true; // Key picked
+											maingame.hud.addValue(this.bonustype,"value",1); // Add key to inventory
+											break;
+										}
+									}
+									gbox.trashObject(this);
+								}
+							}
+						}
+					},
+					blit:function() {
+						if (gbox.objectIsVisible(this)) {
+							// Shadowed object. First draws the shadow...
+							gbox.blitTile(gbox.getBufferContext(),{tileset:this.shadow.tileset,tile:this.shadow.tile,dx:this.x,dy:this.y+this.h-gbox.getTiles(this.shadow.tileset).tileh+4,camera:this.camera});
+							if ((this.expiretime>30)||((this.expiretime<30)&&(this.expiretime%2==0)))
+							// Then the object. Notes that the y is y-z to have the "over the floor" effect.
+							gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
+						}
+					}
+		
+				  });
+		
+		}
+		
+		// Changes a tile in the map. It also adds smoke if asked.
+		maingame.setTileInMap=function(x,y,tile,smoke) {
+			help.setTileInMap(gbox.getCanvasContext("tileslayer"),tilemaps[tilemaps.current],x,y,tile);
+			if (smoke) {
+				var ts=gbox.getTiles(tilemaps[tilemaps.current].tileset);
+				maingame.addSmoke({x:x*ts.tilew,y:y*ts.tilew,h:ts.tileh,w:ts.tilew,hh:ts.tilehh,hw:ts.tilehw,camera:true});
+			}
+		}
+		
+		// Add the "QUEST CLEAR" message
+		maingame.addQuestClear=function(msg) {
+			toys.generate.sparks.popupText(gbox.getObject("player","player"),"sparks",null,{font:"big",jump:6,text:(msg==null?"QUEST CLEAR!":msg),keep:20});
+		}
+		
+		// Add spreading smoke on an object
+		maingame.addSmoke=function(ob,color) {
+			// Since camera is not specified (will be into the initializator), is added on the spark instead from the created object
+			toys.generate.sparks.simple(ob,"sparks",null,{camera:true,animspeed:2,accy:-3,accx:-3,tileset:(color==null?"flame-white":color)});
+			toys.generate.sparks.simple(ob,"sparks",null,{camera:true,animspeed:2,accy:-3,accx:3,tileset:(color==null?"flame-white":color)});
+			toys.generate.sparks.simple(ob,"sparks",null,{camera:true,animspeed:2,accy:3,accx:-3,tileset:(color==null?"flame-white":color)});
+			toys.generate.sparks.simple(ob,"sparks",null,{camera:true,animspeed:2,accy:3,accx:3,tileset:(color==null?"flame-white":color)});		
+		}
+		
+		// Add a tresaure chest
+		maingame.addChest=function(x,y,id,animated,cont,contid,expi) {
+			var td=gbox.getTiles(tilemaps[tilemaps.current].tileset);
+			var ob=gbox.addObject({
+				group:"walls",
+				tileset:"chest",
+				zindex:0, // Needed for zindexed objects
+				x:x*td.tilew,
+				y:y*td.tileh,
+				questid:id,
+				accz:(animated?-10:0), // Bounces
+				content:cont,
+				contentid:contid,
+				expire:expi,
+						
+				initialize:function() {
+					toys.topview.initialize(this,{
+						shadow:{tileset:"shadows",tile:0},
+						frames:{
+							standdown:{ speed:1, frames:[0] }
+						}
+					});
+				},
+				
+				doPlayerAction:function(by) { // When used
+					if (this.questid!=null) tilemaps.queststatus[this.questid]=true;
+					maingame.addSmoke(this); // Add a smoke spit
+					maingame.addBonus(this.x,this.y,this.content,this.contentid,this.expire); // Generate the content bonus
+					gbox.trashObject(this); // and disappear
+				},
+				
+				first:function() {
+					toys.topview.handleGravity(this); // z-gravity
+					toys.topview.applyGravity(this); // z-gravity
+					toys.topview.floorCollision(this,{bounce:2}); // Collision with the floor (for z-gravity)
+					toys.topview.adjustZindex(this); // Set the right zindex
+				},
+				blit:function() {
+					if (gbox.objectIsVisible(this)) {
+						// Shadowed object. First draws the shadow...
+						gbox.blitTile(gbox.getBufferContext(),{tileset:this.shadow.tileset,tile:this.shadow.tile,dx:this.x,dy:this.y+this.h-gbox.getTiles(this.shadow.tileset).tileh+4,camera:this.camera});
+						// Then the object. Notes that the y is y-z to have the "over the floor" effect.
+						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
+					}
+				}
+	
+			  });
+			if (animated) maingame.addSmoke(ob);
+		}
+		
+		// Add a door
+		maingame.addDoor=function(id,tileset,x,y,animated,openwith) { // A door constructor. These doors opens shaking and smoking, a la Zelda
+		  	var door=toys.topview.makedoor("walls",id,tilemaps[tilemaps.current],{whileMoving:function(){
+				this.x+=(this.opencounter%2==0?-1:1)
+				if (this.opencounter%5==0) {
+					toys.generate.sparks.simple(this,"sparks",null,{alpha:0.7,gapy:this.hh,frames:{speed:4,frames:[3,2,1,2,3]},accy:-help.random(0,4),tileset:"flame-white"});
+					toys.generate.sparks.simple(this,"sparks",null,{alpha:0.7,gapx:-this.hw/2,gapy:this.hh,frames:{speed:4,frames:[3,2,1,2,3]},accy:-help.random(0,4),accx:-1,tileset:"flame-white"});
+					toys.generate.sparks.simple(this,"sparks",null,{alpha:0.7,gapx:this.hw/2,gapy:this.hh,frames:{speed:4,frames:[3,2,1,2,3]},accy:-help.random(0,4),accx:1,tileset:"flame-white"});
+				}
+			},whenClosed:function() {
+				this.x++; // Place the door in the right position
+			},questid:id,openwith:openwith,closing:animated,doorheight:50,fullhit:true,tilex:x,tiley:y,tileset:tileset,frames:{speed:1,frames:[0]}});
+			if (openwith) {
+				door.doPlayerAction=function(by) { // When used
+					if (maingame.hud.getValue(this.openwith,"value")>0) {
+						if (this.questid!=null) tilemaps.queststatus[this.questid]=true; // Mark this door as opened
+						maingame.hud.addValue(this.openwith,"value",-1);
+						this.doOpen();
+						maingame.addQuestClear(openwith+" USED");
+					} else {
+						maingame.addQuestClear("NEEDS "+openwith);
+					}
+				}
+			}
+		}
+		
+		// Starts a dialogue
+		maingame.startDialogue=function(id,pause) {
+			if ((maingame.difficulty==0)||(!dialogues[id].istutorial)) { // dialogues marked as tutorial are shown only on easy. This flag is in the dialogue itself.
+				gbox.addObject({
+				group:"foreground",
+				id:"dialogue",
+				dialogueToRead:id,
+				pause:1+(pause==null?0:1), // Pauses a dialog for a while. Is important to wait a frame very time to cancel the last "b" key press (for interacting, for example)
+				initialize:function() {
+					gbox.getObject("player","player").doPause(true); // First pause the player
+				},
+				blit:function() {
+					if (this.pause)
+						this.pause--;
+					else if (toys.dialogue.render(this,"dialogue",dialogues[this.dialogueToRead])) { // If the dialogue is ended
+						if (dialogues[this.dialogueToRead].endgame) // If the dialogue is marked by "endgame"...
+							maingame.gameIsCompleted(); // The game is completed
+						else
+							gbox.getObject("player","player").doPause(false); // Unpause the player
+						gbox.trashObject(this); // Trash the dialogue itself.
+					}
+				}
+			
+				});
+			}
+		}
+		
+		// Add a still object. Are sprites that supports the z-index (houses, trees.) You can walk around these objects
+		maingame.addBlock=function(x,y,tileset,frame) {
+			gbox.addObject({
+				group:"walls",
+				tileset:tileset,
+				zindex:0, // Needed for zindexed objects
+				x:x,
+				y:y,
+				frame:frame,
+								
+				initialize:function() {
+					toys.topview.initialize(this); // Any particular initialization. Just the auto z-index
+				},
+				blit:function() {
+					if (gbox.objectIsVisible(this)) {
+						// Then the object. Notes that the y is y-z to have the "over the floor" effect.
+						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
+					}
+				}
+	
+			  });
+		}
+		
+		// Add a npc (Not Playing Charachter)
+		maingame.addNpc=function(x,y,still,dialogue,questid,talking) {
+			// An easy way to create an NPC.
+			gbox.addObject({
+				questid:questid,
+				group:"walls",
+				tileset:"npc",
+				zindex:0, // Needed for zindexed objects
+				x:x,
+				y:y,
+				myDialogue:dialogue,
+				iamTalking:false,
+				shadow:{tileset:"shadows",tile:0},
+				frames:{
+					still:{ speed:6, frames:still },
+					talking:{ speed:6, frames:(talking==null?still:talking) }
+				},
+				
+				doPlayerAction:function(sw) {
+					this.iamTalking=true; // go in talking mode
+					maingame.startDialogue(this.myDialogue); // Starts its dialogue. Is another object because of z-index
+				},
+				
+				initialize:function() {
+					toys.topview.initialize(this); // Any particular initialization. Just the auto z-index
+				},
+				
+				first:function(by) {
+					this.counter=(this.counter+1)%12;
+					
+					if (this.iamTalking) {
+						this.frame=help.decideFrame(this.counter,this.frames.talking);
+						if (!gbox.getObject("foreground","dialogue")) {// Check if the dialogue ended
+							this.iamTalking=false; // Stop talking
+							if ((this.questid!=null)&&(!tilemaps.queststatus[this.questid])) {
+								tilemaps.queststatus[this.questid]=true; // If related to a quest, the quest is marked as done
+								maingame.addQuestClear();
+							}
+						}
+					} else
+						this.frame=help.decideFrame(this.counter,this.frames.still);
+				},
+				
+				
+				blit:function() {
+					if (gbox.objectIsVisible(this)) {
+						// Shadowed object. First draws the shadow...
+						gbox.blitTile(gbox.getBufferContext(),{tileset:this.shadow.tileset,tile:this.shadow.tile,dx:this.x,dy:this.y+this.h-gbox.getTiles(this.shadow.tileset).tileh+4,camera:this.camera});
+						// Then the object. Notes that the y is y-z to have the "over the floor" effect.
+						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
+					}
+				}
+	
+			  });
+		}
+		
+		// Add an enemy
+		maingame.addEnemy=function(id,type,x,y,cloud) {
+			var td=gbox.getTiles(tilemaps[tilemaps.current].tileset);
+
+			var ob;
+			switch (type) {
+				case "eyeswitch": { // The classic eye-shaped switch
+					 ob=gbox.addObject({
+						questid:id,
+						group:"foes",
+						tileset:"npc",
+						zindex:0, // Needed for zindexed objects
+						x:x*td.tilew,
+						y:y*td.tileh,
+						switchedon:false,
+						frame:0,
+						
+						changeSwitch:function(sw) {
+							this.switchedon=(sw?true:false); // The switch is on
+							this.frame=(sw?1:0); // Change image
+							if (this.questid!=null) tilemaps.queststatus[this.questid]=(sw?true:false); // Mark the quest as done
+						},
+						
+						initialize:function() {
+							toys.topview.initialize(this); // Any particular initialization. Just the auto z-index
+						},
+						
+						hitByBullet:function(by) {
+							if (by._canhitswitch&&!this.switchedon) { // if is hit by bullet
+								this.changeSwitch(true);
+								maingame.addQuestClear(); // Say "quest clear"
+							}
+						},
+						
+						
+						blit:function() {
+							
+							if (gbox.objectIsVisible(this)) {
+								// Then the object. Notes that the y is y-z to have the "over the floor" effect.
+								gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
+							}
+						}
+			
+					  });
+					break;
+				}
+				case "octo": {
+					 ob=gbox.addObject({
+						id:id,
+						group:"foes",
+						tileset:"foe1",
+						zindex:0, // Needed for zindexed objects
+						invultimer:0, // Custom attribute. A timer that keep invulnerable.
+						stilltimer:0, // Custom attribute. A timer that keep the enemy still.
+						x:x*td.tilew,
+						y:y*td.tileh,
+								
+						initialize:function() {
+							toys.topview.initialize(this,{
+	
+								health:3, // Custom attribute. Indicates the strength.
+								shadow:{tileset:"shadows",tile:0},
+								frames:{
+									standup:{ speed:1, frames:[1] },
+									standdown:{ speed:1, frames:[3] },
+									standleft:{ speed:1, frames:[4] },
+									standright:{ speed:1, frames:[4] },
+									movingup:{speed:3,frames:[0,1] },
+									movingdown:{speed:3,frames:[2,3] },
+									movingleft:{speed:3,frames:[4,5] },
+									movingright:{speed:3,frames:[4,5] }
+								}
+							});
+						},
+						
+						kill:function(by){
+							toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,accy:-3,tileset:"flame-blue"});
+							toys.generate.sparks.simple(this,"sparks",null,{animspeed:1,accx:-3,tileset:"flame-blue"});
+							toys.generate.sparks.simple(this,"sparks",null,{animspeed:1,accx:3,tileset:"flame-blue"});
+							if (help.random(0,2)==0) maingame.addBonus(this.x,this.y,"coin"); // reward with a coin, sometime
+							gbox.trashObject(this); // Vanish!
+						},
+						
+						attack:function() {
+							this.stilltimer=10; // Stay still for a while
+							this.frame=(this.facing==toys.FACE_UP?0:(this.facing==toys.FACE_DOWN?3:4));
+							toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,accy:-2,tileset:"flame-white"});
+							toys.topview.fireBullet("foesbullets",null,{
+								fullhit:true,
+								collidegroup:"player",
+								map:tilemaps[tilemaps.current], // Map is specified, since collides with walls
+								mapindex:"map",
+								defaulttile:tilemaps._defaultblock,
+								undestructable:false, // Custom attribute. Is destroyed by the hitted object.
+								power:1, // Custom attribute. Is the damage value of this weapon.
+								from:this,
+								sidex:this.facing,
+								sidey:this.facing,
+								tileset:"bullet-black",
+								frames:{speed:1,frames:[0]},
+								acc:5,
+								fliph:(this.facing==toys.FACE_RIGHT),
+								flipv:(this.facing==toys.FACE_DOWN),
+								angle:toys.FACES_ANGLE[this.facing],
+								spritewalls:"walls",
+								gapy:7 // Avoid wall collision on start
+							}); 
+							
+						},
+						
+						hitByBullet:function(by) {
+							if (!this.invultimer) { // If is not invulnerable
+								this.health-=by.power; // Decrease power
+								if (this.health<=0) // If dead..
+									this.kill(); // Kill...
+								else { // Else is just hit
+									this.accz=-5; // A little jump...
+									this.invultimer=10; // Stay invulnerable for a while...
+									this.stilltimer=10; // Stay still for a while...
+								}
+								return by.undestructable; // Destroy or not a bullet (decided by the bullet itself)
+							}
+						},
+						
+						first:function() {
+							if (this.stilltimer) this.stilltimer--;
+							if (this.invultimer) this.invultimer--;
+							
+							if (objectIsAlive(this)) {
+								
+								// Counter
+								this.counter=(this.counter+1)%60;
+								if (!this.killed) {
+									if (!this.stilltimer) toys.topview.wander(this,tilemaps[tilemaps.current],"map",100,{speed:1,minstep:20,steprange:150}); // tile collisions
+									if ((!this.stilltimer)&&toys.timer.randomly(this,"fire",{base:50,range:50})) this.attack(); // Fires randomly
+									toys.topview.handleAccellerations(this);
+									toys.topview.handleGravity(this); // z-gravity
+									if (!this.stilltimer) toys.topview.applyForces(this); // Apply forces
+									toys.topview.applyGravity(this); // z-gravity
+									toys.topview.tileCollision(this,tilemaps[tilemaps.current],"map",100); // tile collisions
+									toys.topview.spritewallCollision(this,{group:"walls"}); // walls collisions
+									toys.topview.floorCollision(this); // Collision with the floor (for z-gravity)
+									toys.topview.adjustZindex(this); // Set the right zindex
+									if (!this.stilltimer) toys.topview.setFrame(this); // set the right animation frame (if not attacking - which has still frame)
+									var pl=gbox.getObject("player","player");
+									if (!pl.initialize&&pl.collisionEnabled()&&(toys.topview.collides(this,pl))) pl.hitByBullet({power:1}); // If colliding with the player, hit with power 1
+									
+								}
+							}
+						},
+						blit:function() {
+							if ((!this.killed)&&gbox.objectIsVisible(this)&&((this.invultimer%2)==0)) {
+								// Shadowed object. First draws the shadow...
+								gbox.blitTile(gbox.getBufferContext(),{tileset:this.shadow.tileset,tile:this.shadow.tile,dx:this.x,dy:this.y+this.h-gbox.getTiles(this.shadow.tileset).tileh+4,camera:this.camera});
+								// Then the object. Notes that the y is y-z to have the "over the floor" effect.
+								gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
+							}
+						}
+			
+					  });
+					 break;
+				}
+			}		
+			if (cloud) maingame.addSmoke(ob,"flame-blue");
+			return ob;
+		}
+		
+		  gbox.go();
+		  
+	}
+	
+	// BOOTSTRAP
+	window.addEventListener('load', function () {
+		/*
+		tool.makecels({
+			rows:[
+				[
+					{img:"_bin/klin_up.png"},
+					{img:"_bin/klin_up_2.png"},
+					{img:"_bin/klin_up_3.png"},
+					{img:"_bin/klin_down.png"},
+					{img:"_bin/klin_down_2.png"},
+					{img:"_bin/klin_down_3.png"},
+					{img:"_bin/klin_stand_side.png"},
+					{img:"_bin/klin_side_1.png"},
+					{img:"_bin/klin_die.png"},
+					{img:"_bin/klin_up_attack.png"},
+					{img:"_bin/klin_down_attack.png"},
+					{img:"_bin/klin_side_attack.png"}
+				],
+				[
+					{img:"_bin/tile-grass.png"},
+					{img:"_bin/tile-dungefloor.png"},
+					{img:"_bin/tile-entrance.png"},
+					{img:"_bin/tile-entrance-2.png"},
+					{img:"_bin/tile-dungefloor2"},
+					{img:"_bin/tile-dungestairdown.png"},
+					{img:"_bin/tile-dungestairup.png"},
+					{img:"_bin/tile-buttondown.png"},
+					{img:"_bin/tile-buttonup.png"},
+					{img:"_bin/tile-dungefloor3.png"},
+				],
+				[
+					{img:"_bin/tile-rock.png"},
+					{img:"_bin/tile-cesp.png"},
+					{img:"_bin/tile-grassrock.png"},
+					{img:"_bin/tile-mountain.png"},
+					{img:"_bin/tile-dungewall2"},
+					{img:"_bin/tile-dungewall3"},
+					{img:"_bin/tile-dungewall4"},
+					{img:"_bin/tile-dungepit1"},
+					{img:"_bin/tile-dungepit2"},
+				],
+				[
+					{img:"_bin/hit 1.png"},
+					{img:"_bin/hit 2.png"},
+					{img:"_bin/hit 3.png"},
+					{img:"_bin/hit 4.png"},
+				],
+				[
+					{img:"_bin/right/up/hit 1.png"},
+					{img:"_bin/right/up/hit 2.png"},
+					{img:"_bin/right/up/hit 3.png"},
+					{img:"_bin/right/up/hit 4.png"}
+				
+				],
+				[
+					{img:"_bin/foes_1_up.png"},
+					{img:"_bin/foes_1_up_2.png"},
+					{img:"_bin/foes_1_down.png"},
+					{img:"_bin/foes_1_down_2.png"},
+					{img:"_bin/foes_1_left.png"},
+					{img:"_bin/foes_1_left_2.png"}
+					
+				],
+				[
+					{img:"_bin/shadow-small.png"},
+				],
+				[
+					{img:"_bin/coin 1.png"},
+					{img:"_bin/coin 2.png"},
+					{img:"_bin/coin 4.png"},
+					{img:"_bin/coin 6.png"},
+					{img:"_bin/coin 5.png"},
+					{img:"_bin/coin 3.png"},
+					{img:"_bin/bonus-arrow.png"},
+					{img:"_bin/bonus-arrow.png",filter:{color:{r:255,g:255,b:255,a:255}}},
+					{img:"_bin/smallkey"},
+					{img:"_bin/smallkey",filter:{color:{r:255,g:255,b:255,a:255}}},
+					{img:"_bin/bosskey.png"},
+					{img:"_bin/bosskey.png",filter:{color:{r:255,g:255,b:255,a:255}}},
+					{img:"_bin/heart1.png"},
+					{img:"_bin/heart2.png"},
+					{img:"_bin/heart3.png"},
+					{img:"_bin/heart4.png"},
+					{img:"_bin/heart5.png"},
+					{img:"_bin/hud-bosskey.png"},
+					{img:"_bin/hud-smallkey.png"},
+					{img:"_bin/hud-coin.png"},
+					
+				],
+				[
+					{img:"_bin/smoke 1.png"},
+					{img:"_bin/smoke 2.png"},
+					{img:"_bin/smoke 3.png"},
+					{img:"_bin/smoke 4.png"},
+					
+					{img:"_bin/smoke 1.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:130,g:2,b:252,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:0,g:0,b:0,a:255}}]}},
+					{img:"_bin/smoke 2.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:130,g:2,b:252,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:0,g:0,b:0,a:255}}]}},
+					{img:"_bin/smoke 3.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:85,g:0,b:145,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:0,g:0,b:0,a:255}}]}},
+					{img:"_bin/smoke 4.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:25,g:25,b:25,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:0,g:0,b:0,a:255}}]}},
+
+					{img:"_bin/smoke 1.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:249,g:37,b:37,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:144,g:1,b:9,a:255}}]}},
+					{img:"_bin/smoke 2.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:251,g:147,b:31,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:144,g:1,b:9,a:255}}]}},
+					{img:"_bin/smoke 3.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:144,g:82,b:13,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:25,g:25,b:25,a:255}}]}},
+					{img:"_bin/smoke 4.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:25,g:25,b:25,a:255}},{from:{r:0,g:0,b:0,a:255},to:{r:0,g:0,b:0,a:255}}]}},
+
+				],
+				[
+					{img:"_bin/bulletblack-1.png"}
+				],
+				[
+					{img:"_bin/door.png"},
+					{img:"_bin/door-v.png"},
+				],
+				[
+					{img:"_bin/tile-chest.png"},
+				],
+				[
+					{img:"_bin/arrow-left1.png"},
+					{img:"_bin/arrow-left2.png"},
+				],
+				[
+					{img:"_bin/arrow-up1.png"},
+					{img:"_bin/arrow-up2.png"},
+				],
+				[
+					{img:"_bin/item-sword.png"},
+					{img:"_bin/item-arrow.png"},
+				],
+				[
+					{img:"_bin/tile-dungeye"},
+					{img:"_bin/tile-dungeye2"},
+					{img:"_bin/oldman 1.png"},
+					{img:"_bin/oldman 2.png"},
+					{img:"_bin/villager 1.png"},
+					{img:"_bin/villager 2.png"},
+					{img:"_bin/wife 1.png"},
+					{img:"_bin/wife 2.png"},
+					{img:"_bin/spirit 1.png"},
+					{img:"_bin/spirit 2.png"},
+				],
+				[
+					{img:"_bin/house.png"},
+				]
+			]
+		});
+	return;
+	*/
+	
+
+		help.akihabaraInit("The Legend Of Sadness");
+		gbox.setCallback(go);
+		
+		
+		gbox.addImage("sprites","resources/tlol/cels.png");
+		gbox.addImage("font","resources/tlol/font.png");
+		gbox.addImage("fontbig","resources/tlol/fontbig.png");
+		gbox.addImage("logo","resources/tlol/logo.png");
+
+
+		gbox.addFont({id:"small",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:0});
+		gbox.addFont({id:"smalltut",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:24});
+		gbox.addFont({id:"big",image:"fontbig",firstletter:" ",tileh:16,tilew:8,tilerow:255,gapx:0,gapy:0});
+		
+		gbox.addTiles({id:"player",image:"sprites",tileh:30,tilew:30,tilerow:12,gapx:0,gapy:0});
+		gbox.addTiles({id:"tiles",image:"sprites",tileh:30,tilew:30,tilerow:12,gapx:0,gapy:30});
+		
+		gbox.addTiles({id:"lefthit",image:"sprites",tileh:40,tilew:20,tilerow:4,gapx:0,gapy:90});
+		gbox.addTiles({id:"uphit",image:"sprites",tileh:20,tilew:40,tilerow:4,gapx:0,gapy:130});
+		gbox.addTiles({id:"foe1",image:"sprites",tileh:30,tilew:30,tilerow:12,gapx:0,gapy:150});
+		gbox.addTiles({id:"shadows",image:"sprites",tileh:15,tilew:30,tilerow:12,gapx:0,gapy:180});
+		gbox.addTiles({id:"bonus",image:"sprites",tileh:20,tilew:20,tilerow:12,gapx:0,gapy:195});
+		gbox.addTiles({id:"hud",image:"sprites",tileh:20,tilew:20,tilerow:9,gapx:240,gapy:195});
+		
+		gbox.addTiles({id:"flame-white",image:"sprites",tileh:30,tilew:30,tilerow:4,gapx:0,gapy:215});
+		gbox.addTiles({id:"flame-blue",image:"sprites",tileh:30,tilew:30,tilerow:4,gapx:120,gapy:215});
+		gbox.addTiles({id:"flame-red",image:"sprites",tileh:30,tilew:30,tilerow:4,gapx:240,gapy:215});
+		
+		gbox.addTiles({id:"bullet-black",image:"sprites",tileh:15,tilew:15,tilerow:1,gapx:0,gapy:245});
+		
+		gbox.addTiles({id:"door",image:"sprites",tileh:90,tilew:60,tilerow:1,gapx:0,gapy:260});
+		gbox.addTiles({id:"doorv",image:"sprites",tileh:90,tilew:30,tilerow:1,gapx:60,gapy:260});
+		
+		gbox.addTiles({id:"chest",image:"sprites",tileh:30,tilew:30,tilerow:1,gapx:0,gapy:350});
+		
+		gbox.addTiles({id:"leftarrow",image:"sprites",tileh:12,tilew:30,tilerow:2,gapx:0,gapy:380});
+		gbox.addTiles({id:"uparrow",image:"sprites",tileh:30,tilew:12,tilerow:2,gapx:0,gapy:392});
+		
+		gbox.addTiles({id:"items",image:"sprites",tileh:20,tilew:20,tilerow:2,gapx:0,gapy:422});
+		gbox.addTiles({id:"npc",image:"sprites",tileh:30,tilew:30,tilerow:10,gapx:0,gapy:442});
+		
+		gbox.addTiles({id:"house",image:"sprites",tileh:90,tilew:90,tilerow:1,gapx:0,gapy:472});
+		
+		
+		gbox.loadAll();
+	}, false);
+
+	</script>
+</html>

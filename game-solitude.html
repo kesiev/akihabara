@@ -1,0 +1,837 @@
+<html>
+<head>
+	<script type="text/javascript" src="akihabara/gbox.js"></script>
+	<script type="text/javascript" src="akihabara/iphopad.js"></script>
+	<script type="text/javascript" src="akihabara/trigo.js"></script>
+	<script type="text/javascript" src="akihabara/toys.js"></script>
+	<script type="text/javascript" src="akihabara/help.js"></script>
+	<script type="text/javascript" src="akihabara/tool.js"></script>
+	<script type="text/javascript" src="akihabara/gamecycle.js"></script>
+	<style>BODY { -webkit-user-select:none; margin:0px}</style>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+</head>
+<body>
+</body>
+<script>
+// ---
+// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
+// ---
+	
+		  // Game-specific
+		  
+		  var maingame;
+		  var scroller;
+		  var dialogues;
+		  var faces;
+		  var stages;
+		  var enemies;
+		  var attractscroller;
+		  
+		
+		  
+		  function defaultSpark(th) { // this is a little hack: this function can be used for default bullet sparks, for smaller and smarter code
+		  	toys.generate.sparks.simple(th,"sparks",null,{animspeed:2,tileset:"spark"});
+		  }
+		  
+		  function go() {
+		 	gbox.setGroups(["background","player","playerbullets","foes","foesbullets","sparks","foreground","gamecycle"]);
+		 	
+		 	maingame=gamecycle.createMaingame("gamecycle","gamecycle");
+		 			 	
+		 	//
+		 	faces={
+		  			pilot:{
+		  				x:80,
+		  				y:150,
+		  				tileset:"faces",
+		  				frames:{ speed:10, frames:[0,1] },
+		  				portraitx:10,
+		  				portraity:150,
+		  				box:{x:0,y:140,w:gbox.getScreenW(),h:70,alpha:0.5}
+		  			},
+		  			pilotsurprised:{
+		  				x:80,
+		  				y:150,
+		  				tileset:"faces",
+		  				frames:{ speed:10, frames:[4] },
+		  				portraitx:10,
+		  				portraity:150,
+		  				box:{x:0,y:140,w:gbox.getScreenW(),h:70,alpha:0.5}
+		  			},
+		  			pilotangry:{
+		  				x:80,
+		  				y:150,
+		  				tileset:"faces",
+		  				frames:{ speed:4, frames:[2,3] },
+		  				portraitx:10,
+		  				portraity:150,
+		  				box:{x:0,y:140,w:gbox.getScreenW(),h:70,alpha:0.5}
+		  			},
+		  			radio:{
+		  				x:80,
+		  				y:50,
+		  				tileset:"faces",
+		  				frames:{ speed:10, frames:[5,6] },
+		  				portraitx:10,
+		  				portraity:50,
+		  				box:{x:0,y:40,w:gbox.getScreenW(),h:70,alpha:0.5}
+		  			},
+		  			radiosad:{
+		  				x:80,
+		  				y:50,
+		  				tileset:"faces",
+		  				frames:{ speed:1, frames:[7] },
+		  				portraitx:10,
+		  				portraity:50,
+		  				box:{x:0,y:40,w:gbox.getScreenW(),h:70,alpha:0.5}
+		  			},
+		  			radiosadder:{
+		  				x:80,
+		  				y:50,
+		  				tileset:"faces",
+		  				frames:{ speed:10, frames:[7,8] },
+		  				portraitx:10,
+		  				portraity:50,
+		  				box:{x:0,y:40,w:gbox.getScreenW(),h:70,alpha:0.5}
+		  			},
+		  			wife:{
+		  				x:80,
+		  				y:50,
+		  				tileset:"faces",
+		  				frames:{ speed:1, frames:[9] },
+		  				portraitx:10,
+		  				portraity:50,
+		  				box:{x:0,y:40,w:gbox.getScreenW(),h:70,alpha:0.5}
+		  			}
+		  		};
+		  		
+			dialogues={
+		  	intro:{
+		  		font:"big",
+		  		skipkey:"a",
+		  		esckey:null,
+		  		hideonend:true,  // Hidden when ended, so it is not shown during the boss battle.
+		  		who:faces,
+		  		scenes:[
+		  			{
+		  				speed:1,
+		  				who:"pilot",
+		  				talk:[ "Control. 10 minutes to the", "target. All weapons are", "ready." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"radio",
+		  				talk:[ "Ok!", "Stay online. I'm scanning the", "coast for enemies." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"pilot",
+		  				talk:[ "Roger." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"radio",
+		  				talk:[ "It's your last mission, Hiro.", "I'm sure that you will leave", "a good remember to the Squad." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"pilot",
+		  				talk:[ "Last mission... It's not", "something I've decided." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"radiosad",
+		  				talk:[ "..." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"radio",
+		  				talk:[ "Enemies are approaching.", "Stay alert, Hiro." ]
+		  			},
+		  		]
+		  	},
+		  	beforeboss:{
+		  		font:"big",
+		  		skipkey:"a",
+		  		esckey:null,
+		  		hideonend:true,  // Hidden when ended, so it is not shown during the boss battle.
+		  		who:faces,
+		  		scenes:[
+		  			{
+		  				speed:1,
+		  				who:"radio",
+		  				talk:[ "Hiro...", "Something huge is coming...", "Please... survive..." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"pilot",
+		  				talk:[ "It's not the first huge enemy", "I will blow up... what's the", "matter?" ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"radiosadder",
+		  				talk:[ "Please... forgive us...", "Survive... It's your last...", "mission..." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"pilot",
+		  				talk:[ "Wh... what happens?!" ]
+		  			},
+		  		]
+		  	},
+		  	boss:{
+		  		font:"big",
+		  		skipkey:"a",
+		  		esckey:null,
+		  		hideonend:true,  // Hidden when ended, so it is not shown during the boss battle.
+		  		who:faces,
+		  		scenes:[
+		  			{
+		  				speed:1,
+		  				who:"wife",
+		  				talk:[ "At last you're here with me,", "Hiro..." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"pilotsurprised",
+		  				talk:[ "That... that voice..." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"wife",
+		  				talk:[ "You've left me alone for", "too many days, my love. For", "the war... but now..." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"pilotangry",
+		  				talk:[ "Sophia! My love! Wh... What", "they have done to you!!!" ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"wife",
+		  				talk:[ "You've fought thousands of", "enemies... Now fight my", "deep loneliness..." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"pilotangry",
+		  				talk:[ "Please Sophia! Forgive me!", "Stop now! PLEASE STOP!" ]
+		  			}
+		  		]
+		  	},
+		  	bossend:{
+		  		font:"big",
+		  		skipkey:"a",
+		  		esckey:null,
+		  		hideonend:true,  // Hidden when ended, so it is not shown during the boss battle.
+		  		who:faces,
+		  		scenes:[
+		  			{
+		  				speed:2,
+		  				who:"wife",
+		  				talk:[ "Good job, Hiro. You've beaten", "my loneliness... now I'm", "finally with you..." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"pilotangry",
+		  				talk:[ "Hold on, Sophia! I'm coming", "to save you!! Open the", "hangar!" ]
+		  			},
+		  			{
+		  				speed:5,
+		  				who:"wife",
+		  				talk:[ "I love you, Hiro." ]
+		  			},
+		  			{
+		  				speed:1,
+		  				who:"pilotangry",
+		  				talk:[ "SOPHIA!!" ]
+		  			},
+		  		]
+		  	},
+		  	titles:{
+		  		skipkey:"a",
+		  		esckey:"b",
+				font:"small",
+				scenes:[
+					{
+						speed:2,
+						spacing:2,
+						push:gbox.getScreenHH(),
+						scroller:[
+							"SOLITUDE",
+							"A SHORT SHOOTER BY KESIEV",
+							"","","",
+							"JS-CODE BY",
+							"KESIEV",
+							"",
+							"GRAPHICS BY",
+							"KESIEV",
+							"",
+							"STORY BY",
+							"KESIEV",
+							"","","",
+							"CREATED USING THE AKIHABARA ENGINE",
+							"BY KESIEV (c)2010",
+							"WWW.KESIEV.COM",
+							"","","","","","","","","","","",
+							"THANK YOU FOR PLAYING!",
+							"NEVER FORGET WHO LOVES YOU.",
+							"",
+							"THE END"
+						]
+					}
+				]
+			}
+		  };
+		  
+		  // Attract mode scroller
+		  attractscroller={
+				maxwidth:460,
+				stage:[
+					{image:"sea"},
+					{image:"sea"},
+					{image:"sea"},
+					{image:"sea"},
+					{image:"seaside"},
+					{image:"beach"},
+					{image:"beach"},
+					{image:"seaside2"},
+					{image:"sea"},
+					{image:"sea"},
+					{image:"sea"},
+				],
+			};
+				
+		  // Stages layout
+		  stages={
+		  	stage1:{
+		  		scroller: {
+		  			maxwidth:460,
+					stage:[
+						{image:"sea"}, // Start
+						{image:"sea"},
+						{image:"sea"}, // After intro
+						{image:"seaside"},
+						{image:"beach"},
+						{image:"beach"},
+						{image:"beach"},
+						{image:"beach"},
+						{image:"beach2"},
+						{image:"beach"},
+						{image:"beach"},
+						{image:"beach"},
+						{image:"beach"},
+						{image:"beach2"},
+						{image:"beach2"},
+						{image:"beach"},
+						{image:"beach"},
+						{image:"beach2"},
+						{image:"seaside2"},
+						{image:"sea"}, // Boss battle / Ending
+						{image:"sea"},
+						{image:"sea"},
+						{image:"sea"}, // The end of stage
+						{image:"sea"},
+						{image:"sea"},
+						{image:"seaside"}
+					],
+				},
+				script:function(th,pos,bl) {
+					if ((pos==0)&&(bl==0)) { // When starting and first repetition of the sea part. bl is 0 when pos is reached out from the loop. then bl is 1,2 etc.
+						scroller.setSpeed(10); // Set speed to fast
+						scroller.setLoop(0,320); // scrolls faster the sea.
+						toys.resetToy(this,"first-dialogue"); // prepare the intro dialogue						
+						toys.resetToy(this,"once-finishlevel"); // prepare the finished level semaphore	
+						toys.resetToy(this,"once-finishboss"); // prepare the finished boss semaphore
+					} else if (pos<=320) { // During the 0,320 loop...
+						if (toys.dialogue.render(this,"first-dialogue",dialogues.intro)) {
+							scroller.quitLoop();
+							scroller.panToSpeed(2,3);
+						}
+					} else if (pos<5440) { // Legthy level
+						if (pos%1000==0) { // every 1000...
+							// Enemy generators apply the model to the newly created structure. That structure is used as object definition.
+							toys.shmup.generateEnemy("foes",null,{x:help.random(10,gbox.getScreenW()-60),y:-40},enemies.bigship);
+						}
+						if (pos%200==0) { // every 200...
+							toys.shmup.generateEnemy("foes",null,{x:-20,y:help.random(20,20)},enemies.ship2);
+							toys.shmup.generateEnemy("foes",null,{x:gbox.getScreenW()-20,y:help.random(20,20)},enemies.ship3);
+						}
+						if (pos%500==0) { // every 500...
+							toys.shmup.generateEnemy("foes",null,{x:100,y:-20},enemies.ship1);
+							toys.shmup.generateEnemy("foes",null,{x:200,y:-20},enemies.ship1);
+						}
+						if (pos%800==0) { // every 800...
+							toys.shmup.generateEnemy("foes",null,{x:50,y:-20},enemies.ship1);
+							toys.shmup.generateEnemy("foes",null,{x:150,y:-20},enemies.ship1);
+						}
+						
+					} else if (toys.logic.once(th,"once-finishlevel",pos>5760)) { // At the end...
+						scroller.panToSpeed(10,2); // Accellerate... prepare for the boss battle
+						scroller.setLoop(5760,6080); // scrolls faster the sea.
+						toys.shmup.generateEnemy("foes",null,{},enemies.boss); // Here comes the boss
+					} else if (toys.logic.once(th,"once-finishboss",pos>6080)) {// If you're here, you've beaten the boss (the loop was quitted)
+						scroller.panToSpeed(1,5); // Decellerate...
+						maingame.gameIsCompleted(); // The game is completed
+					}
+				}
+			}
+		  }
+		  
+		  var enemy_generical={ // All the enemies has these attributes as default. Are applied by the next for cycle
+		  		health:2,
+		  		tileset:"enemy1",
+		  		frames:{
+		  			still:{speed:1,frames:[0,1]},
+		  			hit:{speed:1,frames:[0,2]},
+		  		},
+		  		handler:function(th) { if (!gbox.objectIsVisible(th)) gbox.trashObject(this); }, // If not visible, vanish
+		  		hitanimationset:"hit",
+		  		kill:function(by) {
+		  			toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,tileset:"explosion",accx:by.accx,accy:Math.floor(by.accy/2)}); // ereditate the explosion direction
+		  			toys.generate.sparks.popupText(this,"sparks",null,{font:"bigred",jump:6,text:"1000pts",keep:10});
+		  			maingame.hud.addValue("score","value",1000);
+		  			if (help.random(0,3)==0) toys.shmup.generateEnemy("foes",null,{x:by.x,y:by.y},enemies.powerup);
+		  			gbox.trashObject(this);
+		  		}
+		  };
+		  
+		  // Enemies models
+		  enemies={
+		  	ship1:{ // Accelleration based enemy
+		  		accx:0,accy:10,
+		  		script:[
+		  			{ forframes:10, everyframe:2, addaccy:-1 },
+		  			{ afterframes:30,  doit: { every:20, action:function(th) { toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletsmall",spark:function(th){defaultSpark(th)},frames:{speed:3,frames:[0,1]},accx:0,accy:5}); } } },
+		  			{ forframes:17, everyframe:5, addaccy:-1, }
+		  		]
+		  	},
+		  	ship2: { // Angle based enemy
+		  		angle:trigo.ANGLE_RIGHT,acc:10,
+		  		script:[
+		  			{ forframes:10, everyframe:2, addacc:-1 },
+		  			{ afterframes:30,  doit: { every:20,action:function(th) { toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletsmall",spark:function(th){defaultSpark(th)},frames:{speed:3,frames:[0,1]},accx:8,accy:8}); } } },
+		  			{ forframes:20, addangle:0.1, addacc:1 }
+		  		]
+		  	},
+			ship3: { // Angle based enemy (specular)
+		  		angle:trigo.ANGLE_LEFT,acc:10,
+		  		script:[
+		  			{ forframes:10, everyframe:2, addacc:-1 },
+		  			{ afterframes:30,  doit: { every:20,action:function(th) { toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletsmall",spark:function(th){defaultSpark(th)},frames:{speed:3,frames:[0,1]},accx:-8,accy:8}); } } },
+		  			{ forframes:20, addangle:-0.1, addacc:1 }
+		  		]
+		  	},
+		  	bigship: {
+		  		accx:0, accy:1,
+		  		health:10,
+		  		tileset:"enemy2",
+		  		frames:{
+		  			still:{speed:1,frames:[0,0,0,1,2,1]}, // glowing center
+		  			hit:{speed:1,frames:[0,3]},
+		  		},
+		  		kill:function(by) {
+		  			toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,tileset:"explosion",accx:help.random(-5,10),accy:help.random(-5,10)}); // ereditate the explosion direction
+		  			toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,tileset:"explosion",accx:help.random(-5,10),accy:help.random(-5,10)}); // ereditate the explosion direction
+		  			toys.generate.sparks.popupText(this,"sparks","",{font:"bigred",jump:6,text:"3000pts",keep:10});
+		  			maingame.hud.addValue("score","value",3000);
+		  			gbox.trashObject(this);
+		  		},
+		  		script:[
+		  			{ afterframes:5,  doit: { every:20,action:function(th) {
+		  				toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[1]},accx:0,accy:5});
+		  			} } },
+		  		]
+		  	},
+		  	// POWER UP
+		  	powerup:{
+		  		accx:0,accy:-5,
+		  		invulnerable:true,
+		  		tileset:"powerup",
+		  		frames:{
+		  			still:{speed:1,frames:[0,1]}
+		  		},
+		  		kill:function() {}, // Not killable
+		  		hitByBullet:function(by) { return true; }, // Passthru bullet
+				handler:function(th) {
+					if (gbox.collides(th,gbox.getObject("player","player"))) {
+						toys.generate.sparks.simple(th,"sparks",null,{animspeed:4,tileset:"spark",accy:-2}); // a moving up spark
+						maingame.hud.addValue("score","value",500);
+						gbox.getObject("player","player").powerUp(); // Power up ship
+						gbox.trashObject(th); // Vanish
+					}
+				},
+				script:[
+					{forframes:15,addaccy:1} // go down
+				]
+		  	},
+		  	// BOSS
+		  	boss:{
+		  		x:gbox.getScreenHW()-94,y:-100, // the middle of the screen...
+		  		accx:0, accy:0, // starts still
+		  		health:100,
+		  		invulnerable:true, // Starts invulnerable. It become vulnerable after the dialogue
+		  		tileset:"boss",
+		  		frames:{
+		  			still:{speed:1,frames:[0]},
+		  			hit:{speed:1,frames:[0,1]}
+		  		},
+		  		kill:function(th,by) {
+		  			th.invulnerable=true; // During the exploding sequence, the ship is invulnerable...
+		  			th.goTo(23); // Goto the blowing sequence.
+		  		},
+		  		handler:function(th) {  }, // Never goes away
+		  		initialize: function(th) { // initialize is the first thing called. prepare the boss dialogue
+		  			toys.resetToy(th,"beforeboss-dialogue"); // prepare the dialogue before the boss
+		  			toys.resetToy(th,"boss-dialogue"); 
+		  			toys.resetToy(th,"bossend-dialogue"); 
+		  		},
+		  		script:[
+		  		//
+		  			{ waitfor:function(th) { return toys.getToyStatus(th,"beforeboss-dialogue") }, doit: { render:function(th) { toys.dialogue.render(th,"beforeboss-dialogue",dialogues.beforeboss); } } }, // Wait for the boss intro dialogue
+		  			{ doit: { } }, // Cancel the dialog scene
+		  			{ setaccy:1 }, // Start going down...
+		  			{ afterframes:100, setaccy:0 }, // It cames from the top
+		  			{ waitfor:function(th) { return toys.getToyStatus(th,"boss-dialogue") }, doit: { render:function(th) { toys.dialogue.render(th,"boss-dialogue",dialogues.boss); } } }, // Wait for the boss intro dialogue
+		  			{ doit: { } }, // Cancel the dialog scene
+		  			// After stopped, became vulnerable and prepare the bullet pattern
+		  			{ setinvulnerable:false, doit:{every:10,action:function(th,time){
+		  				if (time%3==0) { // Sometime fires the diagonals bullets... (time is the counter of the calls of the action)
+		  					toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletsmall",spark:function(th){defaultSpark(th)},frames:{speed:3,frames:[0,1]},gapx:-20,gapy:20,accx:-2,accy:4});
+		  					toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletsmall",spark:function(th){defaultSpark(th)},frames:{speed:3,frames:[0,1]},gapx:20,gapy:20,accx:2,accy:4});
+		  					toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletsmall",spark:function(th){defaultSpark(th)},frames:{speed:3,frames:[0,1]},gapx:-20,gapy:20,accx:-4,accy:4});
+		  					toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletsmall",spark:function(th){defaultSpark(th)},frames:{speed:3,frames:[0,1]},gapx:20,gapy:20,accx:4,accy:4});
+		  				}
+		  				// Fires the vertical bullets every time. Speed is random
+		  				toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[1]},accx:0,gapx:-10,accy:help.random(2,3)});
+		  				toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[1]},accx:0,gapx:10,accy:help.random(2,3)});
+		  				if (th.health<20) { // if low health, starting exploding! A classic!
+		  					if (time%(th.health<10?1:2)==0) // faster if very very low...
+		  						toys.generate.sparks.simple(th,"sparks",null,{animspeed:2,tileset:"explosion",accx:help.random(-5,10),accy:help.random(-5,10)});
+		  				}
+		  			} } },
+		  			{ forframes:6, everyframe:2,addaccx:-1 }, // moves horizontally, changing sometime the acceleration
+		  			{ afterframes:8, forframes:12, everyframe:2, addaccx:1 },
+		  			{ afterframes:24, forframes:12, everyframe:2, addaccx:-1 },
+		  			{ afterframes:24, forframes:12, everyframe:2, addaccx:1 },
+		  			{ afterframes:24, forframes:12, everyframe:2, addaccx:-1 },
+		  			{ afterframes:24, forframes:12, everyframe:2, addaccx:1 },
+		  			{ afterframes:24, forframes:12, everyframe:2, addaccx:-1 },
+		  			{ afterframes:24, forframes:12, everyframe:2, addaccx:1 },
+		  			{ afterframes:12, forframes:6, everyframe:2, addaccx:-1 },
+		  			{ afterframes:30, setaccy:10 }, // jump down...
+		  			{ forframes:30, addaccy:-1 }, // Fly away..
+		  			{ setaccy:0 }, // Stops... out of the screen
+		  			{ afterframes:50, setx:gbox.getScreenHW()-94,sety:-100,setaccx:0,setaccy:0}, // go back on the top of the screen and...
+		  			{ setaccy:1 }, // Restart going down... (without dialog)
+		  			{ afterframes:100, setaccy:0 }, // It cames from the top
+		  			{ goto:7  }, // Restart moving horizontally
+		  			
+		  			// Line 23 : big explosion! (spaghetti code)
+		  			{ setaccx:0,setaccy:1,doit:{every:5,action:function(th,time){ // Slowly go down and do explosions and hit animations
+		  					th.hitAnimation();
+		  					toys.generate.sparks.simple(th,"sparks",null,{animspeed:2,tileset:"explosion",accx:help.random(-5,10),accy:help.random(-5,10)});
+		  					toys.generate.sparks.simple(th,"sparks",null,{animspeed:2,tileset:"explosion",accx:help.random(-5,10),accy:help.random(-5,10)});
+		  			} } },
+		  			{ afterframes:60, setaccy:0 }, // Stops after 60 frames
+		  			{ waitfor:function(th) { return toys.getToyStatus(th,"bossend-dialogue") }, doit: { every:"keep", action:"keep", render:function(th) { toys.dialogue.render(th,"bossend-dialogue",dialogues.bossend); } } }, // Wait for the boss intro dialogue
+		  			{ doit:{ action:function(th){ // An then explode...
+		  				for (var i=0;i<20;i++)
+		  					toys.generate.sparks.simple(th,"sparks",null,{animspeed:2,tileset:"explosion",accx:help.random(-5,10),accy:help.random(-5,10)});
+		  				toys.generate.sparks.popupText(th,"sparks","",{font:"bigred",jump:6,text:"10000pts",keep:60});
+		  				maingame.hud.addValue("score","value",10000);
+		  				scroller.quitLoop(); // Exit the boss battle
+		  				gbox.trashObject(th); // Disappear
+		  			} } }
+		  		]
+		  	}
+		  	
+		  }
+		  
+		  // Apply the generical enemy model to all the ships. If one or more fields are different from the model, the original one are kept.
+		  for (var i in enemies)
+		  	help.mergeWithModel(enemies[i],enemy_generical);
+		 
+		  // No level intro animation
+		  maingame.gameIntroAnimation=function() { return true; }
+		  
+		   // Title intro
+		  maingame.gameTitleIntroAnimation=function(reset) {
+			  	if (reset) {
+			  		toys.resetToy(this,"crosser");
+			  		toys.resetToy(this,"flash");
+			  		gbox.playGroup("foreground");
+			  		scroller=toys.shmup.generateScroller("foreground","roller",help.cloneObject(attractscroller));
+			  		scroller.setSpeed(2);
+			  		scroller.setLoop(0,2560);
+		  		} else {
+		  			if (toys.getToyStatus(this,"crosser"))
+		  				toys.fullscreen.fadein(this,"flash",gbox.getBufferContext(),{fadespeed:0.05,color:gbox.COLOR_WHITE});
+		  			else
+		  				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+		  				
+		  			toys.logos.crossed(this,"crosser",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,speed:2,gapx:250,alpha:0.5});
+		  		}
+		  	},
+		  	
+		  // Change level
+		  maingame.changeLevel=function(level) {
+		  	if (level==null) level="stage1";
+			stages.currentstage=level;
+			// This object handles the script of each level. First prepares the scroller and then does the game actions.
+			gbox.addObject({
+				id:"stagehandler",
+				group:"foreground",
+				initialize:function() {
+					// Since the scroller object changes itself, let's change a cloned histance instead of the original current stage.
+					scroller=toys.shmup.generateScroller("background","roller",help.cloneObject(stages[stages.currentstage].scroller));
+				},
+				first:function() {
+					stages[stages.currentstage].script(this,scroller.y,scroller.looprounds);
+					scroller.setX(gbox.getObject("player","player").x*0.5); // *0.5 for parallax
+				}
+			});
+			toys.shmup.spawn(gbox.getObject("player","player"),{x:150,y:200,weapon:0});
+			this.newLife();
+		  }
+		  
+		    // New life
+		  maingame.newLife=function(up) {
+			toys.shmup.spawn(gbox.getObject("player","player"),{health:3,invul:50,weapon:0});
+		  }
+
+			// End level animation
+		   maingame.endlevelIntroAnimation=function(reset) { return true }
+		  	
+		  // Game ending
+		  maingame.gameEndingIntroAnimation=function(reset){
+		  	if (reset) {
+		  		toys.resetToy(this,"intro-animation");
+		  	} else {
+		  		gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+		  		return toys.dialogue.render(this,"intro-animation",dialogues.titles);
+		  	}
+		  }
+		  
+		  // Game initialization
+		 
+		  maingame.initializeGame=function() {
+		 	// Build hud
+		 	maingame.hud.setWidget("label",{widget:"label",font:"small",value:"1UP",dx:10,dy:10,clear:true});
+		 	maingame.hud.setWidget("score",{widget:"label",font:"small",value:0,dx:30,dy:25,prepad:10,padwith:" ",clear:true});
+		 	maingame.hud.setWidget("lives",{widget:"symbols",tiles:[0],minvalue:0,value:3-maingame.difficulty,maxshown:3,tileset:"symbols",dx:10,dy:gbox.getScreenH()-23,gapx:16,gapy:0});
+
+			// Add player			
+			 gbox.addObject({
+		  	id:"player",
+		  	group:"player",
+		  	tileset:"player",
+		  	weapon:0, // current weapon
+		  	invul:0, // Invulnerability timer
+		  	respawntimer:0, // respawn timer
+		  	
+		  	powerUp:function() {
+		  		if (this.weapon<2) {
+		  			this.weapon++;
+		  			toys.generate.sparks.popupText(this,"sparks",null,{font:"bigred",jump:6,text:"POWER LV."+(this.weapon+1),keep:10});
+		  		}
+		  	},
+		  	
+		  	makeInvulnerable:function(t) {
+		  		this.invul=t;
+		  	},
+			
+		  	fireBullet:function() {
+		  		if (this.weapon==0) { // single shot
+		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},accx:0,accy:-8});
+		  		} else if (this.weapon==1) { // double shot
+		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},accx:0,accy:-8,gapx:-8});
+		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},accx:0,accy:-8,gapx:8});
+		  		} else if (this.weapon==2) { // wide shot
+		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},accx:0,accy:-10});
+		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},acc:8,angle:4.9});
+		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},acc:8,angle:4.7});
+		  		
+		  		}
+		  	
+		  	},
+			
+			initialize:function() {
+				toys.shmup.initialize(this,{
+					bounds:{x:0,y:50,w:gbox.getScreenW(),h:gbox.getScreenH()-50},
+					frames:{
+						still:{ speed:2, frames:[0,1,2] },
+						hit:{speed:1,frames:[0,3]}
+					}
+				});
+			},
+			
+			collisionEnabled:function() {
+				return !maingame.gameIsHold()&&!this.killed&&!this.invul;
+			},
+			
+			kill:function(by){
+	  			toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,tileset:"explosion",accx:-2,accy:-2});
+	  			toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,tileset:"explosion",accx:2,accy:-2});
+	  			toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,tileset:"explosion",accx:-2,accy:2});
+	  			toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,tileset:"explosion",accx:2,accy:2});
+	  			this.killed=true;
+	  			this.respawntimer=20;
+		  	},
+		  	
+		  	hitByBullet:function(by) { // ignore bullets if the ship is untouchable
+		  		if (this.collisionEnabled()) {
+		  			toys.shmup.hitByBullet(this,by); 
+		  			this.makeInvulnerable(10);
+		  		} else return true;
+		  	},
+		  	
+		  	first:function() {
+		  	
+		  		// Counter
+		  		this.counter=(this.counter+1)%10;
+				if (!this.killed) {
+					toys.shmup.applyForces(this); // Apply forces
+					toys.shmup.controlKeys(this,{left:"left",right:"right",up:"up",down:"down"}); // Moves
+					toys.shmup.handleAccellerations(this);
+					toys.shmup.keepInBounds(this); // Keep the ship in his bounds
+					toys.shmup.setFrame(this); // set the right animation frame
+					if (this.invul) this.invul--; // the invulnerability counter
+					if (gbox.keyIsHit("a"))
+						this.fireBullet();
+				} else {
+					if (this.respawntimer) this.respawntimer--; else if (maingame.hud.getValue("lives","value")>0) {
+						maingame.hud.addValue("lives","value",-1);
+						if (maingame.hud.getValue("lives","value")==0) {
+							scroller.panToSpeed(0,5); // slow down the roller
+							maingame.playerDied({wait:10}); // trigger gameover
+						}
+						else maingame.newLife(); // respawn
+					}
+				}
+				
+		  	},
+		  	blit:function() {
+		  		if (!this.killed) // show is not killed and invul is pair (so it blinks during invulnerability)
+		  			gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y,camera:this.camera,fliph:this.fliph,flipv:this.flipv,alpha:((this.invul%2)==0?1:0.5)});
+		  	}
+
+		  });
+		  
+		
+		}
+		
+		
+		  gbox.go();
+		  
+	}
+	
+	// BOOTSTRAP
+	window.addEventListener('load', function () {
+		/*
+		tool.makecels({
+			rows:[
+				[
+					{img:"_bin/ship_1.png"},
+					{img:"_bin/ship_1_1.png"},
+					{img:"_bin/ship_1_2.png"},
+					
+					{img:"_bin/ship_1.png",filter:{color:{r:255,g:255,b:255,a:255}}}
+				],
+				[
+					{img:"_bin/bullet_long1.png"},
+					{img:"_bin/bullet_long2.png"}
+				],
+				[
+					{img:"_bin/spark_1.png"},
+					{img:"_bin/spark_2.png"},
+					{img:"_bin/spark_3.png"}
+				],
+				[
+					{img:"_bin/explosion 1.png"},
+					{img:"_bin/explosion 2.png"},
+					{img:"_bin/explosion 3.png"},
+					{img:"_bin/explosion 4.png"},
+					{img:"_bin/explosion 5.png"},
+					{img:"_bin/explosion 6.png"}					
+				],
+				[
+					{img:"_bin/bullet_small_1.png"},
+					{img:"_bin/bullet_small_2.png"}
+				],
+				[
+					{img:"_bin/enemy_1_1.png"},
+					{img:"_bin/enemy_1_2.png"},
+					{img:"_bin/enemy_1_1.png",filter:{color:{r:255,g:255,b:255,a:255}}}
+				],
+				[
+					{img:"_bin/enemy_2_1.png"},
+					{img:"_bin/enemy_2_2.png"},
+					{img:"_bin/enemy_2_3.png"},
+					{img:"_bin/enemy_2_1.png",filter:{color:{r:255,g:255,b:255,a:255}}}
+				],
+				[
+					{img:"_bin/boss_1.png"},
+					{img:"_bin/boss_1.png",filter:{color:{r:255,g:255,b:255,a:255}}}
+				],
+				[
+					{img:"_bin/powerup_1.png"},
+					{img:"_bin/powerup_2.png"}
+				],
+				[
+					{img:"_bin/ship_1_1_mini.png"}
+				],
+				[
+					{img:"_bin/solitude-commander_1_1.png"},
+					{img:"_bin/solitude-commander_1_2.png"},
+					{img:"_bin/solitude-commander_2_1.png"},
+					{img:"_bin/solitude-commander_2_2.png"},
+					{img:"_bin/solitude-commander_3_1.png"},
+					{img:"_bin/solitude-girl_1_1.png"},
+					{img:"_bin/solitude-girl_1_2.png"},
+				],
+				[
+					{img:"_bin/solitude-girl_2_1.png"},
+					{img:"_bin/solitude-girl_2_2.png"},
+					{img:"_bin/solitude-evil.png"},	
+				]
+				
+				
+			]
+		});
+	return;*/
+	
+		help.akihabaraInit("Solitude");
+		gbox.setCallback(go);
+		
+		gbox.addImage("sea","resources/solitude/sea.png");
+		gbox.addImage("seaside","resources/solitude/seaside.png");
+		gbox.addImage("seaside2","resources/solitude/seaside2.png")
+		gbox.addImage("beach","resources/solitude/beach.png");
+		gbox.addImage("beach2","resources/solitude/beach2.png");
+		gbox.addImage("sprites","resources/solitude/cels.png");
+		gbox.addImage("fontbig","resources/solitude/fontbig.png");
+		gbox.addImage("font","resources/solitude/font.png");
+		gbox.addImage("logo","resources/solitude/logo.png");
+		
+		gbox.addFont({id:"small",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:32});
+		gbox.addFont({id:"big",image:"fontbig",firstletter:" ",tileh:16,tilew:8,tilerow:255,gapx:0,gapy:0});
+		gbox.addFont({id:"bigred",image:"fontbig",firstletter:" ",tileh:16,tilew:8,tilerow:255,gapx:0,gapy:64});
+		
+		gbox.addTiles({id:"player",image:"sprites",tileh:30,tilew:40,tilerow:9,gapx:0,gapy:0});
+		gbox.addTiles({id:"bulletbig",image:"sprites",tileh:14,tilew:15,tilerow:9,gapx:0,gapy:30});
+		gbox.addTiles({id:"spark",image:"sprites",tileh:15,tilew:15,tilerow:3,gapx:0,gapy:44});
+		gbox.addTiles({id:"explosion",image:"sprites",tileh:40,tilew:40,tilerow:6,gapx:0,gapy:59});
+		gbox.addTiles({id:"bulletsmall",image:"sprites",tileh:10,tilew:10,tilerow:2,gapx:0,gapy:99});
+		gbox.addTiles({id:"enemy1",image:"sprites",tileh:30,tilew:30,tilerow:10,gapx:0,gapy:109});
+		gbox.addTiles({id:"enemy2",image:"sprites",tileh:50,tilew:50,tilerow:4,gapx:0,gapy:139});
+		gbox.addTiles({id:"boss",image:"sprites",tileh:97,tilew:188,tilerow:2,gapx:0,gapy:189});
+		gbox.addTiles({id:"powerup",image:"sprites",tileh:20,tilew:20,tilerow:2,gapx:0,gapy:286});
+		gbox.addTiles({id:"symbols",image:"sprites",tileh:13,tilew:17,tilerow:1,gapx:0,gapy:306});
+		gbox.addTiles({id:"faces",image:"sprites",tileh:50,tilew:50,tilerow:7,gapx:0,gapy:319});
+		
+		
+		gbox.loadAll();
+	}, false);
+
+	</script>
+</html>

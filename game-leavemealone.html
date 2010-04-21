@@ -1,0 +1,609 @@
+<html>
+<head>
+	<script type="text/javascript" src="akihabara/gbox.js"></script>
+	<script type="text/javascript" src="akihabara/iphopad.js"></script>
+	<script type="text/javascript" src="akihabara/trigo.js"></script>
+	<script type="text/javascript" src="akihabara/toys.js"></script>
+	<script type="text/javascript" src="akihabara/help.js"></script>
+	<script type="text/javascript" src="akihabara/tool.js"></script>
+	<script type="text/javascript" src="akihabara/gamecycle.js"></script>
+	<style>BODY { -webkit-user-select:none; margin:0px}</style>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+</head>
+<body>
+</body>
+<script>
+// ---
+// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
+// ---
+	
+		  // Game-specific
+		  
+		  var maingame;
+		  var dialogues;
+		  
+		  function go() {
+			gbox.setGroups(["background","player","foes","sparks","gamecycle"]);
+		   	
+		   	maingame=gamecycle.createMaingame("gamecycle","gamecycle");
+	
+		  dialogues={
+		  	intro:{
+		  		font:"big",
+		  		skipkey:"a",
+		  		esckey:"b",
+		  		who:{
+		  			narrator:{
+		  				x:10,
+		  				y:150
+		  			}
+		  		},
+		  		scenes:[
+		  			{
+		  				slide:{
+		  					image:"intro1",
+		  					x:0,
+		  					y:40
+		  				},
+		  				speed:1,
+		  				who:"narrator",
+		  				talk:[
+		  					"Long long time ago there was a sad",
+		  					"kid named Jin. He lives alone on a",
+		  					"lonely and far beach, thinking for all",
+		  					"the day."
+		  				]
+		  			},
+		  			{
+		  				slide:{
+		  					image:"intro2",
+		  					x:0,
+		  					y:40
+		  				},
+		  				speed:1,
+		  				who:"narrator",
+		  				talk:[
+		  					"A bad day, the violet squids that used",
+		  					"to live underwater, jumped out asking",
+		  					"to play with Jin. \"Let's play",
+		  					"together, Jin\" they said!"
+		  				]
+		  			},
+		  			{
+		  				slide:{
+		  					image:"intro3",
+		  					x:0,
+		  					y:40
+		  				},
+		  				speed:1,
+		  				who:"narrator",
+		  				talk:[
+		  					"\"I don't want to play! I want to be",
+		  					"alone!\" he screamed out.",
+		  					"\"Get out of here!\" and he chased",
+		  					"them for all the beach..."
+		  				]
+		  			},
+		  		]
+		  	},
+		  	ending:{
+		  		font:"big",
+		  		skipkey:"a",
+		  		esckey:"b",
+		  		who:{
+		  			narrator:{
+		  				x:10,
+		  				y:150
+		  			}
+		  		},
+		  		scenes:[
+		  			{
+		  				slide:{
+		  					image:"ending1",
+		  					x:0,
+		  					y:40
+		  				},
+		  				speed:1,
+		  				who:"narrator",
+		  				talk:[
+		  					"\"Well done!\" Jin said. \"Now I can",
+		  					"go back to my thoughts!\" And he left",
+		  					"behind a big pile of sad violet",
+		  					"squids."
+		  				]
+		  			},
+		  			{
+		  				slide:{
+		  					image:"intro1",
+		  					x:0,
+		  					y:40
+		  				},
+		  				speed:1,
+		  				who:"narrator",
+		  				talk:[
+		  					"\"My life is very very sad\" said.",
+		  					"\"And I feel really lonely here\"."
+		  				]
+		  			},
+		  			{
+		  				slide:{
+		  					image:"intro1",
+		  					x:0,
+		  					y:40
+		  				},
+		  				speed:2,
+		  				who:"narrator",
+		  				talk:[
+		  					"\"I will ever have a friend?\""
+		  				]
+		  			},
+		  			{
+		  				font:"small",
+		  				speed:2,
+		  				spacing:2,
+		  				push:gbox.getScreenHH(),
+		  				scroller:[
+		  					"LEAVE ME ALONE",
+		  					"A SHORT GAME BY KESIEV",
+		  					"","","",
+		  					"JS-CODE BY",
+		  					"KESIEV",
+		  					"",
+		  					"GRAPHICS BY",
+		  					"KESIEV",
+		  					"",
+		  					"STORY BY",
+		  					"KESIEV",
+		  					"","","",
+		  					"CREATED USING THE AKIHABARA ENGINE",
+		  					"BY KESIEV (c)2010",
+		  					"WWW.KESIEV.COM",
+							"","","","","","","","","","","",
+							"THANK YOU FOR PLAYING!",
+							"NEVER FORGET WHO LOVES YOU.",
+							"",
+							"THE END"
+		  				
+		  				]
+		  			}
+		  		]
+		  	}	  	
+		  };
+
+		  
+		  // Game intro
+		  
+		  maingame.gameIntroAnimation=function(reset){
+		  	if (reset) {
+		  		toys.resetToy(this,"intro-animation");
+		  	} else {
+		  		gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+		  		return toys.dialogue.render(this,"intro-animation",dialogues.intro);
+		  	}
+		  }
+		  
+		  // Game ending
+		  maingame.gameEndingIntroAnimation=function(reset){
+		  	if (reset) {
+		  		toys.resetToy(this,"intro-animation");
+		  		maingame.hud.hideWidgets(["stage","time","timelabel"]); // Hides the timer and the stage label for the ending
+		  	} else {
+		  		gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+		  		return toys.dialogue.render(this,"intro-animation",dialogues.ending);
+		  	}
+		  }
+		  
+		  // Change level
+		  maingame.changeLevel=function(level) {
+		  	if (level==null) level="stage1"; // First stage
+			tilemaps.current=level;
+		  	maingame.hud.setValue("stage","value",tilemaps.current); // Level name on the hud!
+			gbox.createCanvas("tileslayer",{w:tilemaps[tilemaps.current].w,h:tilemaps[tilemaps.current].h});
+			gbox.blitTilemap(gbox.getCanvasContext("tileslayer"),tilemaps[tilemaps.current]);
+			this.newLife();
+		  }
+		  
+		  // New life
+		  maingame.newLife=function(up) {
+		  	// Cleanup the level.
+		  	gbox.trashGroup("foes");
+		  	gbox.purgeGarbage(); // Since we're starting, we can purge all now
+		  	
+			tilemaps[tilemaps.current].addObjects();
+			toys.resetToy(maingame,"gametimer"); // Start the timer
+			toys.platformer.spawn(gbox.getObject("player","player"),{x:tilemaps[tilemaps.current].playerSpawnX,y:tilemaps[tilemaps.current].playerSpawnY,accx:0,accy:0,side:true});
+		  }
+		  
+		  // Title intro
+		  maingame.gameTitleIntroAnimation=function(reset) {
+			  	if (reset) {
+			  		toys.resetToy(this,"bouncer");
+		  		} else {
+		  			gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+		  			toys.logos.bounce(this,"bouncer",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:-gbox.getImage("logo").height,accy:0,floory:gbox.getScreenHH()});
+		  		}
+		  	},
+		  	
+		  // End level animation
+		  maingame.endlevelIntroAnimation=function(reset) {
+		  		 if (reset) {
+		  			 toys.resetToy(this,"framecounter");
+		  			 toys.resetToy(this,"aftercounter");
+		  		} else {
+		  			gbox.blitText(gbox.getBufferContext(),{font:"big",text:"STAGE CLEAR!",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
+
+	  				if (this.hud.getValue("time","value")) { // If there is time left...
+	  				
+	  					if (toys.timer.every(this,"framecounter",2)) { // Every 2 frames...
+	  						this.hud.addValue("time","value",-1); // for every second...
+	  						this.hud.addValue("score","value",10); // Give 10 points to player 1
+	  					}
+	  					return false; // Keep here for more bonuses
+	  					
+	  				} else return toys.timer.after(this,"aftercounter",15); // If there isn't more time, quit after 10 frames
+	  				
+		  		}
+		  	},
+		  
+		  // Games conditions
+		  maingame.gameEvents=function() {
+		   // Tick the timer
+		  	if (toys.timer.real(this,"gametimer",{countdown:30}))
+		  		gbox.getObject("player","player").kill(); // time is up
+		  	else
+		  		maingame.hud.setValue("time","value",toys.getToyValue(this,"gametimer","time")); // Updates timer
+		  	if (gbox.groupIsEmpty("foes"))
+		  		if (tilemaps[tilemaps.current].nextLevel)
+		  			maingame.gotoLevel(tilemaps[tilemaps.current].nextLevel);
+		  		else
+		  			maingame.gameIsCompleted();
+		  }
+		  
+		  // Game is over when...
+		  maingame.gameIsOver=function() {
+		  	return maingame.hud.getValue("lives","value")==0;
+		  }
+		  
+		  // Custom method
+		  maingame.addEnemy=function(type,data) {
+			switch (type) {
+				case "goo": {
+					    gbox.addObject({
+							group:"foes",
+							tileset:"enemy-goo",
+							score:100,
+							initialize:function() {
+								toys.platformer.initialize(this,{
+									frames:{
+										still:{ speed:1, frames:[0] },
+										walking:{ speed:4, frames:[0,1] },
+										jumping:{ speed:1, frames:[0] },
+										falling:{ speed:1, frames:[0] },
+										die: { speed:1,frames:[0] }
+									},
+									x:data.x,
+									y:data.y,
+									jumpaccy:10,
+									side:data.side
+									
+								});
+							},
+							first:function() {
+								if (gbox.objectIsVisible(this)) {
+									// Counter
+									this.counter=(this.counter+1)%10;
+
+									toys.platformer.applyGravity(this); // Apply gravity
+									toys.platformer.auto.horizontalBounce(this); // Bounces horizontally if hit the sideways walls
+									toys.platformer.auto.goomba(this,{moveWhileFalling:true,speed:2}); // goomba movement
+									toys.platformer.auto.dontFall(this,tilemaps[tilemaps.current],"map"); // prevent from falling from current platform
+									toys.platformer.verticalTileCollision(this,tilemaps[tilemaps.current],"map"); // vertical tile collision (i.e. floor)
+									toys.platformer.horizontalTileCollision(this,tilemaps[tilemaps.current],"map"); // horizontal tile collision (i.e. walls)
+									if (toys.platformer.canJump(this)&&toys.timer.randomly(this,"jumper",{base:50,range:50})) this.accy=-this.jumpaccy; // Jump randomly (the toy is resetted the first call)
+									toys.platformer.handleAccellerations(this); // gravity/attrito
+									toys.platformer.setFrame(this); // set the right animation frame
+									var pl=gbox.getObject("player","player");
+									if (pl.collisionEnabled())
+										if (help.isSquished(this,pl)) {
+											pl.multiplier++;
+											var mp=help.multiplier(pl.multiplier);
+											maingame.hud.addValue("score","value",this.score*mp);
+											gbox.trashObject(this);
+											toys.platformer.bounce(pl,{jumpsize:10});
+											toys.generate.sparks.bounceDie(this,"sparks",null,{jump:6,flipv:true});
+											toys.generate.sparks.popupText(this,"sparks",null,{font:"big",jump:6,text:this.score+(mp>1?"x"+mp:"")+" pts.",keep:10});
+										} else
+											if (gbox.collides(this,pl,2))
+												pl.kill(this);
+								}
+								
+							},
+							blit:function() {
+								if (gbox.objectIsVisible(this))
+									gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
+							}
+					  });
+					break;
+				}
+			}
+		  }
+		  
+		  maingame.initializeGame=function() {
+		  	
+		  	// Build hud
+		 	maingame.hud.setWidget("label",{widget:"label",font:"small",value:"1UP",dx:10,dy:10,clear:true});
+		 	maingame.hud.setWidget("score",{widget:"label",font:"small",value:0,dx:30,dy:25,prepad:10,padwith:" ",clear:true});
+		 	maingame.hud.setWidget("lives",{widget:"symbols",minvalue:0,value:3-maingame.difficulty,maxshown:3,tileset:"tiledfont",tiles:[10],dx:42,dy:10,gapx:8,gapy:0});
+		 	maingame.hud.setWidget("timelabel",{widget:"label",font:"small",value:"TIME",dx:0,dy:10,dw:gbox.getScreenW(),halign:gbox.ALIGN_CENTER,clear:true});
+		 	maingame.hud.setWidget("time",{widget:"label",font:"big",value:30,dx:0,dy:20,dw:gbox.getScreenW(),halign:gbox.ALIGN_CENTER,prepad:2,padwith:"0",clear:true});
+		 	maingame.hud.setWidget("stage",{widget:"label",font:"small",value:"",postpad:7,padwith:" ",dx:0,dy:gbox.getScreenH()-8,clear:true});
+		
+		  	tilemaps={
+		
+		
+		stage1:help.finalizeTilemap({
+			tileset:"tiles",
+			map:[
+			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,0000,0000,null,null,null,null,null,null,0000],
+			  	[0000,null,null,0000,0000,0000,null,null,null,null,0000,0000,0000,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,0000,null,null,null,null,null,null,null,null,null,null,null,null,0000,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000]
+			  ],
+			 playerSpawnX:40,
+			 playerSpawnY:180,
+			 addObjects:function() {
+			 	maingame.addEnemy("goo",{x:20*4,y:20*2,side:true});
+			 	maingame.addEnemy("goo",{x:20*11,y:20*2,side:true});
+			 	maingame.addEnemy("goo",{x:20*7,y:20*2,side:true});
+			 },
+			tileIsSolidCeil:function(obj,t){ return (obj.group=="foes"?false:t==0) }, // false for Bubble bobble style platforming
+			tileIsSolidFloor:function(obj,t){ return t==0 },
+			nextLevel:"stage2"
+		}),
+		
+		stage2:help.finalizeTilemap({
+			tileset:"tiles",
+			map:[
+			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,0000,0000,0000,0000,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,0000,null,null,null,null,0000,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,0000,0000,0000,null,null,null,0000,0000,0000,0000,null,null,null,0000,0000,0000,null,null,0000],
+			  	[0000,null,null,0000,0000,0000,null,null,null,null,null,null,null,null,null,null,0000,0000,0000,null,null,0000],
+			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000]
+			  ],
+			 playerSpawnX:40,
+			 playerSpawnY:40,
+			 addObjects:function() {
+			 	maingame.addEnemy("goo",{x:20*4,y:20*7,side:true});
+			 	maingame.addEnemy("goo",{x:20*17,y:20*7,side:true});
+			 	maingame.addEnemy("goo",{x:20*10,y:20*2,side:true});
+			 	maingame.addEnemy("goo",{x:20*10,y:20*6,side:true});
+			 	maingame.addEnemy("goo",{x:20*10,y:20*10,side:true});
+			 },
+			tileIsSolidCeil:function(obj,t){ return false }, // false for Bubble bobble style platforming
+			tileIsSolidFloor:function(obj,t){ return t==0 },
+			nextLevel:"stage3"
+		}),
+		
+		stage3:help.finalizeTilemap({
+			tileset:"tiles",
+			map:[
+			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,0000,0000,0000,null,null,null,null,0000,0000,0000,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,0000,0000,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,0000,0000,0000,null,null,null,null,0000,0000,0000,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,0000,0000,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,0000,0000,0000,null,null,null,null,0000,0000,0000,null,null,0000],
+			  	[0000,null,null,null,0000,null,null,null,null,null,null,0000,null,null,null,0000],
+			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000]
+			  ],
+			 playerSpawnX:30,
+			 playerSpawnY:320,
+			 addObjects:function() {
+			 	maingame.addEnemy("goo",{x:20*4,y:20*16,side:true});
+			 	maingame.addEnemy("goo",{x:20*4,y:20*11,side:true});
+			 	maingame.addEnemy("goo",{x:20*4,y:20*5,side:true});
+			 	maingame.addEnemy("goo",{x:20*11,y:20*16,side:true});
+			 	maingame.addEnemy("goo",{x:20*11,y:20*11,side:true});
+			 	maingame.addEnemy("goo",{x:20*11,y:20*5,side:true});
+			 },
+			tileIsSolidCeil:function(obj,t){ return false }, // false for Bubble bobble style platforming
+			tileIsSolidFloor:function(obj,t){ return t==0 },
+			nextLevel:"stage4"			
+		}),
+		
+		stage4:help.finalizeTilemap({
+			tileset:"tiles",
+			map:[
+			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,0000,0000,0000,null,null,0000,0000,null,null,null,null,0000,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000,0000,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000,null,null,null,0000],
+			  	[0000,null,null,null,0000,0000,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,null,null,null,null,null,0000,null,null,null,null,null,null,null,0000],
+			  	[0000,null,0000,0000,null,null,null,null,null,null,0000,null,null,null,0000,0000,null,null,0000,0000],
+			  	[0000,null,null,null,null,null,null,null,null,0000,null,null,null,null,0000,null,null,null,null,0000],
+			  	[0000,null,null,null,null,null,0000,0000,0000,null,null,null,null,null,0000,null,null,null,null,0000],
+			  	[0000,null,null,null,null,0000,null,null,null,null,null,null,null,0000,0000,null,null,null,null,0000],
+			  	[0000,null,null,null,0000,null,null,null,null,null,null,null,null,null,0000,null,null,null,null,0000],
+			  	[0000,null,null,0000,null,null,null,null,null,null,null,null,null,null,0000,null,null,null,null,0000],
+			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000]
+			  ],
+			 playerSpawnX:30,
+			 playerSpawnY:340,
+			 addObjects:function() {
+			 maingame.addEnemy("goo",{x:20*17,y:20*2,side:true});
+			 maingame.addEnemy("goo",{x:20*8,y:20*17,side:true});
+			 maingame.addEnemy("goo",{x:20*17,y:20*17,side:true});
+			 },
+			tileIsSolidCeil:function(obj,t){ return false }, // false for Bubble bobble style platforming
+			tileIsSolidFloor:function(obj,t){ return t==0 }
+		})
+	};
+
+		  
+
+
+		    gbox.addObject({
+		  	id:"player",
+		  	group:"player",
+		  	tileset:"player",
+		  	multiplier:0,
+			
+			initialize:function() {
+				toys.platformer.initialize(this,{
+					frames:{
+						still:{ speed:1, frames:[0] },
+						walking:{ speed:2, frames:[1,2,3,2,1] },
+						jumping:{ speed:1, frames:[4] },
+						falling:{ speed:1, frames:[5] },
+						die:{speed:1,frames:[6] }
+					}
+				});
+			},
+			
+			collisionEnabled:function() {
+				return !maingame.gameIsHold()&&!this.killed;
+			},
+			
+			kill:function(by){
+		  		this.killed=true;
+		  		maingame.hud.addValue("lives","value",-1); // Decreases lives
+		  		toys.generate.sparks.bounceDie(this,"sparks",null,{jump:6,flipv:false});
+		  		maingame.playerDied({wait:50});
+		  	},
+		  	
+		  	first:function() {
+		  	
+		  		// Counter
+		  		this.counter=(this.counter+1)%10;
+				if (!this.killed) {
+					toys.platformer.applyGravity(this); // Apply gravity
+					toys.platformer.horizontalKeys(this,{left:"left",right:"right"}); // Moves horizontally
+					toys.platformer.verticalTileCollision(this,tilemaps[tilemaps.current],"map"); // vertical tile collision (i.e. floor)
+					toys.platformer.horizontalTileCollision(this,tilemaps[tilemaps.current],"map"); // horizontal tile collision (i.e. walls)
+					toys.platformer.jumpKeys(this,{jump:"a"}); // handle jumping
+					toys.platformer.handleAccellerations(this); // gravity/attrito
+					toys.platformer.setSide(this); // set horizontal side
+					toys.platformer.setFrame(this); // set the right animation frame
+					
+					// Multiplier reset
+					if (this.touchedfloor) this.multiplier=0;
+				}
+				
+		  	},
+		  	blit:function() {
+			
+		  		if (!this.killed)
+		  			gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
+		  	}
+
+		  });
+		
+		 gbox.addObject({
+		  	id:"bg",
+		  	group:"background",
+		  	blit:function() {
+		  		gbox.centerCamera(gbox.getObject("player","player"),{w:tilemaps[tilemaps.current].w,h:tilemaps[tilemaps.current].h});
+		  		gbox.blit(gbox.getBufferContext(),gbox.getImage("bg"),{dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),sourcecamera:true,parallaxx:0.5,parallaxy:0.5});
+		  		gbox.blit(gbox.getBufferContext(),gbox.getCanvas("tileslayer"),{dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),sourcecamera:true});
+		  	},
+		  });
+		  
+		  }
+		  
+		  gbox.go();
+		  
+	}
+	
+	// BOOTSTRAP
+	window.addEventListener('load', function () {
+		/*
+		tool.makecels({
+			rows:[
+				[
+					{img:"_bin/images/man 1.png"},
+					{img:"_bin/images/man 2.png"},
+					{img:"_bin/images/man 3.png"},
+					{img:"_bin/images/man 4.png"},
+					{img:"_bin/images/man 7.png"},
+					{img:"_bin/images/man 8.png"},
+					{img:"_bin/images/man 9.png"}
+				],
+				[
+					{img:"_bin/images/tiles 1.png"}
+				],
+				[
+					{img:"_bin/images/enemy1 1.png"},
+					{img:"_bin/images/enemy1 2.png"},
+				],
+				[
+					{img:"_bin/images/enemy2 1.png"},
+					{img:"_bin/images/enemy2 2.png"},
+				],
+			]
+		});
+	return;
+	*/	
+
+		help.akihabaraInit("Leave Me Alone");
+		gbox.setCallback(go);
+		
+		
+		gbox.addImage("sprites","resources/leavemealone/cels.png");
+		gbox.addImage("bg","resources/leavemealone/bg1.png");
+		gbox.addImage("font","resources/leavemealone/font.png");
+		gbox.addImage("fontbig","resources/leavemealone/fontbig.png");
+		gbox.addImage("intro1","resources/leavemealone/intro1.png");
+		gbox.addImage("intro2","resources/leavemealone/intro2.png");
+		gbox.addImage("intro3","resources/leavemealone/intro3.png");
+		gbox.addImage("ending1","resources/leavemealone/ending1.png");
+		gbox.addImage("logo","resources/leavemealone/logo.png");
+		
+		gbox.addFont({id:"small",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:8});
+		gbox.addFont({id:"big",image:"fontbig",firstletter:" ",tileh:16,tilew:8,tilerow:255,gapx:0,gapy:0});
+		gbox.addTiles({id:"player",image:"sprites",tileh:40,tilew:20,tilerow:9,gapx:0,gapy:0});
+		gbox.addTiles({id:"tiles",image:"sprites",tileh:20,tilew:20,tilerow:9,gapx:0,gapy:40});
+		gbox.addTiles({id:"enemy-goo",image:"sprites",tileh:20,tilew:20,tilerow:9,gapx:0,gapy:60});
+		gbox.addTiles({id:"enemy-sad",image:"sprites",tileh:40,tilew:20,tilerow:9,gapx:0,gapy:80});
+		gbox.addTiles({id:"tiledfont",image:"font",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:8}); // A nice trick: we map a tileset over a font, so we can blit chars like tiles!
+		
+		gbox.loadAll();
+	}, false);
+
+	</script>
+</html>

@@ -1,0 +1,297 @@
+<html>
+<head>
+	<script type="text/javascript" src="akihabara/gbox.js"></script>
+	<script type="text/javascript" src="akihabara/iphopad.js"></script>
+	<script type="text/javascript" src="akihabara/trigo.js"></script>
+	<script type="text/javascript" src="akihabara/toys.js"></script>
+	<script type="text/javascript" src="akihabara/help.js"></script>
+	<script type="text/javascript" src="akihabara/tool.js"></script>
+	<script type="text/javascript" src="akihabara/gamecycle.js"></script>
+
+		<script type="text/javascript" src="resources/tspin/engine/block.js"></script>
+		<script type="text/javascript" src="resources/tspin/engine/block-resources.js"></script>
+	
+		<!--script type="text/javascript" src="resources/tspin/data/extra/dbg-setups.js"></script-->
+	
+		<script type="text/javascript" src="resources/tspin/data/rot-classic.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/rot-srs.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/rot-ars.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/rot-nintendo.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/rot-tengen.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/rot-sega.js"></script>
+
+		<script type="text/javascript" src="resources/tspin/data/sim-sega.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/sim-tengen.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/sim-gb.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/sim-tengen.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/sim-nes.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/sim-tgm.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/sim-tgm2.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/sim-tgm3.js"></script>
+		<script type="text/javascript" src="resources/tspin/data/sim-tds.js"></script>
+
+
+	
+	<style>BODY { -webkit-user-select:none; margin:0px}</style>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+</head>
+<body>
+</body>
+<script>
+
+
+// http://img.photobucket.com/albums/v488/siggyx4scythe/Blog%20Pictures/Heboris_Record.jpg
+// http://xbox360media.ign.com/xbox360/image/article/674/674999/tetris-the-grand-master-ace-20051215045308921_640w.jpg
+		  // Game-specific
+		
+		  var maingame;
+		  var mainmenu;
+		  
+		  function go() {
+		  
+		  	gbox.setGroups(["background","field","sparks","gamecycle"]);
+		  	maingame=gamecycle.createMaingame("gamecycle","gamecycle");
+		  	maingame.selectedoptions=[]; // Cache the previous selected options
+		  	
+		  	mainmenu={labels:[],id:[],submenu:[]};
+		  	for (var i in block.gamemodes) {
+		  		mainmenu.labels.push(saveme(block.gamemodes[i].year+" "+block.gamemodes[i].label+(block.gamemodes[i].notes?" ("+block.gamemodes[i].notes.length+")":"")));
+		  		mainmenu.id.push(i);
+		  	}
+		  	
+		  	// The full game cycle is handled by the engine
+		  	maingame.gameIntroAnimation=function(reset) { return true; }
+		  	maingame.levelIntroAnimation=function(reset) { return true; }
+		  	maingame.newlifeIntroAnimation=function(reset) { return true; }
+		  	maingame.gameoverIntroAnimation=function(reset) { return true; }
+		  	maingame.endlevelIntroAnimation=function(reset) { return true; }
+		  	maingame.gameEndingIntroAnimation=function(reset) { return true; }
+		  	// Game is ever over, if the player dies - is died for game completed or fail.
+		  	maingame.gameIsOver=function() { return true; }
+		  	// PRESS START
+		  	maingame.pressStartIntroAnimation=function(reset) {
+		  		if (reset) {
+		  			toys.resetToy(this,"default-blinker");
+		  		} else {
+		  			toys.text.blink(this,"default-blinker",gbox.getBufferContext(),{font:"small-gray",text:"PRESS A TO START",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:Math.floor(gbox.getScreenH()/3),dw:gbox.getScreenW(),dh:Math.floor(gbox.getScreenH()/3)*2,blinkspeed:10});
+		  			return gbox.keyIsHit("a");
+		  		}
+		  	};
+		  			  	// game title animation
+		  	maingame.gameTitleIntroAnimation=function(reset) {
+			  	if (!reset) {
+		  			gbox.blitAll(gbox.getBufferContext(),gbox.getImage("wp"),{dx:0,dy:0});
+		  			toys.logos.zoomout(this,"zoomouter",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,speed:0.08,zoom:3});
+		  		} else {
+		  			toys.resetToy(this,"zoomouter");
+		  		}
+		  	},
+
+
+
+		  	
+		  	maingame.gameMenu=function(reset) {
+		  		if (reset) {
+		  			toys.resetToy(this,"mode");
+		  			this.gamemode=null;
+		  		} else {
+		  			gbox.blitFade(gbox.getBufferContext(),{alpha:0.5});
+		  			if (this.gamemode==null) {
+						if (toys.ui.menu(this,"mode",{font:"small-gray",keys:{up:"up",down:"down",ok:"a",cancel:"b"},selector:">",selected:maingame.selectedoptions[0],items:mainmenu.labels,x:10,y:10})) {
+							if (toys.getToyValue(this,"difficulty","ok") == -1) return -1;
+							else {
+								if (maingame.selectedoptions[0]!=toys.getToyValue(this,"mode","selected"))
+									maingame.selectedoptions[1]=null;
+								maingame.selectedoptions[0]=toys.getToyValue(this,"mode","selected");
+								this.gamemode=mainmenu.id[maingame.selectedoptions[0]];
+								mainmenu.submenu=[];
+								for (var i=0;i<block.gamemodes[this.gamemode].modes.length;i++)
+									mainmenu.submenu.push(saveme(block.gamemodes[this.gamemode].modes[i].label));
+								toys.resetToy(this,"submode");
+							}
+						}
+					} else {
+						var y=0;
+						gbox.blitText(gbox.getBufferContext(),{font:"small-red", dx:10, dy:10, text:saveme(block.gamemodes[this.gamemode].label)});
+						if (block.gamemodes[this.gamemode].notes)
+							for (var l=0;l<block.gamemodes[this.gamemode].notes.length;l++) {
+								gbox.blitText(gbox.getBufferContext(),{font:"small-gray", dx:20, dy:25+y, text:saveme(block.gamemodes[this.gamemode].notes[l])});
+								y+=gbox.getFont("small-gray").tileh;
+							}
+						if (toys.ui.menu(this,"submode",{font:"small-blue",keys:{up:"up",down:"down",ok:"a",cancel:"b"},selected:maingame.selectedoptions[1],selector:">",items:mainmenu.submenu,x:10,y:y+40})) {
+							maingame.selectedoptions[1]=toys.getToyValue(this,"submode","selected");
+							if (toys.getToyValue(this,"submode","ok") == -1) {
+								this.gamemode=null;
+								toys.resetToy(this,"mode");
+							} else {
+								this.submode=maingame.selectedoptions[1];
+								return true;
+							}
+						}
+					}
+		  			return false;
+		  		}
+		  	},
+		  
+		 	 maingame.initializeGame=function() {
+		 			gbox.addObject({
+						group:"field",
+						gameended:false,
+						myblock:null,
+						
+						initialize:function() {
+							this.myblock=block.createNew(["default",block.gamemodes[maingame.gamemode].modes[maingame.submode].id]);
+							block.setgraphics(this.myblock,{x:120,y:45,surfaceid:"tsurface"});
+							block.begin(this.myblock);
+						},
+						
+						first:function(){
+							gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+							block.kgboxtovkbd(this.myblock);
+							if (!this.gameended&&block.game(this.myblock)) { // This method returns true if the game is over
+								maingame.playerDied({wait:10});
+								this.gameended=true;
+							}
+						},
+						
+						blit:function() {
+							block.fieldtoscreen(this.myblock);
+						}
+						
+		  			});
+		  	}
+		 	
+		  	gbox.go();
+		  
+		}
+	
+	// BOOTSTRAP
+	window.addEventListener('load', function () {
+		/*
+		tool.makecels({
+			rows:[
+				[
+					{img:"_bin/tgm-blocks.png"},
+					{img:"_bin/tgm-blocks-small.png"}
+				]
+			]
+		});
+	return;*/
+	
+
+		help.akihabaraInit("T-Spin");
+		gbox.setCallback(go);
+
+		gbox.addImage("wp","resources/tspin/wp.png");
+		gbox.addImage("logo","resources/tspin/logo.png");
+		
+		gbox.addImage("miscblits","resources/tspin/miscblits.png");
+		gbox.addImage("text","resources/tspin/text2.png");
+		gbox.addImage("brick-tgm","resources/tspin/tgm-blocks.png");
+		gbox.addImage("smbrick-tgm","resources/tspin/tgm-blocks-small.png");
+		gbox.addImage("brick-gb","resources/tspin/gb-blocks.png");
+		gbox.addImage("smbrick-gb","resources/tspin/gb-blocks-small.png");
+		gbox.addImage("brick-tds","resources/tspin/nds-blocks.png");
+		gbox.addImage("smbrick-tds","resources/tspin/nds-blocks-small.png");
+		gbox.addImage("brick-sega","resources/tspin/sega-blocks.png");
+		gbox.addImage("smbrick-sega","resources/tspin/sega-blocks-small.png");
+		gbox.addImage("brick-tengen","resources/tspin/tengen-blocks.png");
+		gbox.addImage("smbrick-tengen","resources/tspin/tengen-blocks-small.png");
+		gbox.addImage("brick-nes","resources/tspin/nes-blocks.png");
+		gbox.addImage("smbrick-nes","resources/tspin/nes-blocks-small.png");
+		gbox.addImage("brick-world","resources/tspin/world-blocks.png");
+		gbox.addImage("smbrick-world","resources/tspin/world-blocks-small.png");
+		
+		gbox.addImage("hanabi0","resources/tspin/hanabi_blue.png");
+		gbox.addImage("hanabi1","resources/tspin/hanabi_green.png");
+		gbox.addImage("hanabi2","resources/tspin/hanabi_orange.png");
+		gbox.addImage("hanabi3","resources/tspin/hanabi_purple.png");
+		gbox.addImage("hanabi4","resources/tspin/hanabi_red.png");
+		gbox.addImage("hanabi5","resources/tspin/hanabi_waterblue.png");
+		gbox.addImage("hanabi6","resources/tspin/hanabi_yellow.png");
+		
+		gbox.addImage("fields","resources/tspin/fields.png");
+		gbox.addImage("spark-tds","resources/tspin/tds-spark.png");
+		gbox.addImage("lock-tds","resources/tspin/perase5.png");
+		gbox.addImage("field-tds","resources/tspin/field-tds.png");
+		
+		gbox.addImage("font-small","resources/leavemealone/font.png");
+		gbox.addImage("font","resources/tspin/font.png");
+		gbox.addImage("digits","resources/tspin/digits.png");
+		gbox.addImage("break","resources/tspin/break.png");
+		gbox.addImage("grade","resources/tspin/grade.png");
+		gbox.addImage("medal","resources/tspin/medal.png");
+		
+		gbox.addImage("back-01","resources/tspin/back-01.png");
+		gbox.addImage("back-02","resources/tspin/back-02.png");
+		gbox.addImage("back-03","resources/tspin/back-03.png");
+		
+		gbox.addFont({id:"small",image:"font-small",firstletter:" ",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:0});
+		gbox.addFont({id:"small-gray",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:32,gapx:0,gapy:0});
+		gbox.addFont({id:"small-blue",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:32,gapx:0,gapy:24});
+		gbox.addFont({id:"small-red",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:32,gapx:0,gapy:48});
+		
+		gbox.addFont({id:"small-digitgray",image:"digits",firstletter:"0",tileh:9,tilew:6,tilerow:32,gapx:132,gapy:90});
+		gbox.addFont({id:"big-digitgray",image:"digits",firstletter:"0",tileh:16,tilew:12,tilerow:32,gapx:0,gapy:161});
+		gbox.addFont({id:"blbig-digitgray",image:"digits",firstletter:"0",tileh:16,tilew:12,tilerow:32,gapx:0,gapy:241});
+	
+		gbox.addTiles({id:"fields",image:"fields",tileh:183,tilew:96,tilerow:10,gapx:0,gapy:0}); // the set of fields models
+		gbox.addTiles({id:"field-tds",image:"field-tds",tileh:172,tilew:102,tilerow:1,gapx:0,gapy:0}); // TDS field
+		gbox.addTiles({id:"small-lbl",image:"miscblits",tileh:6,tilew:25,tilerow:6,gapx:129,gapy:113}); // Small labels
+		gbox.addTiles({id:"break-tgm",image:"break",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // Break animation
+		gbox.addTiles({id:"bar",image:"miscblits",tileh:3,tilew:24,tilerow:2,gapx:38,gapy:34}); // Small bar for score/level caps
+		gbox.addTiles({id:"drop-tds",image:"spark-tds",tileh:10,tilew:7,tilerow:3,gapx:0,gapy:0}); // TDS small brick set
+		gbox.addTiles({id:"lock-tds",image:"lock-tds",tileh:32,tilew:32,tilerow:10,gapx:0,gapy:0}); // TDS small brick set
+		gbox.addTiles({id:"readygo",image:"miscblits",tileh:17,tilew:75,tilerow:1,gapx:0,gapy:0}); // Ready/go animation
+
+		gbox.addTiles({id:"spark0",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:162}); // spark
+		gbox.addTiles({id:"spark1",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:194}); // spark
+		gbox.addTiles({id:"spark2",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:226}); // spark
+		gbox.addTiles({id:"spark3",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:258}); // spark
+		gbox.addTiles({id:"spark4",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:290}); // spark
+		gbox.addTiles({id:"spark5",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:322}); // spark
+		gbox.addTiles({id:"spark6",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:344}); // spark
+		gbox.addTiles({id:"spark7",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:386}); // spark
+		
+		gbox.addTiles({id:"hanabi0",image:"hanabi0",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
+		gbox.addTiles({id:"hanabi1",image:"hanabi1",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
+		gbox.addTiles({id:"hanabi2",image:"hanabi2",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
+		gbox.addTiles({id:"hanabi3",image:"hanabi3",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
+		gbox.addTiles({id:"hanabi4",image:"hanabi4",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
+		gbox.addTiles({id:"hanabi5",image:"hanabi5",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
+		gbox.addTiles({id:"hanabi6",image:"hanabi6",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
+
+		
+		gbox.addTiles({id:"text1",image:"text",tileh:50,tilew:100,tilerow:3,gapx:0,gapy:0}); // Misc text
+		gbox.addTiles({id:"clear",image:"miscblits",tileh:18,tilew:92,tilerow:3,gapx:204,gapy:232}); // The clear sign
+		
+		gbox.addTiles({id:"medal",image:"medal",tileh:12,tilew:15,tilerow:7,gapx:0,gapy:0}); // Medals symbols
+		gbox.addTiles({id:"grade",image:"grade",tileh:24,tilew:90,tilerow:6,gapx:0,gapy:0}); // Grades symbols
+		gbox.addTiles({id:"blgrade",image:"grade",tileh:24,tilew:90,tilerow:6,gapx:0,gapy:216}); // Blinking Grades symbols
+		gbox.addTiles({id:"grade-gm",image:"grade",tileh:32,tilew:90,tilerow:1,gapx:450,gapy:148}); // Grades symbols
+		gbox.addTiles({id:"blgrade-gm",image:"grade",tileh:32,tilew:90,tilerow:1,gapx:450,gapy:364}); // Grades symbols
+		
+		
+		gbox.addTiles({id:"brick-tgm",image:"brick-tgm",tileh:8,tilew:8,tilerow:10,gapx:0,gapy:0}); // TGM brick set
+		gbox.addTiles({id:"smbrick-tgm",image:"smbrick-tgm",tileh:4,tilew:4,tilerow:10,gapx:0,gapy:0}); // TGM small brick set
+		gbox.addTiles({id:"brick-world",image:"brick-world",tileh:8,tilew:8,tilerow:10,gapx:0,gapy:0}); // TGM WORLD brick set
+		gbox.addTiles({id:"smbrick-world",image:"smbrick-world",tileh:4,tilew:4,tilerow:10,gapx:0,gapy:0}); // TGM WORLD small brick set
+		gbox.addTiles({id:"brick-gb",image:"brick-gb",tileh:8,tilew:8,tilerow:8,gapx:0,gapy:0}); // GB brick set
+		gbox.addTiles({id:"smbrick-gb",image:"smbrick-gb",tileh:4,tilew:4,tilerow:8,gapx:0,gapy:0}); // GB small brick set
+		gbox.addTiles({id:"brick-tds",image:"brick-tds",tileh:8,tilew:8,tilerow:8,gapx:0,gapy:0}); // TDS brick set
+		gbox.addTiles({id:"smbrick-tds",image:"smbrick-tds",tileh:4,tilew:4,tilerow:8,gapx:0,gapy:0}); // TDS small brick set
+		gbox.addTiles({id:"brick-sega",image:"brick-sega",tileh:8,tilew:8,tilerow:8,gapx:0,gapy:0}); // TDS brick set
+		gbox.addTiles({id:"smbrick-sega",image:"smbrick-sega",tileh:4,tilew:4,tilerow:8,gapx:0,gapy:0}); // TDS small brick set
+		gbox.addTiles({id:"brick-tengen",image:"brick-tengen",tileh:8,tilew:8,tilerow:8,gapx:0,gapy:0}); // TDS brick set
+		gbox.addTiles({id:"smbrick-tengen",image:"smbrick-tengen",tileh:4,tilew:4,tilerow:8,gapx:0,gapy:0}); // TDS small brick set
+		gbox.addTiles({id:"brick-nes",image:"brick-nes",tileh:8,tilew:8,tilerow:8,gapx:0,gapy:0}); // TDS brick set
+		gbox.addTiles({id:"smbrick-nes",image:"smbrick-nes",tileh:4,tilew:4,tilerow:8,gapx:0,gapy:0}); // TDS small brick set
+
+
+		gbox.addTiles({id:"head-tgm",image:"miscblits",tileh:33,tilew:101,tilerow:10,gapx:0,gapy:129}); // TGM header
+		
+		gbox.loadAll();
+	}, false);
+
+	</script>
+</html>
