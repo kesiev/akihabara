@@ -4,7 +4,9 @@
 
 	var help={
 	
-		// generates numbers from st to ed, skipping skip
+		/**
+		    *  generates numbers from st to ed, skipping skip
+		    */
 		seq:function(st,ed,skip) {
 			var ret=[];
 			for (var i=st;i<ed;i+=(skip==null?1:skip)) ret.push(i);
