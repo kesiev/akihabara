@@ -1260,6 +1260,11 @@
 						return this.w[w][k];
 					},
 					
+
+					getNumberValue:function(w,k) {
+						return this.w[w][k]*1;
+					},
+
 					setValue:function(w,k,v) {
 						if (this.w[w][k]!=v) {
 							if (k=="value") {

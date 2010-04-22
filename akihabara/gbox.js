@@ -164,6 +164,7 @@
 		_framestart:0,
 		_zindex:dynalist.create(),
 		_db:false,
+		_systemcookie:"__gboxsettings",
 		_safedrawimage:function(tox,img,sx,sy,sw,sh,dx,dy,dw,dh) {
 			if (sx<0) { dx-=(dw/sw)*sx;sw+=sx; sx=0; }
 			if (sy<0) { dy-=(dh/sh)*sy;sh+=sy; sy=0; }
@@ -275,6 +276,8 @@
 			gbox._screen.ontouchend=function(evt) {evt.preventDefault();evt.stopPropagation();};
 			gbox._screen.ontouchmove=function(evt) { evt.preventDefault();evt.stopPropagation();};
 			gbox._screen.onmousedown=function(evt) {gbox._screenposition=gbox._domgetabsposition(gbox._screen);if (evt.pageY-gbox._screenposition.y<30)  gbox._showkeyboardpicker(); else gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
+			
+			gbox._loadsettings(); // Load default configuration
 		},
 		setDoubleBuffering:function(db){this._db=db},
 		setStatBar:function(txt){ if (gbox._statbar) this._statbar.innerHTML=(txt?txt:"&nbsp")},
@@ -378,6 +381,46 @@
 		keyIsPressed:function(id) { return this._keyboard[this._keymap[id]]>0},
 		keyIsHold:function(id) { return this._keyboard[this._keymap[id]]>1},
 		keyIsReleased:function(id) { return this._keyboard[this._keymap[id]]==-1},
+		_savesettings:function() {
+			var saved="";
+			for (var k in this._keymap) saved+="keymap-"+k+":"+this._keymap[k]+"~";
+			this.dataSave("sys",saved);
+		},
+		_loadsettings:function() {
+			var cfg=this.dataLoad("sys");
+			if (cfg!==null) {
+				cfg=cfg.split("~");
+				var kv;
+				var mk;
+				for (var i=0;i<cfg.length;i++) {
+					kv=cfg[i].split(":");
+					mk=kv[0].split("-");
+					switch (mk[0]) {
+						case "keymap": { this._keymap[mk[1]]=kv[1]*1; break }
+					}
+				}
+			}
+		},
+		dataSave:function(k,v,d) { 
+			var date = new Date();
+			date.setTime(date.getTime()+((d?d:356*10)*24*60*60*1000));
+			document.cookie =this._systemcookie+"~"+k+"="+v+"; expires="+date.toGMTString()+"; path=/";
+		},
+		dataLoad:function(k,a) {
+			var nameeq=this._systemcookie+"~"+k+"=";
+			var ca = document.cookie.split(";");
+			var rt;
+			for (var i=0;i<ca.length;i++) {
+				var c=ca[i];
+				while (c.charAt(0)==' ') c=c.substring(1,c.length);
+				if (c.indexOf(nameeq)==0) {
+					rt=c.substring(nameeq.length,c.length);
+					if (a&&a.number) return rt*1; else return rt;
+				}
+			}
+			return null;
+		},
+		dataClear:function(k) { this.dataSave(k,"",-1) },
 		getCamera:function() { return this._camera; },
 		setCameraY:function(y,viewdata) {
 			this._camera.y=y;

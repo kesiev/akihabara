@@ -115,6 +115,9 @@
 		 	
 		 	maingame.bullettimer=0; // Maingame is a javascript object, so it can host any kind of variable, like our "bullet timer". Keeps the game still for a while, that happens when eating a ghost or when being eated ;)
 		 	
+		 	if (gbox.dataLoad("capman-hiscore")===null) // We will keep the highscores too. So, if there is any highscore saved...
+		 		gbox.dataSave("capman-hiscore",100); // ... we will put a "100 points" hiscore.
+		 	
 		   // This method is called every new level. That is called also for the first level, so...
 		  maingame.changeLevel=function(level) {
 		  		// The first time the "changeLevel" is called, level is NULL. Our first stage is "1", so...
@@ -237,9 +240,14 @@
 			// Maingame gives an "hud" object that is rendered over everything. Really useful for indicators, like score, lives etc. The first thing we do is to populate this object.
 			maingame.hud.setWidget("label",{widget:"label",font:"small",value:"1UP",dx:240,dy:10,clear:true}); // This is a classic "1UP" static label. Unuseful but really retro!
 			maingame.hud.setWidget("score",{widget:"label",font:"small",value:0,dx:240,dy:25,clear:true}); // A score counter. This not only is a displayed value but will really keep the player's score.
-			maingame.hud.setWidget("lives",{widget:"symbols",minvalue:0,value:3-maingame.difficulty,maxshown:3,tileset:"capman",tiles:[5],dx:240,dy:40,gapx:16,gapy:0}); // The classic life indicator, with repated capman symbols. Note the "difficulty usage" ;)
+			maingame.hud.setWidget("label",{widget:"label",font:"small",value:"HI",dx:240,dy:40,clear:true}); // The "HI" label. Becouse "HI" is more retro.
+			maingame.hud.setWidget("hiscore",{widget:"label",font:"small",value:0,dx:240,dy:55,clear:true}); // The hiscore counter. This one will be just used for displaying.
+
+			maingame.hud.setWidget("lives",{widget:"symbols",minvalue:0,value:3-maingame.difficulty,maxshown:3,tileset:"capman",tiles:[5],dx:240,dy:70,gapx:16,gapy:0}); // The classic life indicator, with repated capman symbols. Note the "difficulty usage" ;)
 			maingame.hud.setWidget("bonus",{widget:"stack",rightalign:true,tileset:"bonus",dx:gbox.getScreenW()-5,dy:gbox.getScreenH()-34,gapx:12,gapy:0,maxshown:8,value:[]}); // The bonus queue: is the "history" of the picked up bonuses, on the lower right corner, aligned to the right. Starts with an empty array. gapx and gapy is the distance between symbols
 			maingame.hud.setWidget("stage",{widget:"label",font:"small",value:"",dx:0,dw:gbox.getScreenW()-5,dy:gbox.getScreenH()-13,halign:gbox.ALIGN_RIGHT,clear:true}); // The label with the stage name (low creativity: STAGE 1, STAGE 2 etc). Is empty for now, will be filled when a new level starts.
+			
+			maingame.hud.setValue("hiscore","value",gbox.dataLoad("capman-hiscore")); // setValue is used to set parametes on hud. So, well, we're setting the "hiscore value" to the loaded data "capman-hiscore" that contains the latest hiscore.
 		
 			// An object will draw the maze on the screen
 			 gbox.addObject({
@@ -612,11 +620,16 @@
 	 	 }
 	 	 
 	 	 // Some final touch to the maingame object...
-		  maingame.gameIsOver=function() { // Game is over when...
-		  	return maingame.hud.getValue("lives","value")==0; // ...lives counter reaches the zero.
+		  maingame.gameIsOver=function() { // This method is called by maingame itself to check if the game is over or not. So...
+		  	var isGameover=maingame.hud.getValue("lives","value")==0; // the game is REALLY over when lives counter reaches the zero.
+		  	if (isGameover) // Just in time, we can do something useful, since we're here. Like... checking if we have a new *CAPMAN CHAMPION*...
+		  		if (maingame.hud.getNumberValue("score","value")>maingame.hud.getNumberValue("hiscore","value")) // If the player's score is higher the shown hiscore...
+		  			gbox.dataSave("capman-hiscore",maingame.hud.getNumberValue("score","value")); // ... save the player's score as new hiscore. The next time we play "capman", the new hiscore to beat will be this one.
+		  	return isGameover; // Finally, returning if the game is ended or not.
 		  }
+		  // You can do this hiscore business in the ending animation, but for a tutorial, the "gameIsOver" is good enough. Is also unfair that there isn't an hiscore for each difficulty level. The world is bad... luckly you can this sources whenever you want, as exercise.
 		  
-		 // And let's do something not related with ghosts, capmans, pills and mazes. Usually random things and hidden countings happens during the gameplay, so...
+		 // And now let's do something not related with ghosts, capmans, pills and mazes. Usually random things and hidden countings happens during the gameplay, so...
 		 maingame.gameEvents=function() { // This method happens every frame of the gameplay. You can keep here game timers or make happen random things, like...
 		 	if (this.bullettimer>0) this.bullettimer--; // ...keep updated the "bullet time" counter...
 		 	if (maingame.pillscount==0) // ...check if the maze is clear...
