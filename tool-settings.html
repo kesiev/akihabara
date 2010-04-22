@@ -76,16 +76,23 @@
 	
 	
 	function customizekey(p) {
+		cancelcustomize();
 		customizing=p;
 		pjq(customizing.input).style.backgroundColor="#cefede";
+	}
+	
+	function cancelcustomize() {
+		if (customizing) {
+			pjq(customizing.input).style.backgroundColor="";
+			updatescreen();
+			customizing=null;
+		}
 	}
 	
 	function keycustomized(e) {
 		if (customizing) {
 			gbox._keymap[customizing.key]=(e.fake||window.event?e.keyCode:e.which);
-			pjq(customizing.input).style.backgroundColor="";
-			updatescreen();
-			customizing=null;
+			cancelcustomize();
 		}
 	}
 	
