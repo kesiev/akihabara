@@ -1,0 +1,105 @@
+<html>
+<head>
+	<script type="text/javascript" src="akihabara/gbox.js"></script>
+	<script type="text/javascript" src="akihabara/help.js"></script>
+	<style>
+		 body *{font-size:17px;font-family: Georgia, "Times New Roman", Times, serif;}
+		 H1 { font-size:20px; text-align:right}
+		 H2 { font-size:20px;line-height:0px; }
+		 
+		 .settingsbox { border:1px solid black;padding:10px;margin:0px; border-radius: 5px;-moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow:0 0 5px #000000; -webkit-box-shadow:0 0 5px #000000; box-shadow:0 0 5px #000000;}
+		 .settingsbox P { font-size:15px }
+		 .settingsbox UL { list-style-type: none; padding: 5px;margin: 0; }
+		 .settingsbox LI { line-height:40px }
+		 .settingsbox LI INPUT { position:absolute;left:150px; width:180px;border:0px; padding:5px }
+		 
+		 .gameboxkeyboard { background-color:#debebe }
+
+		 
+	</style>
+	<title>Akihabara setup</title>
+</head>
+<body onkeyup="keycustomized(event)" onload="loaddata()">
+	<h1>Akihabara setup</h1>
+	<div class="settingsbox gameboxkeyboard">
+		<h2>Gamebox keyboard setup</h1>
+		<p>These settings will be used by any Gamebox game hosted by this domain. Click a box and press a key to customize.</p>
+		<ul>
+			<li> Up <input class="keymap" id="keyup" READONLY onclick="customizekey({key:'up',input:'keyup'})"></li>
+			<li> Down <input class="keymap" id="keydown" READONLY onclick="customizekey({key:'down',input:'keydown'})"></li>
+			<li> Left <input class="keymap" id="keyleft" READONLY onclick="customizekey({key:'left',input:'keyleft'})"></li>
+			<li> Right <input class="keymap" id="keyright" READONLY onclick="customizekey({key:'right',input:'keyright'})"></li>
+			<li> A Button <input class="keymap" id="keya" READONLY onclick="customizekey({key:'a',input:'keya'})"></li>
+			<li> B Button <input class="keymap" id="keyb" READONLY onclick="customizekey({key:'b',input:'keyb'})"></li>
+			<li> C Button <input class="keymap" id="keyc" READONLY onclick="customizekey({key:'c',input:'keyc'})"></li>
+		</ul>
+		<input type="button" onclick="resetdefaults()" value="Reset default settings">
+		<input type="button" onclick="savesettings()" value="Save settings">
+	</div>
+</body>
+<script>
+
+	var defaults=help.cloneObject(gbox._keymap);
+	var customizing=null;
+
+	function pjq(id) { return document.getElementById(id) };
+	
+	function keyidtostring(id) {
+		var strkey="";
+		switch (id) {
+			case 38: { strkey="Up arrow"; break }
+			case 40: { strkey="Down arrow"; break }
+			case 37: { strkey="Left arrow"; break }
+			case 39: { strkey="Right arrow"; break }
+			default: {
+				if (((id>64)&&(id<133))||((id>47)&&(id<58))) strkey=String.fromCharCode(id);
+			}
+		}
+		return "key "+id+(strkey?" ("+strkey+")":"");
+
+	}
+
+	function updatescreen() {
+		pjq("keyup").value=keyidtostring(gbox._keymap["up"]);
+		pjq("keydown").value=keyidtostring(gbox._keymap["down"]);
+		pjq("keyleft").value=keyidtostring(gbox._keymap["left"]);
+		pjq("keyright").value=keyidtostring(gbox._keymap["right"]);
+		pjq("keya").value=keyidtostring(gbox._keymap["a"]);
+		pjq("keyb").value=keyidtostring(gbox._keymap["b"]);
+		pjq("keyc").value=keyidtostring(gbox._keymap["c"]);
+	}
+
+	function loaddata() {
+		gbox._loadsettings();
+		updatescreen();
+	}
+	
+	
+	function customizekey(p) {
+		customizing=p;
+		pjq(customizing.input).style.backgroundColor="#cefede";
+	}
+	
+	function keycustomized(e) {
+		if (customizing) {
+			gbox._keymap[customizing.key]=(e.fake||window.event?e.keyCode:e.which);
+			pjq(customizing.input).style.backgroundColor="";
+			updatescreen();
+			customizing=null;
+		}
+	}
+	
+	function resetdefaults() {
+		if (confirm("Revert to default configuration?")) {
+			gbox._keymap=help.cloneObject(defaults);
+			updatescreen();
+		}
+	}
+	
+	function savesettings() {
+		gbox._savesettings();
+		alert("Settings saved succesfully.");
+	}
+	
+</script>
+</html>
