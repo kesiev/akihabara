@@ -173,7 +173,7 @@ var gamecycle={
 			this.setState(800);
 		},
 		
-		// PRIVATES
+		// private methods
 		
 		setState:function(st) {
 			this.state=st;
@@ -189,7 +189,6 @@ var gamecycle={
 
 		stateIsReady:function() { this.isready=true; },
 		blit:function() {
-			var ok=false;
 			switch (this.state) {
 				case 100:
 				case 101:
