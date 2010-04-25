@@ -23,7 +23,7 @@ var gamecycle={
 		
 		// state transition
 		state:100,  
-		isready:false, 
+		stateFirstIteration:true, 
 		
 		hud:{},
 		
@@ -175,11 +175,20 @@ var gamecycle={
 		
 		// private methods
 		
+		/**
+		 * Changes the current game state
+		 * 
+		 * @param	st	state number
+		 */
 		setState:function(st) {
 			this.state=st;
-			this.isready=false;
+			this.stateFirstIteration=true;
 		},
-		
+	
+		/*
+		 * Removes all objects in each group except the game 
+		 * cycle group. Used for garbage collection when resetting the game.
+		 */	
 		_resetGroups:function() {
 			var g=gbox.getGroups();
 			for (var i=0;i<g.length;i++)
@@ -187,20 +196,23 @@ var gamecycle={
 			gbox.soloGroup(this.group);
 		},
 
-		stateIsReady:function() { this.isready=true; },
+		stateIsReady:function() { this.stateFirstIteration=false; },
+
 		blit:function() {
 			switch (this.state) {
-				case 100:
+
+				// main menu
+				case 100: 
 				case 101:
 				case 102: { // Press Start / Menu
-					if (!this.isready&&(this.state==100)) {
+					if (this.stateFirstIteration && (this.state == 100)) {
 						this._resetGroups();
 						this.gameTitleIntroAnimation(true);
 					}
 					this.gameTitleIntroAnimation(false);
 					switch (this.state) {
 						case 100: { // Press to start
-							if (!this.isready) {
+							if (this.stateFirstIteration) {
 								this.pressStartIntroAnimation(true);
 								this.stateIsReady();
 							}
@@ -208,7 +220,7 @@ var gamecycle={
 							break;
 						}
 						case 101: { // Game menu
-							if (!this.isready) {
+							if (this.stateFirstIteration) {
 								this.gameMenu(true);
 								this.stateIsReady();
 							}
@@ -219,7 +231,7 @@ var gamecycle={
 							break;
 						}
 						case 102: { // Fader
-							if (!this.isready) {
+							if (this.stateFirstIteration) {
 								this._resetGroups();
 								toys.resetToy(this,"fadeout");
 								this.stateIsReady();
@@ -253,7 +265,7 @@ var gamecycle={
 				case 801:// Game ending
 
 				{ // Game playing
-					if (!this.isready) {
+					if (this.stateFirstIteration) {
 						switch (this.state) {
 							case 200: { // Game intro
 								toys.resetToy(this,"fadein");
