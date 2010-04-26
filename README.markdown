@@ -7,4 +7,5 @@ Todo
 ----
 
 * Akihabara needs to be documented!
-* Implement audio tag /Work in progress/
+* Implement audio tag *Work in progress*
+* Better embeddability keeping playability on mobile
