@@ -8,4 +8,10 @@ Todo
 
 * Akihabara needs to be documented!
 * Implement audio tag *Work in progress*
+* Loading screen *Work in progress*
 * Better embeddability keeping playability on mobile
+* Ingame/casacaded resource loader
+
+Nice to have
+----
+* Networking
