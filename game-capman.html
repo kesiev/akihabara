@@ -81,12 +81,15 @@
 			});
 		return;*/
 		
-			help.akihabaraInit("Capman"); // Akihabara is initialized with title and all the default settings.
+			help.akihabaraInit({ // Akihabara is initialized with title and all the default settings.
+				title:"Capman", // ... Just changing the game title...
+				splash:{footnotes:["Music 'Only Heroes Win at Skee Ball' by Greenleo","Contact him: greenleo.bandcamp.com"]}, // And adding some credits to Greenleo on the loading screen, which made the main theme. Great work! Trivia: is also the Akiba Hero 2nd song :)
+			}); 
 			gbox.setCallback(go); // the "go" method is registerd as callback: when all the resources are loaded, will be called.
 
-			gbox.addImage("cels","resources/capman/cels.png"); // Images are loaded setting an alias and a file name. Can be sprites sheet, like this one...
+			gbox.addImage("logo","resources/capman/logo.png"); // Images are loaded setting an alias and a file name. Can be full images, like the logo (load this ASAP, so will be shown during the loading screen)
+			gbox.addImage("cels","resources/capman/cels.png"); // or sprites sheet, like this one...
 			gbox.addImage("font","resources/capman/font.png"); // ...or font set.
-			gbox.addImage("logo","resources/capman/logo.png"); // ...or a full image.
 			
 			gbox.addFont({id:"small",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:0}); // Font are mapped over an image, setting the first letter, the letter size, the length of all rows of letters and a horizontal/vertical gap.
 			// Sometime you can find pixel fonts with multiple colors, one per row/block. You can map multiple fonts on the same image, so create many fonts, one for each color.
@@ -101,6 +104,18 @@
 			gbox.addTiles({id:"bonus",image:"cels",tileh:12,tilew:12,tilerow:8,gapx:0,gapy:24}); // A row from bonuses...
 			gbox.addTiles({id:"maze",image:"cels",tileh:4,tilew:4,tilerow:10,gapx:0,gapy:36}); // The tilesets are taken from the sprite sheet too.
 			
+			// Now let's load some audio samples...
+			var audioserver="resources/audio/"; // You don't have to create this variable but is handy when defining a lot of audio files with the same path. You can also refer a server side script that serves the audio file, putting the file name as GET parameter. Watch out for injections! :)
+			gbox.addAudio("eat",[audioserver+"eat.mp3",audioserver+"eat.ogg"],{channel:"sfx"}); // The capman's "gabogabo" sound. We're giving 2 audio file names for better browser compatibility. We're also defining that this audio sample will be played by default into the "sfx" channel.
+			gbox.addAudio("eatghost",[audioserver+"laser.mp3",audioserver+"laser.ogg"],{channel:"sfx"}); // The capman's ghost-eated sound effect.
+			gbox.addAudio("powerpill",[audioserver+"powerup3.mp3",audioserver+"powerup3.ogg"],{channel:"sfx"}); // The capman's powerpill sound effect.
+			gbox.addAudio("die",[audioserver+"die.mp3",audioserver+"die.ogg"],{channel:"sfx"}); // The capman's death sound effect.
+			gbox.addAudio("bonus",[audioserver+"coin.mp3",audioserver+"coin.ogg"],{channel:"sfx"}); // The sound played when capman eat a bonus.
+			gbox.addAudio("default-menu-option",[audioserver+"select.mp3",audioserver+"select.ogg"],{channel:"sfx"}); // These are default sounds: are played maingame object during menus.
+			gbox.addAudio("default-menu-confirm",[audioserver+"start.mp3",audioserver+"start.ogg"],{channel:"sfx"});
+			gbox.addAudio("ingame",[audioserver+"capman-ingame.mp3",audioserver+"capman-ingame.ogg"],{channel:"bgmusic",loop:true}); // This one is the ingame music. We're putting this into the "bgmusic" channel and will be looped: once ended will start over. Note that creating audio into the bgmusic channel makes them "lighter" for the browser, since is ready to be played only one at time.
+
+			
 			gbox.loadAll(); // When everything is ready, the "loadAll" downloads all the needed resources.
 			
 		}, false);
@@ -110,6 +125,8 @@
 		  
 		  	// The very first thing to do is to set which groups will be involved in the game. Groups can be used for grouped collision detection and for rendering order
 		 	gbox.setGroups(["background","player","ghosts","bonus","sparks","gamecycle"]); // Usually the background is the last thing rendered. The last thing is "gamecycle", that means games messages, like "gameover", menus etc.
+		 	gbox.setAudioChannels({bgmusic:{volume:0.8},sfx:{volume:1.0}}); // If we're going to add audio to our game, we have to create virtual channels. Channels acts like groups but for audio: audio on the same channels can be stopped together and shares the same highest volume.
+
 		 	
 		 	maingame=gamecycle.createMaingame("gamecycle","gamecycle"); // We create a new maingame into the "gamecycle" group. Will be called "gamecycle". From now, we've to "override" some of the maingame default actions.
 		 	
@@ -230,7 +247,7 @@
 			maingame.addGhost({id:3,x:maze.hw+4,y:maze.hh-20});
 			maingame.addGhost({id:4,x:maze.hw+14,y:maze.hh-17});
 			if (this.bonustimer) this.bonustimer=300; // The timer is reset after spawning a new life, if the bouns is not appeared. As I said before, We well talk about this counter at the end.
-
+			gbox.playAudio("ingame"); // Start playing the ingame music. Notes that the "maingame" object will fade in/out and stop the "bgmusic" channel when the screen will fade automatically. We just need to play the music when the screen is fading to fade the music too!
 		  }
 		
 		 	
@@ -329,12 +346,14 @@
 						// capman's mouth!
 						if (inmouth>7) { // If capman is eating a pill (8 for normal pill, 9 for power pill)
 							if (inmouth == 9) { // If is a powerpill
+								gbox.hitAudio("powerpill"); // Play the powerpill sound. hitAudio plays an audio from start and is useful for sound effects. playAudio does nothing if the audio was already playing, so is useful for music playback.
 								this.scorecombo=1; // Reset the combo counter.
 								gbox.getObject("ghosts","ghost1").makeeatable(); // Make the ghosts vulnerable.
 								gbox.getObject("ghosts","ghost2").makeeatable();
 								gbox.getObject("ghosts","ghost3").makeeatable();
 								gbox.getObject("ghosts","ghost4").makeeatable();
-							}
+							} else
+								gbox.hitAudio("eat"); // If is a classic pill, play the classic "gabogabo" sound!
 							var mouthx=help.xPixelToTileX(maze,this.x+this.hw); // Let's get the pill coordinate in the maze...
 							var mouthy=help.yPixelToTileY(maze,this.y+this.hh);
 							help.setTileInMap(gbox.getCanvasContext("mazecanvas"),maze,mouthx,mouthy,null); // ... and set a null tile over that.
@@ -358,6 +377,7 @@
 				kill:function() {
 					if (!this.killed) { // If we're alive...
 						this.killed=true; // First of all, capman is killed. As you've seen, that makes capman invisible and on hold.
+						gbox.hitAudio("die"); // Play the die sound
 						maingame.hud.addValue("lives","value",-1); // Then decrease the lives count.
 						maingame.playerDied({wait:50}); // Telling the main game cycle that the player died. The arguments sets a short delay after the last fadeout, for making visible the dead animation
 						toys.generate.sparks.simple(this,"sparks",null,{tileset:this.tileset,frames:{speed:4,frames:[6,5,7,8,9,9,9,9]}});
@@ -591,6 +611,7 @@
 								maingame.bullettimer=10; // ...stop the game for a while.
 								capman.kill(); // ...kill capman. "kill" is the custom method we've created into the capman object.
 							} else if (this.status=="escape") { // else, if we were escaping from capman (uh oh...)
+								gbox.hitAudio("eatghost"); // Play the ghost-eaten sound.
 								maingame.bullettimer=10; // ...stop the game for a while.
 								toys.generate.sparks.popupText(capman,"sparks",null,{font:"small",jump:5,text:capman.scorecombo+"x100",keep:20}); // Text sparks are useful to "replace" sound effects, give quick hints o make a game really rad! ;)
 								maingame.hud.addValue("score","value",capman.scorecombo*100); // Gives to the player 100*combo points...
@@ -658,7 +679,8 @@
 					// Bonuses are quite simple...
 					var capman=gbox.getObject("player","capman"); // ... checking where capman is.
 					if (gbox.collides(this,capman)) { // If is colliding with the bonus...
-						var bonusscore=((this.bonusid+1)*100);
+						gbox.hitAudio("bonus"); // Play the bonus sound...
+						var bonusscore=((this.bonusid+1)*100); // Calculate the bonus multiplier...
 						maingame.hud.addValue("score","value",bonusscore); // Gives to the player the related bonus...
 						maingame.hud.pushValue("bonus","value",this.frame); // Add the bonus image to the bonus queue (the pile on the bottom of the screen)
 						toys.generate.sparks.popupText(this,"sparks",null,{font:"small",jump:5,text:bonusscore,keep:20}); // Our nice "text spark" with the earned score...
@@ -684,7 +706,7 @@
 				toys.resetToy(this,"rising"); // Like resetting a local toy. Some of the toys are "helpers": they use a local datastore of an object and does stuff, when called. For example: we're reserving a data store called "rising" to the "maingame" object.
 			} else { // Then, when is the time to render our animation...
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1}); // First clear up the screen...
-				toys.logos.linear(this,"rising",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,sx:gbox.getScreenHW()-gbox.getImage("logo").hwidth,sy:gbox.getScreenH(),speed:1}); // Then we're telling to the "linear" toy (which renders something that moves from a point to another) to use the "rising" data store, for keeping his values.
+				toys.logos.linear(this,"rising",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,sx:gbox.getScreenHW()-gbox.getImage("logo").hwidth,sy:gbox.getScreenH(),speed:1,audioreach:"eatghost"}); // Then we're telling to the "linear" toy (which renders something that moves from a point to another and eventually plays an audio on end) to use the "rising" data store, for keeping his values.
 			}
 		};
 

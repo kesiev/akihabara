@@ -168,6 +168,7 @@ var block={
 				next:{},
 				score:{},
 				control:{},
+				audio:{},
 				gfx:{}
 			},
 			timing:{ 
@@ -387,6 +388,11 @@ var block={
 	  for (var steps=0;steps<Math.ceil(th.config.timing.gravity);steps++) 
 	   { th.falling.y++; if (!this.fits(th,th.falling)) {touch=true;break;} }
 	  if (touch) {
+	  	if (!th.falling.floortouched) {
+	  		if (th.config.audio.floor) gbox.hitAudio(th.config.audio.floor);
+	  		th.falling.floortouched=true;
+	  	}
+
 	   th.falling.y--;
 	   if (th.timing.nextissoft&&th.config.control.lockingsoftdrop) th.timing.lockdelay=0;
 	   var wait=false;
@@ -610,9 +616,10 @@ var block={
 			
 		// PROCESS LINE REMOVAL (usually during are)
 		if (th.timing.linecleardelay>-1) {
-		  if (th.timing.linecleardelay==0)
+		  if (th.timing.linecleardelay==0) {
+		  	if (th.config.audio.lineafter) gbox.hitAudio(th.config.audio.lineafter);
 			this.droplines(th,(th.timing.firstremovelines?4:2),0);
-		  else
+		  } else
 		  	this.droplines(th,(th.timing.firstremovelines?3:1),Math.floor(th.config.gfx.vanishingcolors*th.timing.linecleardelay)/th.config.timing.linecleardelay);
 		  th.timing.firstremovelines=false;
 		  th.timing.linecleardelay--;
@@ -686,6 +693,7 @@ var block={
 						break
 					}
 					case this.cons.vdrop.ok: {
+					
 						levelphase="onlock";
 						
 						done=this.droplines(th,0,0); // Check field
@@ -698,9 +706,13 @@ var block={
 						}
 						
 						if (done.cnt) {
+							if (th.config.audio.linebefore) gbox.hitAudio(th.config.audio.linebefore);
 							th.combo.push(done.cnt); // Add to combo counter
 							this.addlinesgroup(th,done.cnt,1); // Add to the single/double/tripe/tetris counter
-						} else th.combo=[]; // Reset combo counter
+						} else {
+							if (th.config.audio.lock) gbox.hitAudio(th.config.audio.lock);
+							th.combo=[]; // Reset combo counter
+						}
 						if (done.cnt>=3) {
 							this.addstat(th,"tetris",1); // Change tetris counter
 							th.backtoback++; // Change backtoback counter
@@ -818,6 +830,7 @@ var block={
 		this.addstat(th,"piece",1);
 		if (suggestion===null) suggestion=this.getnext(th);
 		th.falling={
+			floortouched:false,
 			floorkicked:false,
 			kicked:false,
 			piece:suggestion.piece,
@@ -913,6 +926,7 @@ var block={
 	
 	resetfalling:function(th) { // reset completely the counters of a falling piece, including kicks flags, lock time and entry rotation
 		this.resetspins(th);
+		th.falling.floortouched=false;
 		th.falling.floorkicked=false;
 		th.falling.kicked=false;
 		th.falling.rotatebeforelock=th.falling.rotate;
@@ -925,6 +939,7 @@ var block={
 	  var checki=false; // check infinity
 	  var checkb=false; // rotation-related checks (spins/kicks)
 	  var checks=false;
+	  var sidemoved=false;
 	  var resetspins=false;
 	  var cancelmove=false;
 	  var bbk;
@@ -936,8 +951,8 @@ var block={
 	var curblock;	  
 	
 		switch (move) {
-		  case this.controls.right: { th.falling.x+=th.config.field.big; resetspins=true; checki=th.config.timing.movereset;break;}
-		  case this.controls.left: { th.falling.x-=th.config.field.big; resetspins=true; checki=th.config.timing.movereset;break;}
+		  case this.controls.right: { th.falling.x+=th.config.field.big; resetspins=true; sidemoved=true; checki=th.config.timing.movereset;break;}
+		  case this.controls.left: { th.falling.x-=th.config.field.big; resetspins=true; sidemoved=true; checki=th.config.timing.movereset;break;}
 		  case this.controls.down: { 
 		  if (th.config.control.softdropisdas||firsthit) {
 		  	resetspins=true;
@@ -973,6 +988,7 @@ var block={
 		  case this.controls.rotateleft:  {if (this.pieces[th.config.field.piecemodel][th.falling.piece].length>1) { th.falling.rotate=(th.falling.rotate==0?this.pieces[th.config.field.piecemodel][th.falling.piece].length-1:th.falling.rotate-1); checki=th.config.timing.spinreset;checkb=true; } break;}
 		  case this.controls.store: {
 		if (th.config.field.hold&&(th.holdcount>0)) {
+			if (th.config.audio.hold) gbox.hitAudio(th.config.audio.hold);
 			th.holdcount--;
 			var newhold={piece:th.falling.piece,rotate:th.falling.rotate};
 			if (!th.config.control.holdkeeprotation) newhold.rotate=0;
@@ -1142,6 +1158,12 @@ var block={
 		  
 		  // Handle infinity - http://www.tetrisconcept.net/wiki/Infinity
 		  if (th.config.timing.lockdelay&&checki) th.timing.lockdelay=th.config.timing.lockdelay;
+		  
+		  // Audio
+		  if (checkb)
+		  	if (th.config.audio.rotate) gbox.hitAudio(th.config.audio.rotate);
+		  if (sidemoved)
+		  	if (th.config.audio.sidemove) gbox.hitAudio(th.config.audio.sidemove);
 		  return true;
 		}  
 	},
@@ -1621,6 +1643,7 @@ var block={
 		if (th.clearongameover)
 			this.gameclear(th);
 		else {
+			if (th.config.audio.gameover) gbox.hitAudio(th.config.audio.gameover);
 			if (th.debugging) this.debug(th,"GAME OVER");
 			th.match="fail";
 			this.stopgame(th,"gameoveranimation");

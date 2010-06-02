@@ -204,11 +204,11 @@ var toys={
 					if (toys.topview.pixelcollides({x:th.x+th.colx,y:th.y+th.coly+th.colhh},wl)) {
 						th.touchedleft=true;
 						th.accx=0;
-						th.x=wl.x+wl.colx+wl.colw-th.colx+1;
+						th.x=wl.x+wl.colx+wl.colw-th.colx;
 					} else if (toys.topview.pixelcollides({x:th.x+th.colx+th.colw,y:th.y+th.coly+th.colhh},wl)) {
 						th.touchedright=true;
 						th.accx=0;
-						th.x=wl.x+wl.colx-th.colw-th.colx-1;
+						th.x=wl.x+wl.colx-th.colw-th.colx;
 					}
 					if (toys.topview.pixelcollides({x:th.x+th.colx+th.colhw,y:th.y+th.coly+th.colh},wl)) {
 						th.toucheddown=true;
@@ -226,6 +226,7 @@ var toys={
 			th.touchedfloor=false;
 			if (th.z>0) {
 				th.accz=(data==null?0:-Math.floor(th.accz/data.bounce));
+				if (data&&data.audiobounce&&th.accz) gbox.hitAudio(data.audiobounce);
 				th.z=0;
 				th.touchedfloor=true;
 			}			
@@ -430,6 +431,8 @@ var toys={
 						opencounter:0,
 						opening:false,
 						closing:false,
+						audiobefore:null,
+						audioafter:null,
 						doOpen:function() {
 							this.opening=true;
 						},
@@ -447,23 +450,36 @@ var toys={
 			if (obj.closing) obj.opencounter=obj.doorheight;
 			
 			obj.initialize=function() {
+				this.ismoving=false;
 				toys.topview.initialize(this);
 			};
 			
 			obj[(data.logicon==null?"first":data.logicon)]=function() {
 				if (this.closing) {
+					if (!this.ismoving) {
+						if (this.audiobefore) gbox.hitAudio(this.audiobefore);
+						this.ismoving=true;
+					}
 					this.whileMoving();
 					this.opencounter--;
 					if (this.opencounter<0) {
+						if (this.audioafter) gbox.hitAudio(this.audioafter);
+						this.ismoving=false;
 						this.opencounter=0;
 						this.closing=false;
 						this.whenClosed();
 					}
 				}
 				if (this.opening) {
+					if (!this.ismoving) {
+						if (this.audiobefore) gbox.hitAudio(this.audiobefore);
+						this.ismoving=true;
+					}
 					this.whileMoving();
 					this.opencounter++;
 					if (this.opencounter>=this.doorheight) {
+						if (this.audioafter) gbox.hitAudio(this.audioafter);
+						this.ismoving=false;
 						if (!this.whenOpened()) gbox.trashObject(this);
 					}
 				}
@@ -1007,6 +1023,7 @@ var toys={
 		},
 		jumpKeys:function(th,key) {
 			if (toys.platformer.canJump(th)&&gbox.keyIsHit(key.jump)&&(th.curjsize==0)) {
+				if (key.audiojump) gbox.hitAudio(key.audiojump);
 				th.accy=-th.jumpaccy;
 				th.curjsize=th.jumpsize;
 			} else if (th.curjsize&&gbox.keyIsHold(key.jump)) { // Jump modulation
@@ -1128,7 +1145,11 @@ var toys={
 			if (!th.toys[id].subtimer) {
 				th.toys[id].subtimer=gbox.getFps();
 				if (data.countdown) {
-					if (th.toys[id].time) th.toys[id].time--; else th.toys[id].done=true;
+					if (th.toys[id].time) {
+						th.toys[id].time--; 
+						if (data.audiocritical&&(th.toys[id].time<=data.critical))
+							gbox.hitAudio(data.audiocritical);
+					} else th.toys[id].done=true;
 				} else
 					th.toys[id].time++;
 			}
@@ -1163,7 +1184,7 @@ var toys={
 	ui:{
 		menu:function(th,id,opt) {
 			if (toys._maketoy(th,id)||opt.resetmenu) {
-				var fd=gbox._fonts[opt.font];
+				var fd=gbox.getFont(opt.font);
 				th.toys[id].selected=(opt.selected?opt.selected:0);
 				th.toys[id].ok=0;
 				var w=0;
@@ -1176,9 +1197,18 @@ var toys={
 				th.toys[id].fw=fd.tilew;
 			}
 			if (!th.toys[id].ok) {
-				if (gbox.keyIsHit(opt.keys.up)&&(th.toys[id].selected>0)) th.toys[id].selected--; else
-				if (gbox.keyIsHit(opt.keys.down)&&(th.toys[id].selected<opt.items.length-1)) th.toys[id].selected++; else
-				if (gbox.keyIsHit(opt.keys.ok)) th.toys[id].ok=1; else
+				if (gbox.keyIsHit(opt.keys.up)&&(th.toys[id].selected>0)) {
+					if (opt.audiooption) gbox.hitAudio(opt.audiooption);
+					th.toys[id].selected--;
+				} else
+				if (gbox.keyIsHit(opt.keys.down)&&(th.toys[id].selected<opt.items.length-1)) {
+					if (opt.audiooption) gbox.hitAudio(opt.audiooption);
+					th.toys[id].selected++;
+				} else
+				if (gbox.keyIsHit(opt.keys.ok)) {
+					if (opt.audioconfirm) gbox.hitAudio(opt.audioconfirm);
+					th.toys[id].ok=1;
+				} else
 				if (gbox.keyIsHit(opt.keys.cancel)) th.toys[id].ok=-1;
 			}
 			gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas("menu-"+id),{dx:opt.x+th.toys[id].fw,dy:opt.y,camera:opt.camera});
@@ -1248,6 +1278,11 @@ var toys={
 							if (this.w[i].value)
 								gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:this.w[i].frame,dx:this.w[i].dx,dy:this.w[i].dy,fliph:this.w[i].fliph,flipv:this.w[i].flipv});
 						}
+						if (this.w[i].widget=="gauge") {
+							var ts=gbox.getTiles(this.w[i].tileset);
+							gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:0,dx:this.w[i].dx,dy:this.w[i].dy});						
+							gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:1,dx:this.w[i].dx,dy:this.w[i].dy,w:(this.w[i].value*ts.tilew)/this.w[i].maxvalue});
+						}
 					}
 				},
 				
@@ -1310,19 +1345,35 @@ var toys={
 	},
 	fullscreen:{
 		fadeout:function(th,id,tox,data) {
-			if (toys._maketoy(th,id)||data.resetfade) th.toys[id].fade=0;
+			if (toys._maketoy(th,id)||data.resetfade) {
+				th.toys[id].fade=0;
+				if (data.audiofade) th.toys[id].stv=gbox.getAudioVolume(data.audiofade);
+				if (data.audiochannelfade) th.toys[id].chv=gbox.getChannelVolume(data.audiochannelfade);
+			}
 			th.toys[id].fade+=data.fadespeed;
 			if (th.toys[id].fade>1) th.toys[id].fade=1;
 			data.alpha=th.toys[id].fade;
 			gbox.blitFade(tox,data);
+			if (data.audiofade) gbox.setAudioVolume(data.audiofade,th.toys[id].stv*(1-data.alpha));
+			if (data.audiochannelfade) 
+				if (data.alpha==1)
+					gbox.stopChannel(data.audiochannelfade);
+				else
+					gbox.setChannelVolume(data.audiochannelfade,th.toys[id].chv*(1-data.alpha));
 			return toys._toyfrombool(th,id,th.toys[id].fade==1)
 		},
 		fadein:function(th,id,tox,data) {
-			if (toys._maketoy(th,id)||data.resetfade) th.toys[id].fade=1;
+			if (toys._maketoy(th,id)||data.resetfade) {
+				th.toys[id].fade=1;
+				if (data.audiofade) th.toys[id].stv=gbox.getAudioVolume(data.audiofade);
+				if (data.audiochannelfade) th.toys[id].chv=gbox.getChannelDefaultVolume(data.audiochannelfade);
+			}
 			th.toys[id].fade-=data.fadespeed;
 			if (th.toys[id].fade<0) th.toys[id].fade=0;
 			if (th.toys[id].fade) {
 				data.alpha=th.toys[id].fade;
+				if (data.audiofade) gbox.setAudioVolume(data.audiofade,th.toys[id].stv*(1-data.alpha));
+				if (data.audiochannelfade) gbox.setChannelVolume(data.audiochannelfade,th.toys[id].chv*(1-data.alpha));
 				gbox.blitFade(tox,data);
 			}
 			return toys._toyfrombool(th,id,th.toys[id].fade==0);
@@ -1358,14 +1409,33 @@ var toys={
 			if (toys._maketoy(th,id)) {
 				th.toys[id].x=data.sx;
 				th.toys[id].y=data.sy;
+				th.toys[id].every=data.every;
+				th.toys[id].played=false;
 			}
-			if ((data.x!=th.toys[id].x)||(data.y!=th.toys[id].y))
-				if ((Math.abs(data.x-th.toys[id].x)<=data.speed)&&(Math.abs(data.y-th.toys[id].y)<=data.speed)) {
-					th.toys[id].x=data.x;
-					th.toys[id].y=data.y;
-				} else
-					trigo.translate(th.toys[id],trigo.getAngle(th.toys[id],data),data.speed);
-			gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:th.toys[id].x,dy:th.toys[id].y});
+			if (!th.toys[id].every) {
+				if ((data.x!=th.toys[id].x)||(data.y!=th.toys[id].y))
+					if ((Math.abs(data.x-th.toys[id].x)<=data.speed)&&(Math.abs(data.y-th.toys[id].y)<=data.speed)) {
+						th.toys[id].x=data.x;
+						th.toys[id].y=data.y;
+					} else
+						trigo.translate(th.toys[id],trigo.getAngle(th.toys[id],data),data.speed);
+				else
+					if (!th.toys[id].played) {
+						if (data.audioreach) gbox.hitAudio(data.audioreach);
+						th.toys[id].played=true;
+					}
+				th.toys[id].every=data.every;
+			} else th.toys[id].every--;
+			if (data.text)
+				gbox.blitText(gbox.getBufferContext(),{
+					font:data.font,
+					dx:th.toys[id].x,dy:th.toys[id].y,
+					text:data.text
+				});
+			else if (data.tileset)
+				gbox.blitTile(gbox.getBufferContext(),{tileset:data.tileset,tile:data.tile,dx:th.toys[id].x,dy:th.toys[id].y,camera:data.camera,fliph:data.fliph,flipv:data.flipv,alpha:data.alpha});			
+			else
+				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:th.toys[id].x,dy:th.toys[id].y,alpha:data.alpha});
 			return toys._toyfrombool(th,id,(data.x==th.toys[id].x)&&(data.y==th.toys[id].y));
 		},
 		crossed:function(th,id,data) {
@@ -1381,6 +1451,10 @@ var toys={
 				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:data.x+th.toys[id].gapx,dy:data.y,alpha:data.alpha});
 				return toys._toybusy(th,id);
 			} else {
+				if (!th.toys[id].done) {
+					th.toys[id].done=true;
+					if (data.audioreach) gbox.hitAudio(data.audioreach);					
+				}
 				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:data.x,dy:data.y});
 				return toys._toydone(th,id);
 			}
@@ -1393,7 +1467,10 @@ var toys={
 			}
 			if (th.toys[id].zoom!=1) {
 				th.toys[id].zoom-=data.speed;
-				if (th.toys[id].zoom<1) th.toys[id].zoom=1;
+				if (th.toys[id].zoom<=1) {
+					th.toys[id].zoom=1;
+					if (data.audioreach) gbox.hitAudio(data.audioreach);
+				}
 				gbox.blit(gbox.getBufferContext(),gbox.getImage(data.image),{h:th.toys[id].img.height,w:th.toys[id].img.width,dx:data.x-Math.floor(th.toys[id].img.width*(th.toys[id].zoom-1)/2),dy:data.y-Math.floor(th.toys[id].img.height*(th.toys[id].zoom-1)/2),dh:Math.floor(th.toys[id].img.height*th.toys[id].zoom),dw:Math.floor(th.toys[id].img.width*th.toys[id].zoom),alpha:1/th.toys[id].zoom});
 				return toys._toybusy(th,id);
 			} else {
@@ -1413,7 +1490,8 @@ var toys={
 				if (th.toys[id].cnt>th.toys[id].lh) th.toys[id].gapx=th.toys[id].lh;
 				gbox.blit(gbox.getBufferContext(),gbox.getImage(data.image),{dh:th.toys[id].cnt,dw:th.toys[id].lw,dx:data.x,dy:data.y+th.toys[id].lh-th.toys[id].cnt,alpha:data.alpha});
 				if (data.reflex) gbox.blit(gbox.getBufferContext(),gbox.getImage(data.image),{dh:th.toys[id].cnt,dw:th.toys[id].lw,dx:data.x,dy:data.y+th.toys[id].lh,alpha:data.reflex,flipv:true});
-				
+				if (th.toys[id].cnt>=th.toys[id].lh)
+					if (data.audioreach) gbox.hitAudio(data.audioreach);					
 				return toys._toybusy(th,id);
 			} else {
 				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:data.x,dy:data.y});
@@ -1431,6 +1509,7 @@ var toys={
 			}
 			if (!th.toys[id].done) {
 				if (th.toys[id].y+th.toys[id].h>=data.floory) {
+					if (data.audiobounce) gbox.hitAudio(data.audiobounce);
 					th.toys[id].y=data.floory-th.toys[id].h;
 					th.toys[id].accy=-Math.ceil(th.toys[id].accy/(data.heavy?data.heavy:2));
 					th.toys[id].done=(th.toys[id].accy==0);
@@ -1488,6 +1567,7 @@ var toys={
 						if (th.toys[id].scene.bonus) {
 							gbox.createCanvas("bonus-"+id,{w:th.toys[id].sceneW,h:(th.toys[id].scene.bonus.length)*(th.toys[id].fd.tileh+th.toys[id].scene.spacing)});
 						}
+						if (th.toys[id].scene.audiomusic) gbox.hitAudio(th.toys[id].scene.audiomusic);
 					}
 				}
 				if (!th.toys[id].ended) {
@@ -1510,6 +1590,7 @@ var toys={
 							if (th.toys[id].counter==th.toys[id].scene.speed) {
 								th.toys[id].letter++;
 								th.toys[id].counter=0;
+								if (th.toys[id].scene.audio&&!(th.toys[id].letter%3)) gbox.hitAudio(th.toys[id].scene.audio);
 								var tmp=th.toys[id].letter;
 								var row=0;
 								while (tmp>th.toys[id].scene.talk[row].length) {
@@ -1740,6 +1821,55 @@ var toys={
 				
 				return obj;
 			}
+		},
+		audio:{
+			fadeOut:function(th,group,id,data){
+				var obj=gbox.addObject(
+					help.mergeWithModel(
+						data,{
+							id:id,
+							group:group,
+							fadespeed:-0.02*(data.fadein?-1:1),
+							stoponmute:true,
+							audio:null,
+							channel:null,
+							destination:null
+						}
+					)
+				);
+
+				obj[(data.logicon==null?"first":data.logicon)]=function() {
+					if (this.destination==null)
+						if (this.audio)
+							if (this.fadespeed>0) this.destination=1; else this.destination=0;
+						else
+							if (this.fadespeed>0) this.destination=gbox.getChannelDefaultVolume(this.channel); else this.destination=0;
+					if (this.fadespeed>0) gbox.playAudio(this.audio);
+				}
+				
+				obj[(data.bliton==null?"blit":data.bliton)]=function() {
+					if (this.audio) gbox.changeAudioVolume(this.audio,this.fadespeed);
+					if (this.channel) gbox.changeChannelVolume(this.channel,this.fadespeed);
+					if (
+						(this.audio&&(
+							((this.fadespeed<0)&&(gbox.getAudioVolume(this.audio)<=this.destination))||
+							((this.fadespeed>0)&&(gbox.getAudioVolume(this.audio)>=this.destination))
+					   ))||
+						(this.channel&&(
+							((this.fadespeed<0)&&(gbox.getChannelVolume(this.channel)<=this.destination))||
+							((this.fadespeed>0)&&(gbox.getChannelVolume(this.channel)>=this.destination))
+					   ))
+					) {
+						if (this.channel&&this.stoponmute&&(this.fadespeed<0)) gbox.stopChannel(this.channel);
+						if (this.audio&&this.stoponmute&&(this.fadespeed<0)) gbox.stopAudio(this.audio);
+						gbox.trashObject(this);
+					}
+				}
+			}
+		
 		}
+		
 	}
+	
+
 }

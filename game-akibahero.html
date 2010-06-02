@@ -1,0 +1,409 @@
+<html>
+<head>
+	<script type="text/javascript" src="akihabara/gbox.js"></script>
+	<script type="text/javascript" src="akihabara/iphofretboard.js"></script>
+	<script type="text/javascript" src="akihabara/trigo.js"></script>
+	<script type="text/javascript" src="akihabara/toys.js"></script>
+	<script type="text/javascript" src="akihabara/help.js"></script>
+	<script type="text/javascript" src="akihabara/tool.js"></script>
+	<script type="text/javascript" src="akihabara/gamecycle.js"></script>
+	<style>BODY { -webkit-user-select:none; margin:0px}</style>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+</head>
+<body>
+</body>
+<script>
+// ---
+// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
+// ---
+
+	var ending;
+	var maingame;
+	var song={};
+	var ending={};
+	var audioserver;
+
+	// Add seconds lines to the song and stats. You have to call this once the song data is loaded into the resource file.
+	function addMarkerToSong(sng) {
+		var i=1;
+		var p=0;
+		var worked=[];
+		sng.notes=0;
+		while (i<sng.duration) {
+			while ((p<sng.track.length)&&(sng.track[p].time<i)) { worked.push(sng.track[p]); sng.notes++; p++ }
+			worked.push({ time:i, d:[0,0,0,0,0,1],nofret:true});
+			i+=2;
+		}
+		worked.push({ time:sng.duration, d:[0,0,0,0,0,1],nofret:true,ended:true});
+		worked.push({ time:sng.duration+10, d:[0,0,0,0,0,1],nofret:true});
+		sng.track=worked;
+	}
+
+	function go() {
+
+		gbox.setGroups(["background","field","sparks","overlay","gamecycle"]);
+		gbox.setAudioChannels({bgmusic:{volume:0.8},audio:{volume:0.9},guitar:{volume:1.0},sfx:{volume:1.0}});
+		maingame=gamecycle.createMaingame("gamecycle","gamecycle");	
+
+		maingame.gameIntroAnimation=function() { return true; }
+		maingame.gameIsOver=function() { return true; } // No lives!
+		maingame.gameTitleIntroAnimation=function(reset) { 
+			if (reset) {
+				toys.resetToy(this,"rising"); 
+				toys.resetToy(this,"flash"); 
+				this.udcnt=0;
+			} else {
+				if (toys.getToyStatus(this,"rising")) {
+			  		gbox.blitFade(gbox.getBufferContext(),{alpha:1,color:"rgb("+(help.upAndDown(this.udcnt,100)*2)+",0,0)"});
+			  		gbox.blitAll(gbox.getBufferContext(),gbox.getImage("wp"),{dx:0,dy:0});
+		 	 		toys.fullscreen.fadein(this,"flash",gbox.getBufferContext(),{fadespeed:0.05,color:gbox.COLOR_WHITE});
+		 	 		this.udcnt=(this.udcnt+1)%100;
+			  	} else
+			  		gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+				toys.logos.linear(this,"rising",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,sx:gbox.getScreenHW()-gbox.getImage("logo").hwidth,sy:gbox.getScreenH(),speed:10,audioreach:"explosion"});
+			}
+		};
+		// gameover animation
+		maingame.gameoverIntroAnimation=function(reset) {
+			 if (reset) {
+				gbox.stopChannel("bgmusic");
+				gbox.stopChannel("audio");
+				gbox.stopChannel("guitar");
+				toys.resetToy(this,"default-blinker");
+			} else {
+				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+				return toys.text.fixed(this,"default-blinker",gbox.getBufferContext(),{font:"small",text:"GAME OVER",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),time:50});
+			}
+		};		
+		maingame.gameDisclaimerAnimation=function(reset) {
+			if (reset) {
+				toys.resetToy(this,"warn-timer"); 
+				toys.resetToy(this,"fadein"); 
+				toys.resetToy(this,"fadeout"); 
+			} else {
+				gbox.blitAll(gbox.getBufferContext(),gbox.getImage("warn"),{dx:0,dy:0});
+				// A nice way to enqueue effects :)
+				if (
+					toys.fullscreen.fadein(this,"fadein",gbox.getBufferContext(),{fadespeed:0.05}) &&
+					toys.timer.after(this,"warn-timer",300) &&
+					toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.01})
+				) return true;
+				return false;
+			}
+		};
+		// Song selector
+		maingame.gameMenu=function(reset) {
+			if (reset) {
+				this._songs=[];
+				this._songsid=[];
+				for (var i in song) {
+					this._songsid.push(i);
+					this._songs.push("'"+song[i].title+"' by "+song[i].artist);
+				}
+				toys.resetToy(this,"songselect");
+			} else {
+				gbox.blitFade(gbox.getBufferContext(),{alpha:0.5});
+				gbox.blitText(gbox.getBufferContext(),{font:"big", dx:10, dy:10, text:"TRACKLIST"});
+				gbox.blitText(gbox.getBufferContext(),{font:"small2", dx:10, dy:gbox.getScreenH()-(gbox.getFont("small2").tileh*2)-10, text:"Left/right/blue/orange frets to move."});
+				gbox.blitText(gbox.getBufferContext(),{font:"small2", dx:10, dy:gbox.getScreenH()-gbox.getFont("small2").tileh-10, text:"A button or green button to start."});
+				
+				if (toys.ui.menu(this,"songselect",{audiooption:"default-menu-option",audioconfirm:"default-menu-confirm",font:"small",keys:{up:"left",down:"right",ok:"a",cancel:"b"},selector:">",items:this._songs,x:10,y:40})) {
+					if (toys.getToyValue(this,"difficulty","ok") == -1) return -1;
+					else {
+						this._selectedsong=this._songsid[toys.getToyValue(this,"songselect","selected")];
+						return true;
+					}
+				}
+				return false;
+			}
+		},
+		
+		// Game ending
+		  maingame.gameEndingIntroAnimation=function(reset){
+		  	if (reset) {
+		  		toys.resetToy(this,"intro-animation");
+		  		
+				var endingtheme="song-mix";
+				if (maingame.hud.getValue("stars","value")>8) ; // Extra song for winners
+		  		gbox.hitAudio(endingtheme);
+
+		  	} else {
+		  		gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+		  		return toys.dialogue.render(this,"intro-animation",ending.credits);
+		  	}
+		  }
+		  
+		 // YOU ROCK!
+		maingame.endlevelIntroAnimation=function(reset) {
+			 if (reset) {
+				 toys.resetToy(this,"default-blinker");
+				 this._scoremessage="NICE JOB!";
+				switch (maingame.hud.getValue("stars","value")) {
+					case 9: { this._scoremessage="YOU ROCK!"; break }
+					case 10: { this._scoremessage="OMG FIVE STARS !1!!"; break }
+				}
+			} else {
+				return toys.text.blink(this,"default-blinker",gbox.getBufferContext(),{font:"big",text:this._scoremessage,valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),blinkspeed:5,times:10});
+			}
+		},
+
+
+	
+		maingame.initializeGame=function() {
+		 	// Build hud
+		 	maingame.hud.setWidget("label",{widget:"label",font:"small",value:"SCORE",dx:10,dy:10,clear:true});
+		 	maingame.hud.setWidget("score",{widget:"label",font:"small",value:0,dx:58,dy:10,postpad:10,padwith:" ",clear:true});
+		 	maingame.hud.setWidget("label",{widget:"label",font:"big",value:"COMBO X",dx:10,dy:20,clear:true});
+		 	maingame.hud.setWidget("combo",{widget:"label",font:"big",value:0,dx:122,dy:20,postpad:4,padwith:" ",clear:true});
+		 	maingame.hud.setWidget("energy",{widget:"gauge",tileset:"energy",value:0,maxvalue:100,minvalue:0,value:60,dx:10,dy:40});
+			maingame.hud.setWidget("stars",{widget:"symbols",tiles:[1,0],minvalue:0,maxvalue:10,value:0,maxshown:5,tileset:"stars",emptytile:2,dx:10,dy:60,gapx:12,gapy:0});
+
+		 	// The song title screen.
+		 	gbox.addObject({
+				group:"overlay",
+				
+		 		stilltime:100,
+		 		initialize:function() {
+					toys.resetToy(this,"rising1"); 
+					toys.resetToy(this,"rising2"); 
+					toys.resetToy(this,"rising3"); 
+					toys.resetToy(this,"rising4"); 
+				},
+		 		blit:function() {
+		 			var a=toys.logos.linear(this,"rising1",{tileset:"songbar",tile:0,sx:-gbox.getTiles("songbar").tilew,sy:gbox.getScreenH()-47,x:0,y:gbox.getScreenH()-47,alpha:0.8,speed:15});
+		 			a=(toys.logos.linear(this,"rising2",{font:"small",text:song[gbox.getObject("field","player").track].artist,sx:gbox.getScreenW(),sy:gbox.getScreenH()-44,x:10,y:gbox.getScreenH()-44,speed:10})&&a);
+		 			a=(toys.logos.linear(this,"rising3",{font:"big",text:song[gbox.getObject("field","player").track].title,sx:10,sy:-16,x:10,y:gbox.getScreenH()-35,speed:10,audioreach:"coin"})&&a)
+		 			a=(toys.logos.linear(this,"rising4",{font:"small2",text:song[gbox.getObject("field","player").track].contact,sx:10,sy:gbox.getScreenH(),x:10,y:gbox.getScreenH()-16,speed:1})&&a)
+		 			
+		 			if (a) {
+		 				this.stilltime--;
+		 				if (this.stilltime==0) gbox.trashObject(this);
+		 			}
+		 		}
+		 	});
+		 	
+		 	// The fretboard. A basic GH clone is all this.
+			gbox.addObject({
+				id:"player",
+				group:"field",
+	
+				x:gbox.getScreenHW(), // Center of the cone 
+				basey:gbox.getScreenH(), // Y position of the lower part of the cone
+				
+				depthtime:1.5, // Depth of the cone in time
+				depthpixel:130, // Depth of the cone in pixel
+				conepixel:100, // With of the pixel cone
+				largerconepixel:135, // Larger cone, for time lines
+	
+				linetime:0.2, // The line is <secs> before the bottom
+				frettime:0.1, // Delay tollerance for hitting the notes
+				track:maingame._selectedsong, // Playing track...
+				
+				block:0, // current block
+				shaketime:0, // Time to shake the table
+				
+				fretkey:["a","b","c","left","right"],
+				hitkey:["up","down"],
+				
+				errors:0, // Error counter
+				combo:0, // Combo counter
+				introy:0, // For sliding fretboard
+				ready:80, // Prestart
+				killed:false, // Is gameover?
+				notes:0, // Notes hits correctly
+				
+				drawpattern:function(yp,row,frames,discs,fire) {
+					var w;
+					var h;
+					var ts;
+					var sx;
+					var x;
+					
+					w=gbox.getTiles(frames).tilew-((yp*gbox.getTiles(frames).tilew)/this.depthpixel);
+					h=gbox.getTiles(frames).tileh-((yp*gbox.getTiles(frames).tileh)/this.depthpixel);
+					for (var d=0;d<5;d++) 
+						if (row[d]) {
+							ts=(row[d]==2?"up":"")+frames;
+							sx=this.conepixel-((yp*this.conepixel)/this.depthpixel);
+							x=d*sx/2;
+							if (fire&&fire[d])
+								toys.generate.sparks.simple(this,"sparks",null,{x:this.x-(w/2)-sx+x,y:this.basey-yp-gbox.getTiles("discfire").tileh,animspeed:1,accy:-5,tileset:"discfire"});
+							discs.push({img:ts,data:{x:d*gbox.getTiles(ts).tilew,y:gbox.getTiles(ts).gapy,h:gbox.getTiles(ts).tileh,w:gbox.getTiles(ts).tilew,dw:w,dh:h,dx:this.x-(w/2)-sx+x,dy:this.basey-yp-h+this.introy,alpha:1}});
+						}
+					if (row[5])
+						discs.push({rect:{x:this.x-this.largerconepixel+((yp*this.largerconepixel)/this.depthpixel),y:this.basey-yp,w:(this.largerconepixel-((yp*this.largerconepixel)/this.depthpixel))*2,h:1,color:"rgb(100,100,100)"}});
+				},
+				
+				initialize:function() {
+					
+					for (var i=0;i<song[this.track].track.length;i++) // Cleanup
+						song[this.track].track[i].done=0; // 0: doable, 1: failed, 2:done
+					this.introy=this.depthpixel;
+					this.pxline=this.depthpixel-(((this.depthtime-this.linetime)*this.depthpixel)/this.depthtime);
+					// Load the wallpaper image
+					gbox.addImage("ingame",song[this.track].wallpaper);
+					// Load audio from track's data.
+					if (song[this.track].audio) gbox.addAudio("song-audio",song[this.track].audio,{channel:"audio",background:true});
+					if (song[this.track].guitar) gbox.addAudio("song-guitar",song[this.track].guitar,{channel:"guitar",background:true});
+					if (song[this.track].mix) gbox.addAudio("song-mix",song[this.track].mix,{channel:"bgmusic"});
+				},
+				
+				blit:function() {
+					gbox.blitAll(gbox.getBufferContext(),gbox.getImage("ingame"),{dx:0,dy:this.introy*2});
+					if (this.introy>0) this.introy=Math.floor(this.introy/1.1); else // Sliding fretboard on start
+					if (this.ready) this.ready--;
+
+					var fretb=[1,1,1,1,1];
+					for (var i=0;i<this.fretkey.length;i++) 
+						if (gbox.keyIsPressed(this.fretkey[i])) fretb[i]=2;
+					var hit=false;
+					for (var i=0;i<this.hitkey.length;i++)
+						if (gbox.keyIsHit(this.hitkey[i])) { hit=true; break; }
+					if (this.shaketime) this.shaketime--;
+					gbox.blitTile(gbox.getBufferContext(),{tileset:"table",tile:0,dx:this.x-gbox.getTiles("table").tilehw-(this.shaketime%2),dy:this.basey-gbox.getTiles("table").tileh+this.introy,alpha:1});
+					
+					var discs=[];
+					var songtime;
+
+					if (!this.ready&&!this.killed) {
+						if (gbox.getAudioIsSingleChannel())
+							songtime=gbox.getAudioPosition("song-mix");
+						else if (song[this.track].guitar)
+							songtime=((gbox.getAudioPosition("song-audio")+gbox.getAudioPosition("song-guitar"))/2);
+						else
+							songtime=gbox.getAudioPosition("song-audio");
+						
+						var lowtime=songtime-this.linetime;
+		
+		
+						while (song[this.track].track[this.block].time<lowtime) this.block++;
+		
+						var b=this.block;
+						var s=song[this.track].track[b].time;
+						var first=true;
+						var yp;
+						var error=0; // 0: no error, 1: error, 2: note ok
+						var fire;
+						
+						while (s<lowtime+this.depthtime) {
+							if (song[this.track].track[b].done!=2) {
+								if (first&&!song[this.track].track[b].nofret) {
+									if (hit) { // If fretting...
+										if (song[this.track].track[b].done==0) { // ...and the note is playable
+											if (Math.abs(s-songtime)<=this.frettime) { //...and the time is right
+												var error=2;
+												for (var i=0;i<fretb.length;i++)
+													if (((fretb[i]==2)&&(!song[this.track].track[b].d[i]))||((fretb[i]!=2)&&(song[this.track].track[b].d[i]))) {
+														error=1;
+														break;
+													}
+												if (error==1)
+													song[this.track].track[b].done=1; // Note failed (wrong keys)
+											} else
+												error=1; // Hitting a note too much in the future!
+		
+										} else
+											error=1; // Wrong timing. Hitting an invalidated note
+									} else if (((songtime-s)>this.frettime)&&(song[this.track].track[b].done==0)) { // If not fretting and the note goes away...
+										song[this.track].track[b].done=1;
+										error=1;
+									}
+									if (error==2) {
+										this.notes++;
+										maingame.hud.addValue("combo","value",1);
+										maingame.hud.addValue("score","value",maingame.hud.getValue("combo","value")*10);
+										maingame.hud.addValue("energy","value",Math.ceil(maingame.hud.getValue("combo","value")/2));
+										maingame.hud.addValue("energy","value",Math.ceil(maingame.hud.getValue("combo","value")/2));
+										maingame.hud.setValue("stars","value",Math.floor(10*this.notes/song[this.track].notes));
+										
+										
+										fire=song[this.track].track[b].d;
+										song[this.track].track[b].done=2;
+										if (!gbox.getAudioIsSingleChannel()&&song[this.track].guitar&&gbox.getAudioMute("song-guitar"))
+											gbox.setAudioUnmute("song-guitar");
+									}
+									first=false;
+								}
+								if (song[this.track].track[b].done!=2) {
+									yp=Math.floor((((s-lowtime)*this.depthpixel)/this.depthtime));
+									this.drawpattern(yp,song[this.track].track[b].d,"discs",discs);
+								}
+							}
+							if (song[this.track].track[b].ended) {
+								song[this.track].track[b].done=2;
+								maingame.gameIsCompleted();
+							}
+							b++;
+							if (b>=song[this.track].track.length)
+								break;
+							else
+								s=song[this.track].track[b].time;
+						}
+						if (hit&&first) // Hitting when nothing is on the screen!
+							error=1;
+						if (error==1) {
+							if (!gbox.getAudioIsSingleChannel()) {
+								if (song[this.track].guitar)  gbox.setAudioMute("song-guitar");
+								gbox.hitAudio("explosion");
+							}
+							maingame.hud.setValue("combo","value",0);
+							maingame.hud.addValue("energy","value",-5);
+							if (maingame.hud.getValue("energy","value")==0) {
+								this.killed=true;
+								maingame.playerDied({wait:1});
+							}
+							this.shaketime=10;
+							this.errors++;
+						}
+					}
+					this.drawpattern(this.pxline,fretb,"rings",discs,((this.introy==0)&&this.ready?[this.ready==80,this.ready==75,this.ready==70,this.ready==65,this.ready==60]:fire));
+					if (!gbox.getAudioIsSingleChannel()&&(this.introy==0)&&(this.ready>=60)&&(this.ready%5==0)) gbox.hitAudio("explosion");
+					for (var x=discs.length-1;x>=0;x--)
+						if (discs[x].rect)
+							gbox.blitRect(gbox.getBufferContext(),discs[x].rect);
+						else
+							gbox.blit(gbox.getBufferContext(),gbox.getImage(gbox.getTiles(discs[x].img).image),discs[x].data);
+					if ((this.introy==0)&&(this.ready)) {
+						if ((this.ready==80)&&!gbox.getAudioIsSingleChannel()) {
+							if (song[this.track].guitar) gbox.hitAudio("song-guitar",{mute:true});
+							gbox.hitAudio("song-audio",{mute:true});
+						}
+						if (this.ready==1) {
+							if (gbox.getAudioIsSingleChannel())
+								gbox.hitAudio("song-mix");
+							else {
+								if (song[this.track].guitar) {
+									gbox.setAudioPosition("song-guitar",0);
+									gbox.setAudioUnmute("song-guitar");
+								}
+								gbox.setAudioPosition("song-audio",0);
+								gbox.setAudioUnmute("song-audio");
+							}
+						}
+					}
+				}
+			});
+			// Once here, buy a plasic guitar!
+		}
+		
+		gbox.go();
+	
+	};
+	
+	// BOOTSTRAP
+	window.addEventListener('load', function () {
+
+		// Put additional licenses here!
+		help.akihabaraInit({title:"Akiba Hero",padmode:"fretboard",splash:{footnotes:["Music usage permitted by their owner.","Credits on song select screen and ending."]}});
+		gbox.setCallback(go);
+		
+		audioserver="resources/audio/"
+		
+		gbox.addBundle({file:"resources/akibahero/bundle.js"}); // Audio, sprites, fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code, like in Capman.
+		// Complex bundles here. Interesting stuff. Have a look to this bundle.js
+		
+		gbox.loadAll();
+	}, false);
+
+	</script>
+</html>

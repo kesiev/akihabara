@@ -20,156 +20,15 @@
 		  // Game-specific
 		  
 		  var maingame;
-		  var dialogues;
+		  var dialogues={}; // Loaded by external resources. Must be global.
+		  var tilemaps={}; // Loaded by external resources. Must be global.
+		  var audioserver;
 		  
 		  function go() {
 			gbox.setGroups(["background","player","foes","sparks","gamecycle"]);
+			gbox.setAudioChannels({bgmusic:{volume:0.8},sfx:{volume:1.0}});
 		   	
 		   	maingame=gamecycle.createMaingame("gamecycle","gamecycle");
-	
-		  dialogues={
-		  	intro:{
-		  		font:"big",
-		  		skipkey:"a",
-		  		esckey:"b",
-		  		who:{
-		  			narrator:{
-		  				x:10,
-		  				y:150
-		  			}
-		  		},
-		  		scenes:[
-		  			{
-		  				slide:{
-		  					image:"intro1",
-		  					x:0,
-		  					y:40
-		  				},
-		  				speed:1,
-		  				who:"narrator",
-		  				talk:[
-		  					"Long long time ago there was a sad",
-		  					"kid named Jin. He lives alone on a",
-		  					"lonely and far beach, thinking for all",
-		  					"the day."
-		  				]
-		  			},
-		  			{
-		  				slide:{
-		  					image:"intro2",
-		  					x:0,
-		  					y:40
-		  				},
-		  				speed:1,
-		  				who:"narrator",
-		  				talk:[
-		  					"A bad day, the violet squids that used",
-		  					"to live underwater, jumped out asking",
-		  					"to play with Jin. \"Let's play",
-		  					"together, Jin\" they said!"
-		  				]
-		  			},
-		  			{
-		  				slide:{
-		  					image:"intro3",
-		  					x:0,
-		  					y:40
-		  				},
-		  				speed:1,
-		  				who:"narrator",
-		  				talk:[
-		  					"\"I don't want to play! I want to be",
-		  					"alone!\" he screamed out.",
-		  					"\"Get out of here!\" and he chased",
-		  					"them for all the beach..."
-		  				]
-		  			},
-		  		]
-		  	},
-		  	ending:{
-		  		font:"big",
-		  		skipkey:"a",
-		  		esckey:"b",
-		  		who:{
-		  			narrator:{
-		  				x:10,
-		  				y:150
-		  			}
-		  		},
-		  		scenes:[
-		  			{
-		  				slide:{
-		  					image:"ending1",
-		  					x:0,
-		  					y:40
-		  				},
-		  				speed:1,
-		  				who:"narrator",
-		  				talk:[
-		  					"\"Well done!\" Jin said. \"Now I can",
-		  					"go back to my thoughts!\" And he left",
-		  					"behind a big pile of sad violet",
-		  					"squids."
-		  				]
-		  			},
-		  			{
-		  				slide:{
-		  					image:"intro1",
-		  					x:0,
-		  					y:40
-		  				},
-		  				speed:1,
-		  				who:"narrator",
-		  				talk:[
-		  					"\"My life is very very sad\" said.",
-		  					"\"And I feel really lonely here\"."
-		  				]
-		  			},
-		  			{
-		  				slide:{
-		  					image:"intro1",
-		  					x:0,
-		  					y:40
-		  				},
-		  				speed:2,
-		  				who:"narrator",
-		  				talk:[
-		  					"\"I will ever have a friend?\""
-		  				]
-		  			},
-		  			{
-		  				font:"small",
-		  				speed:2,
-		  				spacing:2,
-		  				push:gbox.getScreenHH(),
-		  				scroller:[
-		  					"LEAVE ME ALONE",
-		  					"A SHORT GAME BY KESIEV",
-		  					"","","",
-		  					"JS-CODE BY",
-		  					"KESIEV",
-		  					"",
-		  					"GRAPHICS BY",
-		  					"KESIEV",
-		  					"",
-		  					"STORY BY",
-		  					"KESIEV",
-		  					"","","",
-		  					"CREATED USING THE AKIHABARA ENGINE",
-		  					"BY KESIEV (c)2010",
-		  					"WWW.KESIEV.COM",
-							"","","","","","","","","","","",
-							"THANK YOU FOR PLAYING!",
-							"NEVER FORGET WHO LOVES YOU.",
-							"",
-							"THE END"
-		  				
-		  				]
-		  			}
-		  		]
-		  	}	  	
-		  };
-
 		  
 		  // Game intro
 		  
@@ -212,15 +71,17 @@
 			tilemaps[tilemaps.current].addObjects();
 			toys.resetToy(maingame,"gametimer"); // Start the timer
 			toys.platformer.spawn(gbox.getObject("player","player"),{x:tilemaps[tilemaps.current].playerSpawnX,y:tilemaps[tilemaps.current].playerSpawnY,accx:0,accy:0,side:true});
+			gbox.hitAudio("ingame");
 		  }
 		  
 		  // Title intro
 		  maingame.gameTitleIntroAnimation=function(reset) {
 			  	if (reset) {
+			  		gbox.playAudio("default-music");
 			  		toys.resetToy(this,"bouncer");
 		  		} else {
 		  			gbox.blitFade(gbox.getBufferContext(),{alpha:1});
-		  			toys.logos.bounce(this,"bouncer",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:-gbox.getImage("logo").height,accy:0,floory:gbox.getScreenHH()});
+		  			toys.logos.bounce(this,"bouncer",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:-gbox.getImage("logo").height,accy:0,audiobounce:"hit",floory:gbox.getScreenHH()});
 		  		}
 		  	},
 		  	
@@ -235,6 +96,7 @@
 	  				if (this.hud.getValue("time","value")) { // If there is time left...
 	  				
 	  					if (toys.timer.every(this,"framecounter",2)) { // Every 2 frames...
+	  						gbox.hitAudio("beep");
 	  						this.hud.addValue("time","value",-1); // for every second...
 	  						this.hud.addValue("score","value",10); // Give 10 points to player 1
 	  					}
@@ -248,7 +110,7 @@
 		  // Games conditions
 		  maingame.gameEvents=function() {
 		   // Tick the timer
-		  	if (toys.timer.real(this,"gametimer",{countdown:30}))
+		  	if (toys.timer.real(this,"gametimer",{countdown:30,critical:5,audiocritical:"beep"}))
 		  		gbox.getObject("player","player").kill(); // time is up
 		  	else
 		  		maingame.hud.setValue("time","value",toys.getToyValue(this,"gametimer","time")); // Updates timer
@@ -305,6 +167,7 @@
 									var pl=gbox.getObject("player","player");
 									if (pl.collisionEnabled())
 										if (help.isSquished(this,pl)) {
+											gbox.hitAudio("hit");
 											pl.multiplier++;
 											var mp=help.multiplier(pl.multiplier);
 											maingame.hud.addValue("score","value",this.score*mp);
@@ -338,146 +201,6 @@
 		 	maingame.hud.setWidget("time",{widget:"label",font:"big",value:30,dx:0,dy:20,dw:gbox.getScreenW(),halign:gbox.ALIGN_CENTER,prepad:2,padwith:"0",clear:true});
 		 	maingame.hud.setWidget("stage",{widget:"label",font:"small",value:"",postpad:7,padwith:" ",dx:0,dy:gbox.getScreenH()-8,clear:true});
 		
-		  	tilemaps={
-		
-		
-		stage1:help.finalizeTilemap({
-			tileset:"tiles",
-			map:[
-			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,0000,0000,null,null,null,null,null,null,0000],
-			  	[0000,null,null,0000,0000,0000,null,null,null,null,0000,0000,0000,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,0000,null,null,null,null,null,null,null,null,null,null,null,null,0000,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000]
-			  ],
-			 playerSpawnX:40,
-			 playerSpawnY:180,
-			 addObjects:function() {
-			 	maingame.addEnemy("goo",{x:20*4,y:20*2,side:true});
-			 	maingame.addEnemy("goo",{x:20*11,y:20*2,side:true});
-			 	maingame.addEnemy("goo",{x:20*7,y:20*2,side:true});
-			 },
-			tileIsSolidCeil:function(obj,t){ return (obj.group=="foes"?false:t==0) }, // false for Bubble bobble style platforming
-			tileIsSolidFloor:function(obj,t){ return t==0 },
-			nextLevel:"stage2"
-		}),
-		
-		stage2:help.finalizeTilemap({
-			tileset:"tiles",
-			map:[
-			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,0000,0000,0000,0000,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,0000,null,null,null,null,0000,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,0000,0000,0000,null,null,null,0000,0000,0000,0000,null,null,null,0000,0000,0000,null,null,0000],
-			  	[0000,null,null,0000,0000,0000,null,null,null,null,null,null,null,null,null,null,0000,0000,0000,null,null,0000],
-			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000]
-			  ],
-			 playerSpawnX:40,
-			 playerSpawnY:40,
-			 addObjects:function() {
-			 	maingame.addEnemy("goo",{x:20*4,y:20*7,side:true});
-			 	maingame.addEnemy("goo",{x:20*17,y:20*7,side:true});
-			 	maingame.addEnemy("goo",{x:20*10,y:20*2,side:true});
-			 	maingame.addEnemy("goo",{x:20*10,y:20*6,side:true});
-			 	maingame.addEnemy("goo",{x:20*10,y:20*10,side:true});
-			 },
-			tileIsSolidCeil:function(obj,t){ return false }, // false for Bubble bobble style platforming
-			tileIsSolidFloor:function(obj,t){ return t==0 },
-			nextLevel:"stage3"
-		}),
-		
-		stage3:help.finalizeTilemap({
-			tileset:"tiles",
-			map:[
-			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,0000,0000,0000,null,null,null,null,0000,0000,0000,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,0000,0000,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,0000,0000,0000,null,null,null,null,0000,0000,0000,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,0000,0000,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,0000,0000,0000,null,null,null,null,0000,0000,0000,null,null,0000],
-			  	[0000,null,null,null,0000,null,null,null,null,null,null,0000,null,null,null,0000],
-			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000]
-			  ],
-			 playerSpawnX:30,
-			 playerSpawnY:320,
-			 addObjects:function() {
-			 	maingame.addEnemy("goo",{x:20*4,y:20*16,side:true});
-			 	maingame.addEnemy("goo",{x:20*4,y:20*11,side:true});
-			 	maingame.addEnemy("goo",{x:20*4,y:20*5,side:true});
-			 	maingame.addEnemy("goo",{x:20*11,y:20*16,side:true});
-			 	maingame.addEnemy("goo",{x:20*11,y:20*11,side:true});
-			 	maingame.addEnemy("goo",{x:20*11,y:20*5,side:true});
-			 },
-			tileIsSolidCeil:function(obj,t){ return false }, // false for Bubble bobble style platforming
-			tileIsSolidFloor:function(obj,t){ return t==0 },
-			nextLevel:"stage4"			
-		}),
-		
-		stage4:help.finalizeTilemap({
-			tileset:"tiles",
-			map:[
-			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,0000,0000,0000,null,null,0000,0000,null,null,null,null,0000,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000,0000,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000,null,null,null,0000],
-			  	[0000,null,null,null,0000,0000,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,null,null,null,null,null,0000,null,null,null,null,null,null,null,0000],
-			  	[0000,null,0000,0000,null,null,null,null,null,null,0000,null,null,null,0000,0000,null,null,0000,0000],
-			  	[0000,null,null,null,null,null,null,null,null,0000,null,null,null,null,0000,null,null,null,null,0000],
-			  	[0000,null,null,null,null,null,0000,0000,0000,null,null,null,null,null,0000,null,null,null,null,0000],
-			  	[0000,null,null,null,null,0000,null,null,null,null,null,null,null,0000,0000,null,null,null,null,0000],
-			  	[0000,null,null,null,0000,null,null,null,null,null,null,null,null,null,0000,null,null,null,null,0000],
-			  	[0000,null,null,0000,null,null,null,null,null,null,null,null,null,null,0000,null,null,null,null,0000],
-			  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000]
-			  ],
-			 playerSpawnX:30,
-			 playerSpawnY:340,
-			 addObjects:function() {
-			 maingame.addEnemy("goo",{x:20*17,y:20*2,side:true});
-			 maingame.addEnemy("goo",{x:20*8,y:20*17,side:true});
-			 maingame.addEnemy("goo",{x:20*17,y:20*17,side:true});
-			 },
-			tileIsSolidCeil:function(obj,t){ return false }, // false for Bubble bobble style platforming
-			tileIsSolidFloor:function(obj,t){ return t==0 }
-		})
-	};
-
-		  
-
-
 		    gbox.addObject({
 		  	id:"player",
 		  	group:"player",
@@ -502,6 +225,7 @@
 			
 			kill:function(by){
 		  		this.killed=true;
+		  		gbox.hitAudio("die");
 		  		maingame.hud.addValue("lives","value",-1); // Decreases lives
 		  		toys.generate.sparks.bounceDie(this,"sparks",null,{jump:6,flipv:false});
 		  		maingame.playerDied({wait:50});
@@ -516,7 +240,7 @@
 					toys.platformer.horizontalKeys(this,{left:"left",right:"right"}); // Moves horizontally
 					toys.platformer.verticalTileCollision(this,tilemaps[tilemaps.current],"map"); // vertical tile collision (i.e. floor)
 					toys.platformer.horizontalTileCollision(this,tilemaps[tilemaps.current],"map"); // horizontal tile collision (i.e. walls)
-					toys.platformer.jumpKeys(this,{jump:"a"}); // handle jumping
+					toys.platformer.jumpKeys(this,{jump:"a",audiojump:"jump"}); // handle jumping
 					toys.platformer.handleAccellerations(this); // gravity/attrito
 					toys.platformer.setSide(this); // set horizontal side
 					toys.platformer.setFrame(this); // set the right animation frame
@@ -580,27 +304,12 @@
 	return;
 	*/	
 
-		help.akihabaraInit("Leave Me Alone");
+		// Put additional licenses here!
+		help.akihabaraInit({title:"Leave Me Alone",splash:{footnotes:["Music by: Greenleo, Smiletron.","Full credits on ending title."]}});
 		gbox.setCallback(go);
 		
-		
-		gbox.addImage("sprites","resources/leavemealone/cels.png");
-		gbox.addImage("bg","resources/leavemealone/bg1.png");
-		gbox.addImage("font","resources/leavemealone/font.png");
-		gbox.addImage("fontbig","resources/leavemealone/fontbig.png");
-		gbox.addImage("intro1","resources/leavemealone/intro1.png");
-		gbox.addImage("intro2","resources/leavemealone/intro2.png");
-		gbox.addImage("intro3","resources/leavemealone/intro3.png");
-		gbox.addImage("ending1","resources/leavemealone/ending1.png");
-		gbox.addImage("logo","resources/leavemealone/logo.png");
-		
-		gbox.addFont({id:"small",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:8});
-		gbox.addFont({id:"big",image:"fontbig",firstletter:" ",tileh:16,tilew:8,tilerow:255,gapx:0,gapy:0});
-		gbox.addTiles({id:"player",image:"sprites",tileh:40,tilew:20,tilerow:9,gapx:0,gapy:0});
-		gbox.addTiles({id:"tiles",image:"sprites",tileh:20,tilew:20,tilerow:9,gapx:0,gapy:40});
-		gbox.addTiles({id:"enemy-goo",image:"sprites",tileh:20,tilew:20,tilerow:9,gapx:0,gapy:60});
-		gbox.addTiles({id:"enemy-sad",image:"sprites",tileh:40,tilew:20,tilerow:9,gapx:0,gapy:80});
-		gbox.addTiles({id:"tiledfont",image:"font",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:8}); // A nice trick: we map a tileset over a font, so we can blit chars like tiles!
+		audioserver="resources/audio/"
+		gbox.addBundle({file:"resources/leavemealone/bundle.js"}); // Audio, sprites, fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code, like in Capman.
 		
 		gbox.loadAll();
 	}, false);

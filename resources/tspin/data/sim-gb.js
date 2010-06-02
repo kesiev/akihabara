@@ -60,6 +60,10 @@ block.library["sim-gb"]=function(th) {
 	  // TODO
 	  // The "heart levels" (activated by holding Down+Start at the title screen) are as fast as the level plus 10, but unlike on the NES version, they don't improve the score.
 	  
+	  // AUDIO CHANGES
+	  th.config.audio.sidemove="move1";
+	  th.config.audio.linebefore="linedone1";
+
 	  // GRAPHIC CHANGES
 	  block.loadlibrary(th,"gfx-none");
 	  th.config.gfx.blits[th.config.gfx.blitsfieldindex]={type:"blit",dx:-8,dy:0,tileset:"fields",tile:20};

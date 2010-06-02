@@ -7,31 +7,6 @@
 	<script type="text/javascript" src="akihabara/help.js"></script>
 	<script type="text/javascript" src="akihabara/tool.js"></script>
 	<script type="text/javascript" src="akihabara/gamecycle.js"></script>
-
-		<script type="text/javascript" src="resources/tspin/engine/block.js"></script>
-		<script type="text/javascript" src="resources/tspin/engine/block-resources.js"></script>
-	
-		<!--script type="text/javascript" src="resources/tspin/data/extra/dbg-setups.js"></script-->
-	
-		<script type="text/javascript" src="resources/tspin/data/rot-classic.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/rot-srs.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/rot-ars.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/rot-nintendo.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/rot-tengen.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/rot-sega.js"></script>
-
-		<script type="text/javascript" src="resources/tspin/data/sim-sega.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/sim-tengen.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/sim-gb.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/sim-tengen.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/sim-nes.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/sim-tgm.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/sim-tgm2.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/sim-tgm3.js"></script>
-		<script type="text/javascript" src="resources/tspin/data/sim-tds.js"></script>
-
-
-	
 	<style>BODY { -webkit-user-select:none; margin:0px}</style>
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 </head>
@@ -40,8 +15,6 @@
 <script>
 
 
-// http://img.photobucket.com/albums/v488/siggyx4scythe/Blog%20Pictures/Heboris_Record.jpg
-// http://xbox360media.ign.com/xbox360/image/article/674/674999/tetris-the-grand-master-ace-20051215045308921_640w.jpg
 		  // Game-specific
 		
 		  var maingame;
@@ -50,6 +23,8 @@
 		  function go() {
 		  
 		  	gbox.setGroups(["background","field","sparks","gamecycle"]);
+		  	gbox.setAudioChannels({bgmusic:{volume:0.8},sfx:{volume:1.0}});
+
 		  	maingame=gamecycle.createMaingame("gamecycle","gamecycle");
 		  	maingame.selectedoptions=[]; // Cache the previous selected options
 		  	
@@ -81,7 +56,7 @@
 		  	maingame.gameTitleIntroAnimation=function(reset) {
 			  	if (!reset) {
 		  			gbox.blitAll(gbox.getBufferContext(),gbox.getImage("wp"),{dx:0,dy:0});
-		  			toys.logos.zoomout(this,"zoomouter",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,speed:0.08,zoom:3});
+		  			toys.logos.zoomout(this,"zoomouter",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,speed:0.08,zoom:3,audioreach:"line1"});
 		  		} else {
 		  			toys.resetToy(this,"zoomouter");
 		  		}
@@ -97,7 +72,7 @@
 		  		} else {
 		  			gbox.blitFade(gbox.getBufferContext(),{alpha:0.5});
 		  			if (this.gamemode==null) {
-						if (toys.ui.menu(this,"mode",{font:"small-gray",keys:{up:"up",down:"down",ok:"a",cancel:"b"},selector:">",selected:maingame.selectedoptions[0],items:mainmenu.labels,x:10,y:10})) {
+						if (toys.ui.menu(this,"mode",{audiooption:"default-menu-option",audioconfirm:"linedone1",font:"small-gray",keys:{up:"up",down:"down",ok:"a",cancel:"b"},selector:">",selected:maingame.selectedoptions[0],items:mainmenu.labels,x:10,y:10})) {
 							if (toys.getToyValue(this,"difficulty","ok") == -1) return -1;
 							else {
 								if (maingame.selectedoptions[0]!=toys.getToyValue(this,"mode","selected"))
@@ -118,7 +93,7 @@
 								gbox.blitText(gbox.getBufferContext(),{font:"small-gray", dx:20, dy:25+y, text:saveme(block.gamemodes[this.gamemode].notes[l])});
 								y+=gbox.getFont("small-gray").tileh;
 							}
-						if (toys.ui.menu(this,"submode",{font:"small-blue",keys:{up:"up",down:"down",ok:"a",cancel:"b"},selected:maingame.selectedoptions[1],selector:">",items:mainmenu.submenu,x:10,y:y+40})) {
+						if (toys.ui.menu(this,"submode",{audiooption:"default-menu-option",audioconfirm:"linedone1",font:"small-blue",keys:{up:"up",down:"down",ok:"a",cancel:"b"},selected:maingame.selectedoptions[1],selector:">",items:mainmenu.submenu,x:10,y:y+40})) {
 							maingame.selectedoptions[1]=toys.getToyValue(this,"submode","selected");
 							if (toys.getToyValue(this,"submode","ok") == -1) {
 								this.gamemode=null;
@@ -179,11 +154,21 @@
 	return;*/
 	
 
-		help.akihabaraInit("T-Spin");
+		help.akihabaraInit({title:"T-Spin"});
 		gbox.setCallback(go);
 
-		gbox.addImage("wp","resources/tspin/wp.png");
+		var audioserver="resources/audio/"
+		gbox.addAudio("default-menu-option",[audioserver+"select.mp3",audioserver+"select.ogg"],{channel:"sfx"});
+		gbox.addAudio("linedone1",[audioserver+"start.mp3",audioserver+"start.ogg"],{channel:"sfx"});
+		gbox.addAudio("rotate1",[audioserver+"select.mp3",audioserver+"select.ogg"],{channel:"sfx"});
+		gbox.addAudio("floor1",[audioserver+"hit.mp3",audioserver+"hit.ogg"],{channel:"sfx"});
+		gbox.addAudio("line1",[audioserver+"explosion.mp3",audioserver+"explosion.ogg"],{channel:"sfx"});
+		gbox.addAudio("hold1",[audioserver+"coin.mp3",audioserver+"coin.ogg"],{channel:"sfx"});
+		gbox.addAudio("gameover1",[audioserver+"bigexplosion.mp3",audioserver+"bigexplosion.ogg"],{channel:"sfx"});
+		gbox.addAudio("move1",[audioserver+"voice_narrator.mp3",audioserver+"voice_narrator.ogg"],{channel:"sfx"});
+		
 		gbox.addImage("logo","resources/tspin/logo.png");
+		gbox.addImage("wp","resources/tspin/wp.png");
 		
 		gbox.addImage("miscblits","resources/tspin/miscblits.png");
 		gbox.addImage("text","resources/tspin/text2.png");
@@ -287,8 +272,35 @@
 		gbox.addTiles({id:"brick-nes",image:"brick-nes",tileh:8,tilew:8,tilerow:8,gapx:0,gapy:0}); // TDS brick set
 		gbox.addTiles({id:"smbrick-nes",image:"smbrick-nes",tileh:4,tilew:4,tilerow:8,gapx:0,gapy:0}); // TDS small brick set
 
-
 		gbox.addTiles({id:"head-tgm",image:"miscblits",tileh:33,tilew:101,tilerow:10,gapx:0,gapy:129}); // TGM header
+		
+		// Loads external Javascript (like putting these on "<script>" tag, but handled by the resource loader.
+
+		// Loads the "block" engine: a feature rich puzzle-game engine in JS
+		gbox.addScript({file:"resources/tspin/engine/block.js"});
+		gbox.addScript({file:"resources/tspin/engine/block-resources.js"});
+
+		// Uncomment the following line for debugging setups
+		//gbox.addScript({file:"resources/tspin/data/extra/dbg-setups.js",onLoad:function(a){console.log("Enabling debug mode.")}});
+		
+		// Basic rotation library
+		gbox.addScript({file:"resources/tspin/data/rot-classic.js"});
+		gbox.addScript({file:"resources/tspin/data/rot-srs.js"});
+		gbox.addScript({file:"resources/tspin/data/rot-ars.js"});
+		gbox.addScript({file:"resources/tspin/data/rot-nintendo.js"});
+		gbox.addScript({file:"resources/tspin/data/rot-tengen.js"});
+		gbox.addScript({file:"resources/tspin/data/rot-sega.js"});
+
+		// Load sims
+		gbox.addScript({file:"resources/tspin/data/sim-sega.js"});
+		gbox.addScript({file:"resources/tspin/data/sim-tengen.js"});
+		gbox.addScript({file:"resources/tspin/data/sim-gb.js"});
+		gbox.addScript({file:"resources/tspin/data/sim-tengen.js"});
+		gbox.addScript({file:"resources/tspin/data/sim-nes.js"});
+		gbox.addScript({file:"resources/tspin/data/sim-tgm.js"});
+		gbox.addScript({file:"resources/tspin/data/sim-tgm2.js"});
+		gbox.addScript({file:"resources/tspin/data/sim-tgm3.js"});		
+		gbox.addScript({file:"resources/tspin/data/sim-tds.js"});
 		
 		gbox.loadAll();
 	}, false);

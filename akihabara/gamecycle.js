@@ -22,7 +22,7 @@ var gamecycle={
 		difficulty:0,
 		
 		// state transition
-		state:100,  
+		state:50,  
 		stateFirstIteration:true, 
 		
 		hud:{},
@@ -38,10 +38,16 @@ var gamecycle={
 		 * meant to be overridden since you have to do garbage collection. 
 		 */
 		newLife:function() { },
+
+		// game disclaimer animation (if needed)
+		gameDisclaimerAnimation:function(reset) {
+			return true;
+		 },
 		
-		// level intro animation
+		// game intro animation
 		gameIntroAnimation:function(reset) {
 			if (reset) {
+				gbox.stopChannel("bgmusic");
 				toys.resetToy(this,"default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
@@ -49,8 +55,10 @@ var gamecycle={
 			}
 		 },
 		 
+		// level intro animation
 		levelIntroAnimation:function(reset) {
 			if (reset) {
+				gbox.stopChannel("bgmusic");
 				toys.resetToy(this,"default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
@@ -61,6 +69,7 @@ var gamecycle={
 		 // Life intro animation
 		 newlifeIntroAnimation:function(reset) {
 			 if (reset) {
+				gbox.stopChannel("bgmusic");
 				toys.resetToy(this,"default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
@@ -71,6 +80,7 @@ var gamecycle={
 		// gameover animation
 		gameoverIntroAnimation:function(reset) {
 			 if (reset) {
+				gbox.stopChannel("bgmusic");
 				toys.resetToy(this,"default-blinker");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
@@ -80,7 +90,9 @@ var gamecycle={
 		
 		// game title animation
 		gameTitleIntroAnimation:function(reset) {
-			if (!reset) {
+			if (reset)
+				gbox.stopChannel("bgmusic");
+			else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
 				gbox.blitText(gbox.getBufferContext(),{font:"small",text:"GAME TITLE",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()-100});
 			}
@@ -132,7 +144,7 @@ var gamecycle={
 				toys.resetToy(this,"difficulty");
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:0.5});
-				if (toys.ui.menu(this,"difficulty",{font:"small",keys:{up:"up",down:"down",ok:"a",cancel:"b"},selector:">",items:["EASY","NORMAL","HARD"],x:10,y:10})) {
+				if (toys.ui.menu(this,"difficulty",{audiooption:"default-menu-option",audioconfirm:"default-menu-confirm",font:"small",keys:{up:"up",down:"down",ok:"a",cancel:"b"},selector:">",items:["EASY","NORMAL","HARD"],x:10,y:10})) {
 					if (toys.getToyValue(this,"difficulty","ok") == -1) return -1;
 					else {
 						this.difficulty=toys.getToyValue(this,"difficulty","selected");
@@ -201,6 +213,17 @@ var gamecycle={
 		blit:function() {
 			switch (this.state) {
 
+				// Disclaimer
+				case 50: {
+					if (this.stateFirstIteration) {
+						this._resetGroups();
+						this.gameDisclaimerAnimation(true);
+						this.stateIsReady();
+					}
+					if (this.gameDisclaimerAnimation(false)) 
+						this.setState(100);
+					break;
+				}
 				// main menu
 				case 100: 
 				case 101:
@@ -213,6 +236,7 @@ var gamecycle={
 					switch (this.state) {
 						case 100: { // Press to start
 							if (this.stateFirstIteration) {
+								gbox.resetChannel("bgmusic");
 								this.pressStartIntroAnimation(true);
 								this.stateIsReady();
 							}
@@ -221,6 +245,7 @@ var gamecycle={
 						}
 						case 101: { // Game menu
 							if (this.stateFirstIteration) {
+								gbox.setChannelVolume("bgmusic",0.5);
 								this.gameMenu(true);
 								this.stateIsReady();
 							}
@@ -236,7 +261,7 @@ var gamecycle={
 								toys.resetToy(this,"fadeout");
 								this.stateIsReady();
 							}
-							if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05}))
+							if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05,audiochannelfade:"bgmusic"}))
 								this.setState(200);
 							break;
 						}
@@ -322,11 +347,13 @@ var gamecycle={
 								break;
 							}
 							case 700: {
+								gbox.resetChannel("bgmusic");
 								gbox.soloGroup(this.group);
 								this.gameoverIntroAnimation(true);
 								break;
 							}
 							case 801: {
+								gbox.resetChannel("bgmusic");
 								gbox.soloGroup(this.group);
 								this.gameEndingIntroAnimation(true);
 								break;
@@ -343,7 +370,7 @@ var gamecycle={
 						case 601: // Fade in with new life
 						case 402: // Fade in after level change
 						case 300: { // Fade in at the beginning of the game
-							if (toys.fullscreen.fadein(this,"fadein",gbox.getBufferContext(),{fadespeed:0.05})) this.setState(301);
+							if (toys.fullscreen.fadein(this,"fadein",gbox.getBufferContext(),{fadespeed:0.05,audiochannelfade:"bgmusic"})) this.setState(301);
 							break;
 						}
 						case 301: { // Ingame stuff
@@ -352,16 +379,16 @@ var gamecycle={
 						}
 						case 400: { // Fade out before changing the level
 							if (this.endlevelIntroAnimation(false))
-								if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05})) this.setState(401);
+								if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05,audiochannelfade:"bgmusic"})) this.setState(401);
 							break;
 						}
 						case 800: { // Fade out before game ending
 							if (this.endlevelIntroAnimation(false))
-								if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05})) this.setState(801);
+								if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05,audiochannelfade:"bgmusic"})) this.setState(801);
 							break;
 						}
 						case 501: { // Fade out after dead
-							if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05})) 
+							if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05,audiochannelfade:"bgmusic"})) 
 								if (this.gameIsOver())
 									this.setState(700); // GAME OVER
 								else

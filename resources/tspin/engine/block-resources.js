@@ -13,6 +13,9 @@ block.staffrolls={
 			"JS-CODE","BY",
 			"KESIEV",
 			"",
+			"SFX","BY",
+			"CFXR",
+			"",
 			"GRAPHICS","BY",
 			"KESIEV",
 			"HEBO",
@@ -41,6 +44,9 @@ block.staffrolls={
 			"","","",
 			"JS-CODE","BY",
 			"KESIEV",
+			"",
+			"SFX","BY",
+			"CFXR",
 			"",
 			"GRAPHICS","BY",
 			"KESIEV",
@@ -248,7 +254,17 @@ block.library["default"]=function(th) { // Default parameters - A plain tetris w
 	th.config.timing.pushkicks=false;
 	th.config.timing.stickstoppable=false;
 	th.config.timing.gravity=0;
-
+	
+	// AUDIO PARAMETERS
+	th.config.audio.rotate="rotate1";
+	th.config.audio.floor="floor1";
+	th.config.audio.sidemove=null;
+	th.config.audio.lock=null;
+	th.config.audio.linebefore=null;
+	th.config.audio.lineafter="line1";
+	th.config.audio.hold="hold1";
+	th.config.audio.gameover="gameover1";
+	
 	// GRAPHIC PARAMETERS
 	th.config.gfx.tileset="brick-tgm";
 	th.config.gfx.drawborder="rgb(255,255,255)";

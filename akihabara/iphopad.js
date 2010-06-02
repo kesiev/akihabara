@@ -69,14 +69,6 @@ var iphopad={
 			]
 		});
 	},
-	getDeviceConfig:function() {
-		if (navigator.userAgent.match(/iPhone/i)||navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/Android/i))
-			return {touch:true,width:320};			
-		else if (navigator.userAgent.match(/iPad/i))
-			return {touch:true,width:768};
-		else
-			return {zoom:2};
-	},
 	initialize:function(data) {
 		var oElement=document.createElement("div");
 		oElement.style.margin="auto";

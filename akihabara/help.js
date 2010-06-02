@@ -51,6 +51,13 @@ var help={
 	decideFrame:function(cnt,anim) {
 		return anim.frames[Math.floor(cnt/anim.speed)%anim.frames.length];
 	},
+	// Numbers going up and down once reached the half
+	// Args: (counter)
+	// Outs: the value
+	upAndDown:function(counter,max) {
+		if ((counter%max)>(max/2)) return max-(counter%max); else return (counter%max);
+	},
+	
 	// Get the tile value in a map, using pixels as coords
 	// Args: (x,y,map,<output if any tile is found>,<index of the map array in the passed map>)
 	// Outs: the tile or ifout
@@ -215,34 +222,117 @@ var help={
 		for (var n in o) ret+=n+":["+o[n]+"] ";
 		return ret;
 	},
+	
+	// Check if a variable is defined or not
+	isDefined:function(v) {
+		return ((typeof(v) !== 'undefined') || (v===null));
+	},
+	
+	// Get device configuration
+	getDeviceConfig:function() {
+
+		var cap;
+		if (navigator.userAgent.match(/iPhone/i)||navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/Android/i))
+			cap={touch:true,width:320};			
+		else if (navigator.userAgent.match(/iPad/i))
+			cap={touch:true,width:768,forcedidle:10}; // Forced idle time is needed for correct framerate calculation.
+		else
+			cap={zoom:2};
+		
+		cap.canaudio=!!(document.createElement('audio').canPlayType);
+
+		if (cap.canaudio) {
+			if (navigator.userAgent.match(/iPad/i)||navigator.userAgent.match(/iPhone/i)||navigator.userAgent.match(/iPod/i)) {
+				cap.audiocompatmode=2; // Single audio per time, so compatibility mode is needed. Plays only the "bgmusic" channel.
+				cap.audioteam=1; // Only a member is required in the audioteam.
+				cap.audioisexperimental=true; // Audio is experimental, since limited.
+			} else if (navigator.userAgent.match(/Chrome/i)) {
+				cap.audioteam=3; // Quite low performance on playback responsiveness.
+			} else if (navigator.userAgent.match(/Firefox/i)) {
+				cap.audioteam=1; // Testing smaller audioteam
+				cap.audiopositiondelay=0.3; // Ogg playback is slower 0.3 between MP3 playback. Don't know why :)
+				cap.audiocreatemode=1; // Firefox is stalling while downloading lot of things
+			} else if (navigator.userAgent.match(/Minefield/i)) {
+				cap.audioteam=1; // Testing smaller audioteam
+				cap.audiocreatemode=1; // Firefox is stalling while downloading lot of things
+				// Minefield has fixed the 0.3 delay!
+			} else if (navigator.userAgent.match(/Safari/i)) {
+				cap.audioteam=1; // Testing smaller audioteam						
+				cap.audioisexperimental=true; // Only for nightly builds for now
+			} else if (navigator.userAgent.match(/Opera/i)) {
+				cap.audioteam=1; // Testing smaller audioteam			
+				cap.audiocreatemode=1; // Do not like audio object cloning very much
+			} else
+				cap.audioisexperimental=true; // Audio is just experimental on all other devices.
+				
+		}
+
+		return cap;
+	},
 
 	// The default Akihabara initialization. Low-res, low-framerate, zoomed view
-	akihabaraInit:function(title) {
-		var device=iphopad.getDeviceConfig();
-	
-		document.title=(title?title:"Akihabara");
+	akihabaraInit:function(data) {
+		if ((typeof data).toLowerCase() == "string") data={title:data};
+		var device=this.getDeviceConfig();
+		var footnotes=["MADE WITH AKIHABARA (C)2010 - GPL2/MIT","Project: www.kesiev.com/akihabara","Sources: github.com/kesiev/akihabara"];
+		document.title=(data.title?data.title:"Akihabara");
+		if (data.splash) {
+			if (data.splash.footnotes) 
+				for (var i=0;i<footnotes.length;i++) data.splash.footnotes.push(footnotes[i]);
+			gbox.setSplashSettings(data.splash);
+		}
+		if (!data.splash||(data.splash.minilogo==null)) gbox.setSplashSettings({minilogo:"logo"});
+		if (!data.splash||(data.splash.background==null)) gbox.setSplashSettings({background:"akihabara/splash.png"});
+		if (!data.splash||(data.splash.minimalTime==null)) gbox.setSplashSettings({minimalTime:3000});
+		if (!data.splash||(data.splash.footnotes==null)) gbox.setSplashSettings({footnotes:footnotes});
 		document.body.style.backgroundColor="#000000";
 		gbox.setScreenBorder(false);
 		if (help.geturlparameter("statusbar")) gbox.setStatusBar(1);
 		if (help.geturlparameter("db")) gbox.setDoubleBuffering(true);
 		if (help.geturlparameter("noautoskip")) gbox.setAutoskip(null);
 		if (help.geturlparameter("zoom")) gbox.setZoom(help.geturlparameter("zoom")); else
-			if (device.zoom) gbox.setZoom(device.zoom); else
-			if (device.width) gbox.setZoom(device.width/320);
+			if (help.isDefined(device.zoom)) gbox.setZoom(device.zoom); else
+			if (help.isDefined(device.width)) gbox.setZoom(device.width/320);
 		if (help.geturlparameter("fps")) gbox.setFps(help.geturlparameter("fps")*1);
-			else gbox.setFps(25);
+			else gbox.setFps((data.fps?data.fps:25));
 		if (help.geturlparameter("fskip")) gbox.setFrameskip(help.geturlparameter("fskip"));
+		if (help.geturlparameter("forcedidle")) gbox.setForcedIdle(help.geturlparameter("forcedidle")*1);
+			else if (help.isDefined(device.forcedidle)) gbox.setForcedIdle(device.forcedidle);
+
+		gbox.initScreen((data.width?data.width:(data.portrait?240:320)),(data.height?data.height:(data.portrait?320:240)));
+
+		if (help.geturlparameter("showplayers")) gbox.setShowPlayers(help.geturlparameter("showplayers")=="yes");
+		if (help.geturlparameter("canaudio")) gbox.setCanAudio(help.geturlparameter("canaudio")=="yes"); else
+			gbox.setCanAudio(device.canaudio&&(!device.audioisexperimental||gbox.getFlag("experimental")));
+		if (help.geturlparameter("audiocompatmode")) gbox.setAudioCompatMode(help.geturlparameter("audiocompatmode")*1); else
+			if (help.isDefined(device.audiocompatmode)) gbox.setAudioCompatMode(device.audiocompatmode);
+		if (help.geturlparameter("audioteam")) gbox.setAudioTeam(help.geturlparameter("audioteam")*1); else
+			if (help.isDefined(device.audioteam)) gbox.setAudioTeam(device.audioteam);
+		if (help.geturlparameter("loweraudioteam")) gbox.setLowerAudioTeam(help.geturlparameter("loweraudioteam")*1); else
+			if (help.isDefined(device.loweraudioteam)) gbox.setLowerAudioTeam(device.loweraudioteam);			
+		if (help.geturlparameter("audiocreatemode")) gbox.setAudioCreateMode(help.geturlparameter("audiocreatemode")*1); else
+			if (help.isDefined(device.audiocreatemode)) gbox.setAudioCreateMode(device.audiocreatemode);
+		if (help.geturlparameter("audiodequeuetime")) gbox.setAudioDequeueTime(help.geturlparameter("audiodequeuetime")*1); else
+			if (help.isDefined(device.audiodequeuetime)) gbox.setAudioDequeueTime(device.audiodequeuetime);
+		if (help.geturlparameter("audiopositiondelay")) gbox.setAudioPositionDelay(help.geturlparameter("audiopositiondelay")*1); else
+			if (help.isDefined(device.audiopositiondelay)) gbox.setAudioPositionDelay(device.audiopositiondelay);
 			
 			
-		gbox.initScreen(320,240);
-		
+			
 		if (help.geturlparameter("touch")=="no");
 			else if ((help.geturlparameter("touch")=="yes")||device.touch)
-				iphopad.initialize({h:100,dpad:"akihabara/dpad.png",buttons:"akihabara/buttons.png",bg:"akihabara/padbg.png"});
-	
-		// Debug fonts
-		gbox.addImage("_dbf","akihabara/debugfont.png");
-		gbox.addFont({id:"_dbf",image:"_dbf",firstletter:" ",tileh:5,tilew:4,tilerow:16,gapx:0,gapy:0});
-		
+				switch (data.padmode) {
+					case "fretboard": {
+						iphofretboard.initialize({h:100,bg:"akihabara/fretboard.png"});		
+						break;
+					}
+					case "none": {
+						break;
+					}
+					default: {
+						iphopad.initialize({h:100,dpad:"akihabara/dpad.png",buttons:"akihabara/buttons.png",bg:"akihabara/padbg.png"});		
+						break;
+					}
+				}
 	}
 }

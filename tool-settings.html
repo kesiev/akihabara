@@ -7,14 +7,18 @@
 		 H1 { font-size:20px; text-align:right}
 		 H2 { font-size:20px;line-height:0px; }
 		 
-		 .settingsbox { border:1px solid black;padding:10px;margin:0px; border-radius: 5px;-moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow:0 0 5px #000000; -webkit-box-shadow:0 0 5px #000000; box-shadow:0 0 5px #000000;}
+		 .settingsbox { border:1px solid black;padding:10px;margin:0px 0px 10px 0px; border-radius: 5px;-moz-border-radius: 5px; -webkit-border-radius: 5px; -moz-box-shadow:0 0 5px #000000; -webkit-box-shadow:0 0 5px #000000; box-shadow:0 0 5px #000000;}
 		 .settingsbox P { font-size:15px }
+		 .settingsbox P * { font-size:15px }
 		 .settingsbox UL { list-style-type: none; padding: 5px;margin: 0; }
-		 .settingsbox LI { line-height:40px }
-		 .settingsbox LI INPUT { position:absolute;left:150px; width:180px;border:0px; padding:5px }
+		 .settingsbox LI { line-height:40px; font-size:15px }
+		 .settingsbox .keymap { position:absolute;left:150px; width:180px;border:0px; padding:5px }
 		 
 		 .gameboxkeyboard { background-color:#debebe }
+		 .gameboxaudio { background-color:#debebe }
+		 .gameboxexperimental { background-color:#fecede }
 
+		 .gameboxsave { background-color:#debebe }
 		 
 	</style>
 	<title>Akihabara setup</title>
@@ -22,7 +26,7 @@
 <body onkeyup="keycustomized(event)" onload="loaddata()">
 	<h1>Akihabara setup</h1>
 	<div class="settingsbox gameboxkeyboard">
-		<h2>Gamebox keyboard setup</h1>
+		<h2>Gamebox keyboard setup</h2>
 		<p>These settings will be used by any Gamebox game hosted by this domain. Click a box and press a key to customize.</p>
 		<ul>
 			<li> Up <input class="keymap" id="keyup" READONLY onclick="customizekey({key:'up',input:'keyup'})"></li>
@@ -33,13 +37,34 @@
 			<li> B Button <input class="keymap" id="keyb" READONLY onclick="customizekey({key:'b',input:'keyb'})"></li>
 			<li> C Button <input class="keymap" id="keyc" READONLY onclick="customizekey({key:'c',input:'keyc'})"></li>
 		</ul>
+	</div>
+	<div class="settingsbox gameboxaudio">
+		<h2>Gamebox audio setup</h2>
+		<p>These settings will be used by any Gamebox game hosted by this domain. <b>Audio is still in beta</b> and is available only on <b>Opera</b> and <b>Firefox</b> browsers.</p>
+		<ul>
+			<li><input type="checkbox" id="noaudio" onclick="checkflag(this)"> Disable audio</li>
+		</ul>
+	</div>
+	<div class="settingsbox gameboxexperimental">
+		<h2>Gamebox experimental</h2>
+		<p>This checkbox enables misc experimental features <b>that are really unstable</b>. Use at yout own risk!</p>
+		<ul>
+			<li><input type="checkbox" id="experimental" onclick="checkflag(this)"> Enable experimental features</li>
+		</ul>
+		<p><i>Experimental features are: audio on Safari (works well, but on Nightly Builds), iPad with 3.6 firmware, iPhone with 4.x betas (single channel mode) and all other audio-enabled devices (untested)</i></p>
+	</div>
+	<div class="settingsbox gameboxsave">
 		<input type="button" onclick="resetdefaults()" value="Reset default settings">
 		<input type="button" onclick="savesettings()" value="Save settings">
 	</div>
 </body>
 <script>
 
-	var defaults=help.cloneObject(gbox._keymap);
+	var defaults={
+		keymap:help.cloneObject(gbox._keymap),
+		flags:help.cloneObject(gbox._flags)
+	};
+		
 	var customizing=null;
 
 	function pjq(id) { return document.getElementById(id) };
@@ -67,6 +92,13 @@
 		pjq("keya").value=keyidtostring(gbox._keymap["a"]);
 		pjq("keyb").value=keyidtostring(gbox._keymap["b"]);
 		pjq("keyc").value=keyidtostring(gbox._keymap["c"]);
+		
+		for (var i in gbox._flags)
+			pjq(i).checked=gbox._flags[i];
+	}
+	
+	function checkflag(t) {
+		gbox._flags[t.id]=(t.checked?true:false);
 	}
 
 	function loaddata() {
@@ -98,7 +130,8 @@
 	
 	function resetdefaults() {
 		if (confirm("Revert to default configuration?")) {
-			gbox._keymap=help.cloneObject(defaults);
+			gbox._keymap=help.cloneObject(defaults.keymap);
+			gbox._flags=help.cloneObject(defaults.flags);
 			updatescreen();
 		}
 	}
