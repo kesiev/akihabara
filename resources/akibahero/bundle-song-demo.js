@@ -1,4 +1,14 @@
 {
+
+	// This was the first test song of Akiba Hero, made by Arnaldo Brenna.
+	// Was an early prototype built only for pre-testing audio sync on Akihabara and is the
+	// song played in the demo video I've made before releasing the audio engine.
+	//
+	// http://www.youtube.com/watch?v=ChL5dZpkFOE - Akiba Hero 'The Fifth Markup' 100% on Hard
+	//
+	// The song was kept as an history piece - the original "The Fifth Markup" sounds really
+	// better :)
+	
 	setObject:[
 		{
 			object:"song",
@@ -8,15 +18,12 @@
 				audio:[audioserver+"hypermarkup5-song.mp3",audioserver+"hypermarkup5-song.ogg"], // The music track. Must be defined.
 				guitar:[audioserver+"hypermarkup5-guitar.mp3",audioserver+"hypermarkup5-guitar.ogg"], // Facoltative. The notes track. You can use just a mixed track but is less "GH".
 				mix:[audioserver+"hypermarkup5-mix.mp3",audioserver+"hypermarkup5-mix.ogg"], // The mixed track, used for single channel devices.
-				title:"The Fifth Markup", // Song title. Must have.
+				title:"The Test Song", // Song title. Must have.
 				artist:"Arnaldo Brenna", // Artist's name. Must have.
 				year:"2010", // Year. Must have for closing titles.
 				contact:"arnaldobrenna@hotmail.it", // Must! :)
-				extranotes:[
-					"FULL QUALITY TRACKS ARE",
-					"AVAILABLE AT",
-					"HTTP://WWW.KESIEV.COM/AKIHABARA"
-				],
+				errors:["explosion"], // Error sounds. Must.				
+				errorleave:["explosion"], // Sound when a note is missed. Must.
 				duration:125,
 				track:[
 				

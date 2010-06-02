@@ -12,6 +12,8 @@
 				year:"2010", // Year. Must have for closing titles.
 				contact:"greenleo.bandcamp.com", // Must! :)
 				duration:63.5,
+				errors:["explosion"], // Error sounds. Must.
+				errorleave:["explosion"], // Sound when a note is missed. Must.
 				track:[
 				
 					// Song start

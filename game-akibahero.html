@@ -52,6 +52,7 @@
 				toys.resetToy(this,"rising"); 
 				toys.resetToy(this,"flash"); 
 				this.udcnt=0;
+				gbox.playAudio("intro");
 			} else {
 				if (toys.getToyStatus(this,"rising")) {
 			  		gbox.blitFade(gbox.getBufferContext(),{alpha:1,color:"rgb("+(help.upAndDown(this.udcnt,100)*2)+",0,0)"});
@@ -60,7 +61,7 @@
 		 	 		this.udcnt=(this.udcnt+1)%100;
 			  	} else
 			  		gbox.blitFade(gbox.getBufferContext(),{alpha:1});
-				toys.logos.linear(this,"rising",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,sx:gbox.getScreenHW()-gbox.getImage("logo").hwidth,sy:gbox.getScreenH(),speed:10,audioreach:"explosion"});
+				toys.logos.linear(this,"rising",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,sx:gbox.getScreenHW()-gbox.getImage("logo").hwidth,sy:gbox.getScreenH(),audioreach:"explosion",speed:10});
 			}
 		};
 		// gameover animation
@@ -282,7 +283,7 @@
 						var s=song[this.track].track[b].time;
 						var first=true;
 						var yp;
-						var error=0; // 0: no error, 1: error, 2: note ok
+						var error=0; // 0: no error, 1:note-ok, 2: error, 3:error-missed
 						var fire;
 						
 						while (s<lowtime+this.depthtime) {
@@ -291,24 +292,24 @@
 									if (hit) { // If fretting...
 										if (song[this.track].track[b].done==0) { // ...and the note is playable
 											if (Math.abs(s-songtime)<=this.frettime) { //...and the time is right
-												var error=2;
+												var error=1;
 												for (var i=0;i<fretb.length;i++)
 													if (((fretb[i]==2)&&(!song[this.track].track[b].d[i]))||((fretb[i]!=2)&&(song[this.track].track[b].d[i]))) {
-														error=1;
+														error=2;
 														break;
 													}
-												if (error==1)
+												if (error!=1)
 													song[this.track].track[b].done=1; // Note failed (wrong keys)
 											} else
-												error=1; // Hitting a note too much in the future!
+												error=2; // Hitting a note too much in the future!
 		
 										} else
-											error=1; // Wrong timing. Hitting an invalidated note
+											error=2; // Wrong timing. Hitting an invalidated note
 									} else if (((songtime-s)>this.frettime)&&(song[this.track].track[b].done==0)) { // If not fretting and the note goes away...
 										song[this.track].track[b].done=1;
-										error=1;
+										error=3;
 									}
-									if (error==2) {
+									if (error==1) {
 										this.notes++;
 										maingame.hud.addValue("combo","value",1);
 										maingame.hud.addValue("score","value",maingame.hud.getValue("combo","value")*10);
@@ -340,11 +341,14 @@
 								s=song[this.track].track[b].time;
 						}
 						if (hit&&first) // Hitting when nothing is on the screen!
-							error=1;
-						if (error==1) {
+							error=2;
+						if (error>1) {
 							if (!gbox.getAudioIsSingleChannel()) {
 								if (song[this.track].guitar)  gbox.setAudioMute("song-guitar");
-								gbox.hitAudio("explosion");
+								if (error==2)
+									gbox.hitAudio(song[this.track].errors[help.random(0,song[this.track].errors.length)]);
+								else
+									gbox.hitAudio(song[this.track].errorleave[help.random(0,song[this.track].errorleave.length)]);
 							}
 							maingame.hud.setValue("combo","value",0);
 							maingame.hud.addValue("energy","value",-5);
