@@ -58,6 +58,7 @@
 		// These are stage data
 		{file:"resources/solitude/bundle-attractmode.js"},
 		{file:"resources/solitude/bundle-stage1.js"},
+		// {file:"resources/solitude/bundle-stage2.js"}, // For now stage2 is only a placeholder. Uncomment and start developing!
 		
 	]
 }

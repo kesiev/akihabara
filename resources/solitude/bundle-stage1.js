@@ -4,7 +4,8 @@
 			object:"stages",
 			property:"stage1",
 			value:{
-			
+				music:"ingame", // The background music.
+				
 				// The "movie reel" of the background.
 				scroller: {
 					maxwidth:460,
@@ -76,7 +77,7 @@
 						toys.shmup.generateEnemy("foes",null,{},enemies.boss); // Here comes the boss
 					} else if (toys.logic.once(th,"once-finishboss",pos>6080)) {// If you're here, you've beaten the boss (the loop was quitted)
 						scroller.panToSpeed(1,5); // Decellerate...
-						maingame.gameIsCompleted(); // The game is completed
+						maingame.myChangeLevel("stage2"); // Let's try to go to stage 2. The game will end if not exists.
 					}
 				}
 			}

@@ -38,7 +38,6 @@
 			gbox.setAudioChannels({bgmusic:{volume:0.8},sfx:{volume:1.0}});
 		 	
 		 	maingame=gamecycle.createMaingame("gamecycle","gamecycle");
-
 		 
 		  // No level intro animation
 		  maingame.gameIntroAnimation=function() { return true; }
@@ -67,6 +66,16 @@
 		  maingame.changeLevel=function(level) {
 		  	if (level==null) level="stage1";
 			stages.currentstage=level;
+		 	// Cleanup the level.
+		  	gbox.trashGroup("foes");
+		  	gbox.trashGroup("background");
+		  	gbox.trashGroup("playerbullets");
+		  	gbox.trashGroup("foes");
+		  	gbox.trashGroup("foesbullets");
+		  	gbox.trashGroup("sparks");
+		  	gbox.trashGroup("foreground");
+		  	gbox.purgeGarbage(); // Since we're starting, we can purge all now
+			
 			// This object handles the script of each level. First prepares the scroller and then does the game actions.
 			gbox.addObject({
 				id:"stagehandler",
@@ -81,8 +90,19 @@
 				}
 			});
 			toys.shmup.spawn(gbox.getObject("player","player"),{x:150,y:200,weapon:0});
-			gbox.playAudio("ingame");
+			gbox.playAudio(stages[stages.currentstage].music);
 			this.newLife();
+		  }
+		  
+		  // Custom level handler. We will call this for passing from a stage to another. For
+		  // flexibility, we will check if the destination stage exists. If yes, the stage is
+		  // changed else the game ends. In your games you can just call the changeLevel, if you're
+		  // sure that the stage exists.
+		  maingame.myChangeLevel=function(dest) {
+		  	if (stages[dest]) // If the stage exists...
+		  		maingame.gotoLevel(dest); // Let's go there...
+		  	else // else... :)
+				maingame.gameIsCompleted(); // The game is completed
 		  }
 		  
 		    // New life
@@ -142,8 +162,7 @@
 		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},accx:0,accy:-10});
 		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},acc:8,angle:4.9});
 		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},acc:8,angle:4.7});
-		  		
-		  		}
+				 }
 		  	
 		  	},
 			
