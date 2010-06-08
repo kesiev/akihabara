@@ -258,7 +258,6 @@ var help={
 				// Minefield has fixed the 0.3 delay!
 			} else if (navigator.userAgent.match(/Safari/i)) {
 				cap.audioteam=1; // Testing smaller audioteam						
-				cap.audioisexperimental=true; // Only for nightly builds for now
 			} else if (navigator.userAgent.match(/Opera/i)) {
 				cap.audioteam=1; // Testing smaller audioteam			
 				cap.audiocreatemode=1; // Do not like audio object cloning very much
