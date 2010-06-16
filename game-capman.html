@@ -85,7 +85,6 @@
 				title:"Capman", // ... Just changing the game title...
 				splash:{footnotes:["Music 'Only Heroes Win at Skee Ball' by Greenleo","Contact him: greenleo.bandcamp.com"]}, // And adding some credits to Greenleo on the loading screen, which made the main theme. Great work! Trivia: is also the Akiba Hero 2nd song :)
 			}); 
-			gbox.setCallback(go); // the "go" method is registerd as callback: when all the resources are loaded, will be called.
 
 			gbox.addImage("logo","resources/capman/logo.png"); // Images are loaded setting an alias and a file name. Can be full images, like the logo (load this ASAP, so will be shown during the loading screen)
 			gbox.addImage("cels","resources/capman/cels.png"); // or sprites sheet, like this one...
@@ -116,7 +115,7 @@
 			gbox.addAudio("ingame",[audioserver+"capman-ingame.mp3",audioserver+"capman-ingame.ogg"],{channel:"bgmusic",loop:true}); // This one is the ingame music. We're putting this into the "bgmusic" channel and will be looped: once ended will start over. Note that creating audio into the bgmusic channel makes them "lighter" for the browser, since is ready to be played only one at time.
 
 			
-			gbox.loadAll(); // When everything is ready, the "loadAll" downloads all the needed resources.
+			gbox.loadAll(go); // When everything is ready, the "loadAll" downloads all the needed resources and runs the "go" function when it's done loading.
 			
 		}, false);
 		
