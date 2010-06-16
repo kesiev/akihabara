@@ -693,7 +693,7 @@ var gbox={
 	getFont:function(t){ return this._fonts[t] },
 	loadAll:function(cb) {
 		// Set the callback function, which is called after the resources are loaded.
-		if (this._cb == null) this._cb = cb;
+		if (!this._cb) this._cb = cb;
 		// Default stuff
 		this.addImage("_dbf","akihabara/debugfont.png");
 		if (this._splash.background) this.addImage("_splash",this._splash.background);
