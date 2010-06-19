@@ -1012,7 +1012,7 @@ var toys={
 				} 
 				if ((th.accx>0)&&map.tileIsSolidFloor(th,right)) {
 					th.accx=0;
-					th.x=help.xPixelToTile(map,th.x,1)-th.w;
+					th.x=help.xPixelToTile(map,th.x+th.w)-th.w;
 					th.touchedrightwall=true;
 				}
 				t+=gbox.getTiles(map.tileset).tileh;
