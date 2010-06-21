@@ -321,13 +321,13 @@
 						toys.topview.controlKeys(this,{left:"left",right:"right",up:"up",down:"down"}); // Set capman's horizontal and vertical speed.
 						toys.topview.applyForces(this); // Moves capman 
 						// Note that our capman will keep going since we're not changing the speed given by controlKeys and applied by applyForces (i.e. toys.handleAccellerations)
-						toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1}); // check tile collisions.
-																								  // Tollerance indicates how "rounded" the corners are (for turning precision - in capman have to be precise but not too much, for anticipated turnings)
+						toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1}); // check tile collisions.
+																								  // tolerance indicates how "rounded" the corners are (for turning precision - in capman have to be precise but not too much, for anticipated turnings)
 																								  // Approximation is the distance in pixel of each check. Lower approximation is better but is slower. Usually using the lower between the tile size and the sprite height is enough.
 						if (this.touchedup||this.toucheddown||this.touchedleft||this.touchedright) { // If capman hits some wall
 							help.copyModel(this,olddata); // the olddata properties are replaced to the local object
 							toys.topview.applyForces(this); // And is moved like we've done before, like the player hasn't changed direction.
-							toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1});
+							toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1});
 						}
 						
 						// The side warp. If capman reach one of the left or right side of the maze, is spawn on the other side,in the same direction
@@ -442,7 +442,7 @@
 								else
 									toys.topview.controlKeys(this,{pressdown:1}); // ...else we're pressing down.
 								toys.topview.applyForces(this); // Let's move the ghost...
-								toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1}); // ...and check if is colliding with a wall.
+								toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1}); // ...and check if is colliding with a wall.
 								if (this.touchedup||this.toucheddown) // If the ghost touched the border of the house...
 									this.facing=(this.facing==toys.FACE_UP?toys.FACE_DOWN:toys.FACE_UP); // Invert their direction. The next cycle, the ghost will move in the opposite direction.
 								
@@ -466,7 +466,7 @@
 									toys.topview.controlKeys(this,{pressup:1}); //  Let's move up, out from the house
 								}
 								toys.topview.applyForces(this); // Let's move the ghost...
-								toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1}); // ...and check if is colliding with a wall.
+								toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1}); // ...and check if is colliding with a wall.
 								if (this.touchedup) // If the ghost touches a border up...
 									this.status="chase"; // We're out from the labirynth. Is the time to kick the capman a$$!
 								break; // That is enough.
@@ -500,7 +500,7 @@
 										if (help.random(0,2)==0) toys.topview.controlKeys(this,{pressup:1}); else toys.topview.controlKeys(this,{pressdown:1});
 								}
 								toys.topview.applyForces(this); // Then we're moving to that direction...
-								toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1}); // ...and check if is colliding with a wall.
+								toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1}); // ...and check if is colliding with a wall.
 								break;
 							}
 							
@@ -518,7 +518,7 @@
 									}
 								}
 								toys.topview.applyForces(this); // Then we're moving to that direction...
-								toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1}); // ...and check if is colliding with a wall.
+								toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1}); // ...and check if is colliding with a wall.
 								break;
 							}
 							
@@ -526,7 +526,7 @@
 								toys.topview.setStaticSpeed(this,1) // Slowly...
 								toys.topview.controlKeys(this,{pressdown:1}); // Moving down...
 								toys.topview.applyForces(this); // Let's move...
-								toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1}); // ...and check if is colliding with a wall.
+								toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1}); // ...and check if is colliding with a wall.
 								if (this.toucheddown) { // If we've touched the house floor...
 									this.tileset=this.id; // change wear...								
 									toys.topview.setStaticSpeed(this,2) // Faster...
@@ -551,7 +551,7 @@
 										toys.topview.controlKeys(this,{pressdown:1}); //  Let's move down!									
 								}
 								toys.topview.applyForces(this); // Then we're moving to that direction...
-								toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1}); // ...and check if is colliding with a wall.
+								toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1}); // ...and check if is colliding with a wall.
 								this.time--; // Decrease the timer. This time means for how much time the ghost is vulnerable.
 								if (this.time>0) { // if we can be eaten...
 									// Now we're setting the tileset. Switching tilesets with the same number of frames allow to change dynamically how the character looks. This is a sample:
@@ -580,14 +580,14 @@
 								help.copyModel(this,olddata); // we're reversing to the old movement...
 								toys.topview.controlKeys(this,{pressup:(this.facing==toys.FACE_UP),pressdown:(this.facing==toys.FACE_DOWN),pressleft:(this.facing==toys.FACE_LEFT),pressright:(this.facing==toys.FACE_RIGHT)}); // Push toward the old direction.
 								toys.topview.applyForces(this); // redo the moving...
-								toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1}); // ...and check collision.
+								toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1}); // ...and check collision.
 								if (this.touchedup||this.toucheddown||this.touchedleft||this.touchedright) { //Uh-oh. If colliding here too, our ghost is really stuck.
 									for (var i=0;i<4;i++) // So we're trying to move in any of the four direction.
 										if (i!=((olddata.facing+2)%4)) { // Do you remember? Ghosts cannot go back, so we're skipping the opposite direction. The trick: opposite direction is current direction +2. Have a look to the toys constants.
 											help.copyModel(this,olddata); // First, go back on the starting point...
 											toys.topview.controlKeys(this,{pressup:(i==toys.FACE_UP),pressdown:(i==toys.FACE_DOWN),pressleft:(i==toys.FACE_LEFT),pressright:(i==toys.FACE_RIGHT)}); // Push one of the direction
 											toys.topview.applyForces(this); // redo the moving...
-											toys.topview.tileCollision(this,maze,"map",null,{tollerance:0,approximation:1}); // ...and check collision again.
+											toys.topview.tileCollision(this,maze,"map",null,{tolerance:0,approximation:1}); // ...and check collision again.
 											if (!(this.touchedup||this.toucheddown||this.touchedleft||this.touchedright)) break; //  If we've not touched anything, we're no longer stuck!
 											// Else, we'll try the other direction
 										}
@@ -605,7 +605,7 @@
 						
 						// Then... let's bug capman a bit
 						var capman=gbox.getObject("player","capman"); // As usual, first we pick our capman object...
-						if (gbox.collides(this,capman,2)) { // If we're colliding with capman, with a tollerance of 2 pixels...
+						if (gbox.collides(this,capman,2)) { // If we're colliding with capman, with a tolerance of 2 pixels...
 							if (this.status=="chase") { // and we're hunting him...
 								maingame.bullettimer=10; // ...stop the game for a while.
 								capman.kill(); // ...kill capman. "kill" is the custom method we've created into the capman object.
