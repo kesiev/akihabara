@@ -157,7 +157,10 @@
 
 									toys.platformer.applyGravity(this); // Apply gravity
 									toys.platformer.auto.horizontalBounce(this); // Bounces horizontally if hit the sideways walls
-									toys.platformer.auto.goomba(this,{moveWhileFalling:true,speed:2}); // goomba movement
+									if (this.touchedfloor) // If touching the floor...
+										toys.platformer.auto.goomba(this,{moveWhileFalling:true,speed:2}); // goomba movement
+									else // Else...
+										this.accx=0; // Stay still (i.e. jump only vertically)
 									toys.platformer.auto.dontFall(this,tilemaps[tilemaps.current],"map"); // prevent from falling from current platform
 									toys.platformer.verticalTileCollision(this,tilemaps[tilemaps.current],"map"); // vertical tile collision (i.e. floor)
 									toys.platformer.horizontalTileCollision(this,tilemaps[tilemaps.current],"map"); // horizontal tile collision (i.e. walls)

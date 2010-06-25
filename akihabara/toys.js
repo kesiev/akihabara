@@ -1022,15 +1022,17 @@ var toys={
 			return th.touchedfloor;
 		},
 		jumpKeys:function(th,key) {
-			if (toys.platformer.canJump(th)&&gbox.keyIsHit(key.jump)&&(th.curjsize==0)) {
+			if ((toys.platformer.canJump(th)||(key.doublejump&&(th.accy>=0)))&&gbox.keyIsHit(key.jump)&&(th.curjsize==0)) {
 				if (key.audiojump) gbox.hitAudio(key.audiojump);
 				th.accy=-th.jumpaccy;
 				th.curjsize=th.jumpsize;
+				return true;
 			} else if (th.curjsize&&gbox.keyIsHold(key.jump)) { // Jump modulation
 				th.accy--;
 				th.curjsize--;
 			} else
 				th.curjsize=0;
+			return false;
 		},	
 		bounce:function(th,data) {
 			th.curjsize=0;
@@ -1073,7 +1075,7 @@ var toys={
 				} else th.pushing=toys.PUSH_NONE;
 			},
 			dontFall:function(th,map,tilemap) {
-				if (th.accx) {
+				if (th.accx&&th.touchedfloor) {
 					var til;
 					if (th.accx>0) til=help.getTileInMap(toys.platformer.getNextX(th)+th.w-1+th.accx,th.y+th.h,map,0,tilemap);				
 					else til=help.getTileInMap(toys.platformer.getNextX(th),th.y+th.h,map,0,tilemap);
