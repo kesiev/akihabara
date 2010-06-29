@@ -1802,8 +1802,10 @@ var toys={
 							x:th.x,
 							y:th.y,
 							vaccy:-data.jump,
+							accx:0,
 							flipv:data.flipv,
 							cnt:0,
+							blinkspeed:0,
 							camera:th.camera
 						}
 					)
@@ -1813,12 +1815,14 @@ var toys={
 					if (gbox.objectIsVisible(this)) {
 						this.vaccy++;
 						this.y+=this.vaccy;
-						this.cnt=(this.cnt+1)%10;
+						this.x+=this.accx;
+						this.cnt++;
 					} else gbox.trashObject(this);	
 				}
 				
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
-					gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});					
+					if (!this.blinkspeed||(Math.floor(this.cnt/this.blinkspeed)%2))
+						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});					
 				}
 				
 				return obj;
