@@ -946,7 +946,6 @@
 	
 
 		help.akihabaraInit({title:"The Legend Of Sadness",splash:{footnotes:["Musics by: Greenleo, Graulund, Robert Jaret.","Full credits on ending title."]}});
-		gbox.setCallback(go);
 
 		// We are not going to use faces for dialogues
 		noface={ noone:{ x:10, y:170,box:{x:0,y:160,w:gbox.getScreenW(),h:60,alpha:0.5} } };
@@ -955,7 +954,7 @@
 
 		gbox.addBundle({file:"resources/tlol/bundle.js"}); // Audio, sprites, fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code, like in Capman.
 		
-		gbox.loadAll();
+		gbox.loadAll(go);
 	}, false);
 
 	</script>

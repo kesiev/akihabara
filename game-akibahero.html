@@ -197,7 +197,7 @@
 				largerconepixel:135, // Larger cone, for time lines
 	
 				linetime:0.2, // The line is <secs> before the bottom
-				frettime:0.1, // Delay tollerance for hitting the notes
+				frettime:0.1, // Delay tolerance for hitting the notes
 				track:maingame._selectedsong, // Playing track...
 				
 				block:0, // current block
@@ -399,14 +399,13 @@
 
 		// Put additional licenses here!
 		help.akihabaraInit({title:"Akiba Hero",padmode:"fretboard",splash:{footnotes:["Music usage permitted by their owner.","Credits on song select screen and ending."]}});
-		gbox.setCallback(go);
 		
 		audioserver="resources/audio/"
 		
 		gbox.addBundle({file:"resources/akibahero/bundle.js"}); // Audio, sprites, fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code, like in Capman.
 		// Complex bundles here. Interesting stuff. Have a look to this bundle.js
 		
-		gbox.loadAll();
+		gbox.loadAll(go);
 	}, false);
 
 	</script>

@@ -258,9 +258,7 @@
 
 		// Put additional licenses here!
 		help.akihabaraInit({title:"The Hall Of Fame",portrait:true,padmode:"none",splash:{footnotes:["Music: Pixel Heart by Cathode Rays","(c)2009 - Permitted by its owner."]}}); // you can define also height:xx, width:xx and fps:xxx and the pad mode now! Happy?
-		gbox.setCallback(go);
-		
-		
+
 		gbox.addImage("logo","resources/halloffame/logo.png");
 		gbox.addImage("font","resources/halloffame/font.png");
 		for (var i=0;i<people.length;i++) 
@@ -275,7 +273,7 @@
 		for (var i=0;i<people.length;i++) 
 			gbox.addTiles({id:people[i].who,image:people[i].who,tileh:76,tilew:48,tilerow:3,gapx:0,gapy:0});
 		
-		gbox.loadAll();
+		gbox.loadAll(go);
 		
 	}, false);
 

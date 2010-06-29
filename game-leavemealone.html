@@ -309,12 +309,11 @@
 
 		// Put additional licenses here!
 		help.akihabaraInit({title:"Leave Me Alone",splash:{footnotes:["Music by: Greenleo, Smiletron.","Full credits on ending title."]}});
-		gbox.setCallback(go);
 		
 		audioserver="resources/audio/"
 		gbox.addBundle({file:"resources/leavemealone/bundle.js"}); // Audio, sprites, fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code, like in Capman.
 		
-		gbox.loadAll();
+		gbox.loadAll(go);
 	}, false);
 
 	</script>

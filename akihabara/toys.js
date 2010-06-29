@@ -156,27 +156,27 @@ var toys={
 			th.touchedleft=false;
 			th.touchedright=false;
 			
-			var tollerance=(data&&(data.tollerance!=null)?data.tollerance:6);
+			var tolerance=(data&&(data.tolerance!=null)?data.tolerance:6);
 			var approximation=(data&&(data.approximation!=null)?data.approximation:10);
-			var t=tollerance-approximation;
+			var t=tolerance-approximation;
 			do {
 				t+=approximation;
-				if (t>th.colw-tollerance-1) t=th.colw-tollerance-1;
+				if (t>th.colw-tolerance-1) t=th.colw-tolerance-1;
 				var bottom=help.getTileInMap(th.x+th.colx+t,th.y+th.coly+th.colh-1,map,defaulttile,tilemap);
 				var top=help.getTileInMap(th.x+th.colx+t,th.y+th.coly,map,defaulttile,tilemap);
 				if (map.tileIsSolid(th,top)) th.touchedup=true;
 				if (map.tileIsSolid(th,bottom)) th.toucheddown=true;	
-			} while (t!=th.colw-tollerance-1);
+			} while (t!=th.colw-tolerance-1);
 			
-			t=tollerance-approximation;
+			t=tolerance-approximation;
 			do {
 				t+=approximation;
-				if (t>th.colh-tollerance-1) t=th.colh-tollerance-1;
+				if (t>th.colh-tolerance-1) t=th.colh-tolerance-1;
 				var left=help.getTileInMap(th.x+th.colx,th.y+th.coly+t,map,defaulttile,tilemap);
 				var right=help.getTileInMap(th.x+th.colx+th.colw-1,th.y+th.coly+t,map,defaulttile,tilemap);
 				if (map.tileIsSolid(th,left)) th.touchedleft=true;
 				if (map.tileIsSolid(th,right)) th.touchedright=true;
-			} while (t!=th.colh-tollerance-1);
+			} while (t!=th.colh-tolerance-1);
 			
 			if (th.touchedup) {
 				th.accy=0;
@@ -381,7 +381,7 @@ var toys={
 				else if (this.toucheddown||this.touchedup||this.touchedleft||this.touchedright) this.onWallHit();
 				else if (this.collidegroup!=null)
 					for (var i in gbox._objects[this.collidegroup])
-						if ((!gbox._objects[this.collidegroup][i].initialize)&&toys.topview.collides(this,gbox._objects[this.collidegroup][i],gbox._objects[this.collidegroup][i].tollerance)) {
+						if ((!gbox._objects[this.collidegroup][i].initialize)&&toys.topview.collides(this,gbox._objects[this.collidegroup][i],gbox._objects[this.collidegroup][i].tolerance)) {
 							if (gbox._objects[this.collidegroup][i]["hitByBullet"]!=null)
 								if (!gbox._objects[this.collidegroup][i].hitByBullet(this)) {
 									this.spark(this);
@@ -522,7 +522,7 @@ var toys={
 						camera:false,
 						flipv:false, fliph:false,
 						health:1,
-						tollerance:4
+						tolerance:4
 					}
 				)
 			);
@@ -623,7 +623,7 @@ var toys={
 				if (!gbox.objectIsVisible(this)) gbox.trashObject(this);
 				else if (this.collidegroup!=null)
 					for (var i in gbox._objects[this.collidegroup])
-						if ((!gbox._objects[this.collidegroup][i].initialize)&&gbox.collides(this,gbox._objects[this.collidegroup][i],gbox._objects[this.collidegroup][i].tollerance)) {
+						if ((!gbox._objects[this.collidegroup][i].initialize)&&gbox.collides(this,gbox._objects[this.collidegroup][i],gbox._objects[this.collidegroup][i].tolerance)) {
 							if (gbox._objects[this.collidegroup][i]["hitByBullet"]!=null)
 								if (!gbox._objects[this.collidegroup][i].hitByBullet(this)) {
 									this.spark(this);
@@ -684,7 +684,7 @@ var toys={
 						health:1,
 						hittimer:0,
 						kill:toys.NOOP,
-						tollerance:0,
+						tolerance:0,
 						initialize:null,
 						invulnerable:false,
 						hitAnimation:function(time) {

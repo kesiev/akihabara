@@ -313,13 +313,12 @@
 	return;*/
 	
 		help.akihabaraInit({title:"Solitude",splash:{footnotes:["Musics by: AndyExpandy, Rich Vreeland, NE7.","Full credits on ending title."]}});
-		gbox.setCallback(go);
 		
 		audioserver="resources/audio/";
 		gbox.addBundle({file:"resources/solitude/bundle.js"}); // Audio, sprites, fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code, like in Capman.
 		// Have a look to the resource file. Solitude implements some sort of "resource unpacking" before using them.
 		
-		gbox.loadAll();
+		gbox.loadAll(go);
 	}, false);
 
 	</script>

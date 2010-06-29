@@ -155,7 +155,6 @@
 	
 
 		help.akihabaraInit({title:"T-Spin"});
-		gbox.setCallback(go);
 
 		var audioserver="resources/audio/"
 		gbox.addAudio("default-menu-option",[audioserver+"select.mp3",audioserver+"select.ogg"],{channel:"sfx"});
@@ -302,7 +301,7 @@
 		gbox.addScript({file:"resources/tspin/data/sim-tgm3.js"});		
 		gbox.addScript({file:"resources/tspin/data/sim-tds.js"});
 		
-		gbox.loadAll();
+		gbox.loadAll(go);
 	}, false);
 
 	</script>

@@ -198,6 +198,7 @@ var gbox={
 	
 	// VARS
 	_autoid:0,
+	_cb:null, // callback for loadAll()
 	_keyboard:[],
 	_keymap:{
 		up:38,
@@ -400,6 +401,7 @@ var gbox={
 	getScreenHH:function(){return this._screenhh},
 	getScreenHW:function(){return this._screenhw},
 	setZoom:function(z) { this._zoom=z},
+	// setCallback is deprecated, as cb is now passed directly into loadAll(). Leaving it in for backwards compatibility.
 	setCallback:function(cb) { this._cb=cb; },
 	_playobject:function(g,obj,a) {
 		if (gbox._objects[g][obj].initialize) {
@@ -693,9 +695,11 @@ var gbox={
 	},
 	getTiles:function(t) { return this._tiles[t] },
 	getFont:function(t){ return this._fonts[t] },
-	loadAll:function() {
+	loadAll:function(cb) {
 		// Setup logger
 		if (this._canlog) this.log=console.log;
+		// Set the callback function, which is called after the resources are loaded.
+		if (!this._cb) this._cb = cb;
 		// Default stuff
 		this.addImage("_dbf","akihabara/debugfont.png");
 		if (this._splash.background) this.addImage("_splash",this._splash.background);
