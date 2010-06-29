@@ -1729,7 +1729,8 @@ var toys={
 							camera:th.camera,
 							gravity:false,
 							trashoffscreen:true,
-							fliph:(data.fliph==null?th.fliph:data.fliph), flipv:(data.flipv==null?th.flipv:data.flipv)
+							fliph:(data.fliph==null?th.fliph:data.fliph), flipv:(data.flipv==null?th.flipv:data.flipv),
+							blinkspeed:0
 						}
 					)
 				);
@@ -1745,7 +1746,7 @@ var toys={
 				}
 				
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
-					if (this.timer>=0)
+					if ((this.timer>=0)&&(!this.blinkspeed||(Math.floor(this.timer/this.blinkspeed)%2)))
 						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.timer,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.fliph,flipv:this.flipv,alpha:this.alpha});					
 				}
 				
