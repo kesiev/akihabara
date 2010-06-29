@@ -248,6 +248,7 @@ var gbox={
 	_breakcacheurl:function(a) {return a+(a.indexOf("?")==-1?"?":"&")+"_brc="+gbox._sessioncache; },
 	_forcedidle:0,
 	_gamewaiting:0,
+	_canlog:false,
 	_splash:{
 		gaugeLittleColor:"rgb(255,240,0)",
 		gaugeLittleBackColor:"rgb(255,255,255)",
@@ -261,6 +262,9 @@ var gbox={
 		footnotesSpacing:1
 	},
 	_minimalexpired:0, // 0: not triggered, 1: triggered, 2: done
+	setCanLog:function(c) { this._canlog=c&&window.console; },
+	canLog:function() { return this._canlog},
+	log:function() {}, // Overridden if console is really available
 	_safedrawimage:function(tox,img,sx,sy,sw,sh,dx,dy,dw,dh) {
 		if (!img||!tox) return;
 		if (sx<0) { dx-=(dw/sw)*sx;sw+=sx; sx=0; }
@@ -690,6 +694,8 @@ var gbox={
 	getTiles:function(t) { return this._tiles[t] },
 	getFont:function(t){ return this._fonts[t] },
 	loadAll:function() {
+		// Setup logger
+		if (this._canlog) this.log=console.log;
 		// Default stuff
 		this.addImage("_dbf","akihabara/debugfont.png");
 		if (this._splash.background) this.addImage("_splash",this._splash.background);
