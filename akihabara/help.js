@@ -51,6 +51,18 @@ var help={
 	decideFrame:function(cnt,anim) {
 		return anim.frames[Math.floor(cnt/anim.speed)%anim.frames.length];
 	},
+	// Decides an animation frame that is played once. The last frame is still.
+	// Args: (number,{speed:<animation speed>,frames:<animation sequence>})
+	// Outs: the frame
+	decideFrameOnce:function(cnt,anim) {
+		return anim.frames[(cnt>=anim.frames.length*anim.speed?anim.frames.length-1:Math.floor(cnt/anim.speed))];
+	},
+	// Returns if the animation was fully played at least once with decideFrame or fully with decideFrameOnce.
+	// Args: (number,{speed:<animation speed>,frames:<animation sequence>})
+	// Outs: the frame
+	isLastFrameOnce:function(cnt,anim) {
+		return (cnt>=anim.frames.length*anim.speed);
+	},
 	// Numbers going up and down once reached the half
 	// Args: (counter)
 	// Outs: the value
@@ -297,6 +309,7 @@ var help={
 		if (help.geturlparameter("fskip")) gbox.setFrameskip(help.geturlparameter("fskip"));
 		if (help.geturlparameter("forcedidle")) gbox.setForcedIdle(help.geturlparameter("forcedidle")*1);
 			else if (help.isDefined(device.forcedidle)) gbox.setForcedIdle(device.forcedidle);
+		if (help.geturlparameter("canlog")) gbox.setCanLog(true);
 
 		gbox.initScreen((data.width?data.width:(data.portrait?240:320)),(data.height?data.height:(data.portrait?320:240)));
 
