@@ -302,6 +302,7 @@ var help={
 		if (help.geturlparameter("db")) gbox.setDoubleBuffering(true);
 		if (help.geturlparameter("noautoskip")) gbox.setAutoskip(null);
 		if (help.geturlparameter("zoom")) gbox.setZoom(help.geturlparameter("zoom")); else
+      if (help.isDefined(data.zoom)) gbox.setZoom(data.zoom); else
 			if (help.isDefined(device.zoom)) gbox.setZoom(device.zoom); else
 			if (help.isDefined(device.width)) gbox.setZoom(device.width/320);
 		if (help.geturlparameter("fps")) gbox.setFps(help.geturlparameter("fps")*1);
