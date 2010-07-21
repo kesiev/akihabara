@@ -292,6 +292,8 @@ var help={
 				for (var i=0;i<footnotes.length;i++) data.splash.footnotes.push(footnotes[i]);
 			gbox.setSplashSettings(data.splash);
 		}
+		var screenwidth=(data.width?data.width:(data.portrait?240:320));
+		var screenheight=(data.height?data.height:(data.portrait?320:240));
 		if (!data.splash||(data.splash.minilogo==null)) gbox.setSplashSettings({minilogo:"logo"});
 		if (!data.splash||(data.splash.background==null)) gbox.setSplashSettings({background:"akihabara/splash.png"});
 		if (!data.splash||(data.splash.minimalTime==null)) gbox.setSplashSettings({minimalTime:3000});
@@ -302,9 +304,9 @@ var help={
 		if (help.geturlparameter("db")) gbox.setDoubleBuffering(true);
 		if (help.geturlparameter("noautoskip")) gbox.setAutoskip(null);
 		if (help.geturlparameter("zoom")) gbox.setZoom(help.geturlparameter("zoom")); else
-      if (help.isDefined(data.zoom)) gbox.setZoom(data.zoom); else
+	     	if (help.isDefined(data.zoom)) gbox.setZoom(data.zoom); else
 			if (help.isDefined(device.zoom)) gbox.setZoom(device.zoom); else
-			if (help.isDefined(device.width)) gbox.setZoom(device.width/320);
+			if (help.isDefined(device.width)) gbox.setZoom(device.width/screenwidth);
 		if (help.geturlparameter("fps")) gbox.setFps(help.geturlparameter("fps")*1);
 			else gbox.setFps((data.fps?data.fps:25));
 		if (help.geturlparameter("fskip")) gbox.setFrameskip(help.geturlparameter("fskip"));
@@ -312,7 +314,7 @@ var help={
 			else if (help.isDefined(device.forcedidle)) gbox.setForcedIdle(device.forcedidle);
 		if (help.geturlparameter("canlog")) gbox.setCanLog(true);
 
-		gbox.initScreen((data.width?data.width:(data.portrait?240:320)),(data.height?data.height:(data.portrait?320:240)));
+		gbox.initScreen(screenwidth,screenheight);
 
 		if (help.geturlparameter("showplayers")) gbox.setShowPlayers(help.geturlparameter("showplayers")=="yes");
 		if (help.geturlparameter("canaudio")) gbox.setCanAudio(help.geturlparameter("canaudio")=="yes"); else
