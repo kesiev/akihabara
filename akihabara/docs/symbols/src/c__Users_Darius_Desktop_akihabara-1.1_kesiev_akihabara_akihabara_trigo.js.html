@@ -1,0 +1,84 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">// ---</span><span class="WHIT">
+<span class='line'>  2</span> </span><span class="COMM">// Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/</span><span class="WHIT">
+<span class='line'>  3</span> </span><span class="COMM">// ---</span><span class="WHIT">
+<span class='line'>  4</span> 
+<span class='line'>  5</span> </span><span class="COMM">/**
+<span class='line'>  6</span>  * @namespace Trigo module provides some math stuff for moving objects in a 
+<span class='line'>  7</span>  * direction or following a round path.
+<span class='line'>  8</span>  */</span><span class="WHIT">
+<span class='line'>  9</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">trigo</span><span class="PUNC">=</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 10</span> </span><span class="WHIT">	</span><span class="NAME">ANGLE_RIGHT</span><span class="PUNC">:</span><span class="NUMB">0</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 11</span> </span><span class="WHIT">	</span><span class="NAME">ANGLE_DOWN</span><span class="PUNC">:</span><span class="NAME">Math.PI</span><span class="PUNC">*</span><span class="NUMB">0.5</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="WHIT">	</span><span class="NAME">ANGLE_LEFT</span><span class="PUNC">:</span><span class="NAME">Math.PI</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">	</span><span class="NAME">ANGLE_UP</span><span class="PUNC">:</span><span class="NAME">Math.PI</span><span class="PUNC">*</span><span class="NUMB">1.5555555</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT"> </span><span class="COMM">/**
+<span class='line'> 16</span>  * Adds two angles together (radians).
+<span class='line'> 17</span>  * @param {Float} a Base angle.
+<span class='line'> 18</span>  * @param {Float} add The angle you're adding to the base angle.
+<span class='line'> 19</span>  * @returns The resultant angle, always between 0 and 2*pi.
+<span class='line'> 20</span>  */</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="WHIT">	</span><span class="NAME">addAngle</span><span class="PUNC">:</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">,</span><span class="NAME">add</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">		</span><span class="NAME">a</span><span class="PUNC">=</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">+</span><span class="NAME">add</span><span class="PUNC">)</span><span class="PUNC">%</span><span class="PUNC">(</span><span class="NAME">Math.PI</span><span class="PUNC">*</span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">&lt;</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">Math.PI</span><span class="PUNC">*</span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">+</span><span class="NAME">a</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="KEYW">else</span><span class="WHIT"> </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">a</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 24</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 25</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 26</span>   * Gets the distance between two points.
+<span class='line'> 27</span>   * @param {Object} p1 This is an object containing x and y params for the first point.
+<span class='line'> 28</span>   * @param {Object} p2 This is an object containing x and y params for the second point.
+<span class='line'> 29</span>   * @returns The distance between p1 and p2.
+<span class='line'> 30</span>   */</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">	</span><span class="NAME">getDistance</span><span class="PUNC">:</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">p1</span><span class="PUNC">,</span><span class="NAME">p2</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">Math.sqrt</span><span class="PUNC">(</span><span class="NAME">Math.pow</span><span class="PUNC">(</span><span class="NAME">p2.x</span><span class="PUNC">-</span><span class="NAME">p1.x</span><span class="PUNC">,</span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">+</span><span class="NAME">Math.pow</span><span class="PUNC">(</span><span class="NAME">p2.y</span><span class="PUNC">-</span><span class="NAME">p1.y</span><span class="PUNC">,</span><span class="NUMB">2</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">  </span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 36</span>   * Calculates the angle between two points.
+<span class='line'> 37</span>   * @param {Object} p1 This is an object containing x and y params for the first point.
+<span class='line'> 38</span>   * @param {Object} p2 This is an object containing x and y params for the second point.
+<span class='line'> 39</span>   * @param {Float} transl (Optional) Adds an angle (in radians) to the result. Defaults to 0.
+<span class='line'> 40</span>   * @returns The angle between points p1 and p2, plus transl.
+<span class='line'> 41</span>   */</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">	</span><span class="NAME">getAngle</span><span class="PUNC">:</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">p1</span><span class="PUNC">,</span><span class="NAME">p2</span><span class="PUNC">,</span><span class="NAME">transl</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.addAngle</span><span class="PUNC">(</span><span class="NAME">Math.atan2</span><span class="PUNC">(</span><span class="NAME">p2.y</span><span class="PUNC">-</span><span class="NAME">p1.y</span><span class="PUNC">,</span><span class="NAME">p2.x</span><span class="PUNC">-</span><span class="NAME">p1.x</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="PUNC">(</span><span class="NAME">transl</span><span class="PUNC">?</span><span class="NAME">transl</span><span class="PUNC">:</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="WHIT">  
+<span class='line'> 46</span>   </span><span class="COMM">/**
+<span class='line'> 47</span>   * Translates a point by a vector defined by angle and distance. This does not return a value but rather modifies the x and y values of p1.
+<span class='line'> 48</span>   * @param {Object} p1 This is an object containing x and y params for the point.
+<span class='line'> 49</span>   * @param {Float} a The angle of translation (rad).
+<span class='line'> 50</span>   * @param {Float} d The distance of translation.
+<span class='line'> 51</span>   */</span><span class="WHIT">  
+<span class='line'> 52</span> 	</span><span class="NAME">translate</span><span class="PUNC">:</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">p1</span><span class="PUNC">,</span><span class="NAME">a</span><span class="PUNC">,</span><span class="NAME">d</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">		</span><span class="NAME">p1.x</span><span class="PUNC">=</span><span class="NAME">p1.x</span><span class="PUNC">+</span><span class="NAME">Math.cos</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">)</span><span class="PUNC">*</span><span class="NAME">d</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">		</span><span class="NAME">p1.y</span><span class="PUNC">=</span><span class="NAME">p1.y</span><span class="PUNC">+</span><span class="NAME">Math.sin</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">)</span><span class="PUNC">*</span><span class="NAME">d</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">  
+<span class='line'> 57</span>   </span><span class="COMM">/**
+<span class='line'> 58</span>   * Translates an x component of a coordinate by a vector defined by angle and distance. This returns its component translation.
+<span class='line'> 59</span>   * @param {Float} x1 This is an x coordinate.
+<span class='line'> 60</span>   * @param {Float} a The angle of translation (rad).
+<span class='line'> 61</span>   * @param {Float} d The distance of translation.
+<span class='line'> 62</span>   */</span><span class="WHIT">    
+<span class='line'> 63</span> 	</span><span class="NAME">translateX</span><span class="PUNC">:</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">x1</span><span class="PUNC">,</span><span class="NAME">a</span><span class="PUNC">,</span><span class="NAME">d</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 64</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">x1</span><span class="PUNC">+</span><span class="NAME">Math.cos</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">)</span><span class="PUNC">*</span><span class="NAME">d</span><span class="WHIT">
+<span class='line'> 65</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 66</span> 
+<span class='line'> 67</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 68</span>   * Translates a y component of a coordinate by a vector defined by angle and distance. This returns its component translation.
+<span class='line'> 69</span>   * @param {Float} y1 This is a y coordinate.
+<span class='line'> 70</span>   * @param {Float} a The angle of translation (rad).
+<span class='line'> 71</span>   * @param {Float} d The distance of translation.
+<span class='line'> 72</span>   */</span><span class="WHIT">    
+<span class='line'> 73</span> 	</span><span class="NAME">translateY</span><span class="PUNC">:</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">y1</span><span class="PUNC">,</span><span class="NAME">a</span><span class="PUNC">,</span><span class="NAME">d</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 74</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">y1</span><span class="PUNC">+</span><span class="NAME">Math.sin</span><span class="PUNC">(</span><span class="NAME">a</span><span class="PUNC">)</span><span class="PUNC">*</span><span class="NAME">d</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 77</span> </span></pre></body></html>

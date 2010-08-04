@@ -3,7 +3,7 @@
 // ---
 
 /**
- * Tool module provides simple developing tools. Currently, this file only has a cel-composer: 
+ * @namespace Tool module provides simple developing tools. Currently, this file only has a cel-composer: 
  * it can compose an image stacking a set of frames for animating objects, applying a 
  * number of filters to each frame.
  */
@@ -13,6 +13,7 @@ var tool={
 	_data:{},
 	_count:0,
 	_countloaded:0,
+  
 	_loaded:function(id) {
 		this._loadedflag[id]=true;
 		tool._countloaded++;
