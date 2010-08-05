@@ -324,10 +324,27 @@ var gbox={
 		}
 		return sizes;
 	},
+  
+  /**
+  * Sets the gbox._forcedidle property.
+  * @param {Boolean} f The value to write to gbox._forcedidle.
+  */	  
 	setForcedIdle:function(f) { this._forcedidle=f},
+  
+  /**
+  * Returns a gbox flag at index f.
+  * @param {Object} f The index of the flag you want returned.
+  */	  
 	getFlag:function(f) { return this._flags[f] },
-	setStatusBar:function(a) { this._statbar=a },
+  
+  /**
+  * Sets the gbox._statbar property. Only useful if called before gbox.initScreen. Debugging funtionality.
+  * Much easier to access if you add '?statusbar=1' to your URL.
+  * @param {Boolean} f The value to write to gbox._statbar.
+  */	
+  setStatusBar:function(a) { this._statbar=a },
 	setScreenBorder:function(a) { this._border=a},
+  
   /**
   * Initializes the screen to a certain width and height, applies zoom attributes, populates the 
   * body of the HTML document including the canvas element, sets an initial camera, creates a '_buffer'
@@ -395,22 +412,72 @@ var gbox={
 		gbox._loadsettings(); // Load default configuration
 		gbox.setCanAudio(true); // Tries to enable audio by default
 	},
+
+  /**
+  * Sets the gbox._db property. Turns on an off double buffering.
+  * @param {Boolean} db The value to write to gbox._db. True enables double buffering, false disables.
+  */	  
 	setDoubleBuffering:function(db){this._db=db},
+  
+  /**
+  * Writes text to the status bar, but only if the status bar is enabled.
+  * @param {String} txt The text to write to the status bar.
+  */	  
 	setStatBar:function(txt){ if (gbox._statbar) this._statbar.innerHTML=(txt?txt:"&nbsp")},
+
+  /**
+  * Set the frames per second rate.
+  * @param {Integer} f Total frames per second for the game to run at.
+  */	  
 	setFps:function(f){
 		this._fps=f;
 		this._mspf=Math.floor(1000/f)
 	},
+  
+  /**
+  * Get the frames per second rate (default is 25).
+  * @returns {Integer} Returns the frames per second.
+  */
 	getFps:function() { return this._fps },
 	setAutoskip:function(f){this._autoskip=f},
 	setFrameskip:function(f){this._frameskip=f},
+  
+  /**
+  * Get the screen height.
+  * @returns {Integer} Screen height in pixels.
+  */
 	getScreenH:function(){return this._screenh},
+
+  /**
+  * Get the screen width.
+  * @returns {Integer} Screen width in pixels.
+  */
 	getScreenW:function(){return this._screenw},
+  
+  /**
+  * Get the screen half-height.
+  * @returns {Integer} Screen half-height in pixels.
+  */
 	getScreenHH:function(){return this._screenhh},
+
+  /**
+  * Get the screen half-width.
+  * @returns {Integer} Screen half-width in pixels.
+  */
 	getScreenHW:function(){return this._screenhw},
+  
+  /**
+  * Sets the gbox._zoom parameter, only works before gbox.initScreen is called.
+  * @param {Integer} Zoom factor.
+  */
 	setZoom:function(z) { this._zoom=z},
-	// setCallback is deprecated, as cb is now passed directly into loadAll(). Leaving it in for backwards compatibility.
+
+  /**
+  * Deprecated: gbox._cb is now set by passing it directly into gbox.loadAll(). Left in for backwards compatibility.
+  * @param {String} The name of the function to be called once gbox.loadAll is completed.
+  */
 	setCallback:function(cb) { this._cb=cb; },
+
 	_playobject:function(g,obj,a) {
 		if (gbox._objects[g][obj].initialize) {
 			gbox._objects[g][obj].initialize(obj);
@@ -418,6 +485,7 @@ var gbox={
 		}
 		if (gbox._objects[g][obj][a]) gbox._objects[g][obj][a](obj,a);
 	},
+
 	_nextframe:function(){
 		gbox._framestart=gbox._mspf-(new Date().getTime()-gbox._framestart);
 		if (gbox._autoskip)
@@ -426,6 +494,10 @@ var gbox={
 		if (gbox._statbar) gbox.debugGetstats();
 		this._gametimer=setTimeout(gbox.go,(gbox._framestart<=0?1:gbox._framestart));		
 	},
+
+  /**
+  * This function kicks off the main loop and state machine for the game.
+  */
 	go:function() {
 		if (gbox._loaderqueue.isBusy()) {
 			if (gbox._gamewaiting==1) {
@@ -495,7 +567,10 @@ var gbox={
 				gbox._nextframe();
 		}
 	},
-	
+  
+  /**
+  * Displays basic audio, object, and performance statistics in the status bar. Automatically called each frame if the status bar is enabled.
+  */
 	debugGetstats:function() {
 		var statline="Idle: "+gbox._framestart+"/"+gbox._mspf+(gbox._frameskip>0?" ("+gbox._frameskip+"skip)":"")+" | ";
 		var cnt=0;
@@ -523,16 +598,43 @@ var gbox={
 			*/
 		gbox.setStatBar(statline);
 	},
+  
 	setZindex:function(th,z) {
 		if ((th.__zt==null)||(th.zindex!=z)) {
 			th.zindex=z;
 			this._zindexch.push({o:{g:th.group,o:th.id},z:z});
 		}
 	},
+
+  /**
+  * Returns true if a given key in this._keymap is pressed. Only returns true on the transition from unpressed to pressed.
+  * @param {String} A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
+  * @returns {Boolean} True if the given key is transitioning from unpressed to pressed in this frame.
+  */
 	keyIsHit:function(id) { return this._keyboard[this._keymap[id]]==1},
+  
+  /**
+  * Returns true if a given key in this._keymap is being held down. Returns true as long as the key is held down.
+  * @param {String} A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
+  * @returns {Boolean} True if the given key is held down.
+  */  
 	keyIsPressed:function(id) { return this._keyboard[this._keymap[id]]>0},
+
+  /**
+  * Returns true if a given key in this._keymap has been held down for at least one frame. Will not return true if a key
+  * is quickly tapped, only once it has been held down for a frame.
+  * @param {String} A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
+  * @returns {Boolean} True if the given key has been held down for at least one frame.
+  */  
 	keyIsHold:function(id) { return this._keyboard[this._keymap[id]]>1},
+  
+  /**
+  * Returns true if a given key in this._keymap is released. Only returns true on the transition from pressed to unpressed.
+  * @param {String} A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
+  * @returns {Boolean} True if the given key is transitioning from pressed to unpressed in this frame.
+  */
 	keyIsReleased:function(id) { return this._keyboard[this._keymap[id]]==-1},
+  
 	_savesettings:function() {
 		var saved="";
 		for (var k in this._keymap) saved+="keymap-"+k+":"+this._keymap[k]+"~";
