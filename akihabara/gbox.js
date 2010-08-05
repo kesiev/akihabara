@@ -659,17 +659,18 @@ var gbox={
 	},
 
   /**
-  * Saves data to a browser cookie as a key-value pair, which can be restored later using gbox.dataLoad. Only works if user has cookies enabled.
+  * Saves data to a browser cookie as a key-value pair, which can be restored later using gbox.dataLoad. Only 
+  * works if user has cookies enabled.
   * @param {String} k The key which identifies the value you are storing.
   * @param {String} v The value you wish to store. Needs to be a string!
-  * @param {String} d A date switch TODO: update this
+  * @param {String} d A date offset, to be added to the current date. Defines the cookie's expiration date. By default this is set to 10 years.
   * @example
   * // (from Capman)
   * gbox.dataSave("capman-hiscore",maingame.hud.getNumberValue("score","value"));
   */
 	dataSave:function(k,v,d) { 
 		var date = new Date();
-		date.setTime(date.getTime()+((d?d:356*10)*24*60*60*1000));
+		date.setTime(date.getTime()+((d?d:365*10)*24*60*60*1000));
 		document.cookie =this._systemcookie+"~"+k+"="+v+"; expires="+date.toGMTString()+"; path=/";
 	},
   
@@ -827,17 +828,50 @@ var gbox={
 	stopGroups:function(gid){for (var i=0;i<gid.length;i++)this.stopGroup(gid[i])},
 	toggleGroups:function(gid){for (var i=0;i<gid.length;i++)this.toggleGroup(gid[i])},
   
-  
+  /**
+  * Given a group and an id for a particular object instance, this returns the instance requested.
+  * <b>NOTE:</b> this does not return a copy of the object you've requested! Any modifications you make
+  * to the object returned are directly modifying the object you requested.
+  * @param {String} group The id of the group that contains the object.
+  * @param {String} id The id of the instance of the object.
+  * @returns {Object} The object requested.
+  * @example
+  * // Find the player and reduce health by half.
+  * playertemp = gbox.getObject('player','player_id');
+  * player.health = player.health/2;
+  */ 
 	getObject:function(group,id) {return this._objects[group][id]},
+
+  /**
+  * Creates a font. Must be send an object containing: <ul><li>id: the id of the font</li>
+  * <li>image: reference to the font image loaded (must contain font character tiles in ASCII order)</li>
+  * <li>firstletter: the ASCII character that the font image's first character corresponds to</li>
+  * <li>tileh: height in pixels of the character tiles</li>
+  * <li>tilew: width in pixels of the character tiles</li>
+  * <li>tilerow: width in pixels of each row in the font image</li>
+  * <li>gapx: x-coord gap between tile columns, in pixels</li>
+  * <li>gapy: y-coord gap between tile rows, in pixels</li></ul>
+  * @param {Object} data An object formatted as detailed above.
+  * @example
+  * gbox.addImage('font', 'font.png');
+  * gbox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });
+  */ 
 	addFont:function(data) {
 		data.tilehh=Math.floor(data.tileh/2);
 		data.tilehw=Math.floor(data.tilew/2);
 		this._fonts[data.id]=data;
 		this._fonts[data.id].firstascii=data.firstletter.charCodeAt(0);
 	},
+  
+  /**
+  * Returns a font object containing data about the font.
+  * @param {String} id The id of the font, as set in gbox.addFont.
+  */   
 	getFont:function(id) {
 		return this._fonts[id];
 	},
+
+
 	trashObject:function(obj) {
 		if (!this._garbage[obj.group]) this._garbage[obj.group]={};
 		this._garbage[obj.group][obj.id]=1;
