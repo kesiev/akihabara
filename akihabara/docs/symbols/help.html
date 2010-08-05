@@ -285,7 +285,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">help.<b><a href="../symbols/help.html#.cloneObject">cloneObject</a></b>(model)
 								</div>
-								<div class="description"></div>
+								<div class="description">Creates a duplicate of an existing set of parameters.</div>
 							</td>
 						</tr>
 					
@@ -294,7 +294,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">help.<b><a href="../symbols/help.html#.copyModel">copyModel</a></b>(data, model)
 								</div>
-								<div class="description">Merges two objects together overwriting any existing parameters.</div>
+								<div class="description">Merges two sets of parameters together overwriting any existing parameters.</div>
 							</td>
 						</tr>
 					
@@ -303,7 +303,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">help.<b><a href="../symbols/help.html#.createModel">createModel</a></b>(obj, attrs)
 								</div>
-								<div class="description"></div>
+								<div class="description">Creates a subset of an existing set of parameters.</div>
 							</td>
 						</tr>
 					
@@ -339,7 +339,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">help.<b><a href="../symbols/help.html#.framestotime">framestotime</a></b>(frames)
 								</div>
-								<div class="description"></div>
+								<div class="description">Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds).</div>
 							</td>
 						</tr>
 					
@@ -348,7 +348,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">help.<b><a href="../symbols/help.html#.getArrayCapped">getArrayCapped</a></b>(a, id)
 								</div>
-								<div class="description"></div>
+								<div class="description">Returns the Nth element in an array.</div>
 							</td>
 						</tr>
 					
@@ -438,7 +438,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">help.<b><a href="../symbols/help.html#.mergeWithModel">mergeWithModel</a></b>(data, model)
 								</div>
-								<div class="description">Merges two objects together without overwriting existing parameters.</div>
+								<div class="description">Merges two sets of parameters together without overwriting existing parameters.</div>
 							</td>
 						</tr>
 					
@@ -691,10 +691,14 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Creates a duplicate of an existing set of parameters.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">data = {a: 1, b: 2, c: "three"};newdata = help.cloneObject(data);newdata => {a: 1, b: 2, c: "three"}</pre>
 					
 					
 					
@@ -703,16 +707,23 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>model</b>
+									<span class="light fixedFont">{Object}</span> <b>model</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An object containing a set of parameters.</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>A new object, equivalent to 'model'.</dd>
+							
+							</dl>
 						
 						
 						
@@ -727,10 +738,14 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Merges two objects together overwriting any existing parameters. This merges model->data, and if data and model share parameters, data's are overwritten by model's.
+						Merges two sets of parameters together overwriting any existing parameters. This merges model->data, and if data and model share parameters, data's are overwritten by model's.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged => {a: 1, b: 2, c: "three", d: "four"}</pre>
 					
 					
 					
@@ -776,10 +791,14 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Creates a subset of an existing set of parameters.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">data = {a: 1, b: 2, c: "three"};newdata = help.createModel(data, ["a", "c"]);newdata => {a: 1, c: "three"}</pre>
 					
 					
 					
@@ -788,22 +807,29 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>obj</b>
+									<span class="light fixedFont">{Object}</span> <b>obj</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An object containing a set of parameters, the source of the data.</dd>
 							
 								<dt>
-									<b>attrs</b>
+									<span class="light fixedFont">{Array}</span> <b>attrs</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An array of strings, containing the names of parameters you wish to copy.</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>A new set of parameters based on the subset specified.</dd>
+							
+							</dl>
 						
 						
 						
@@ -959,10 +985,14 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds). Calculated using the current frames per second.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">// Assuming 25 frames per second, Akihabara's default.timestamp = help.framestotime(25);timestamp => '00:01:00';timestamp = help.framestotime(25 * 60);timestamp => '01:00:00';</pre>
 					
 					
 					
@@ -971,16 +1001,23 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>frames</b>
+									<span class="light fixedFont">{Integer}</span> <b>frames</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>A quantity of frames.</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>A string containing a timestamp formatted "mm:ss:cs", representing the length of time it would take to render that many frames.</dd>
+							
+							</dl>
 						
 						
 						
@@ -995,7 +1032,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Returns the Nth element in an array. If the array is shorter than N, it returns the last element of the array.
 						
 						
 					</div>
@@ -1007,22 +1044,29 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>a</b>
+									<span class="light fixedFont">{Array}</span> <b>a</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An array.</dd>
 							
 								<dt>
-									<b>id</b>
+									<span class="light fixedFont">{Integer}</span> <b>id</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An index to the array.</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>If id > a.length, it returns a[a.length-1]. Otherwise returns a[id].</dd>
+							
+							</dl>
 						
 						
 						
@@ -1445,10 +1489,14 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						Merges two objects together without overwriting existing parameters. This merges model->data, and if data and model share parameters, data's values remain intact.
+						Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged => {a: 1, b: 2, c: 3, d: "four"};</pre>
 					
 					
 					
@@ -2132,7 +2180,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Wed Aug 04 2010 15:57:23 GMT-0400 (EDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Wed Aug 04 2010 18:39:14 GMT-0400 (EDT)
 		</div>
 	</body>
 </html>

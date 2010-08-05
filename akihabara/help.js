@@ -258,10 +258,15 @@ You need at least a null entry, followed by one numerical entry for each tile ty
 	goToZero:function(v) { return (v?v-(v/Math.abs(v)):0); },
 	
   /**
-  * Merges two objects together without overwriting existing parameters. This merges model->data, and if data and model share parameters, data's values remain intact.
+  * Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact.
   * @param {Object} data An object containing a set of parameters, the destination of the merge.
   * @param {Object} model An object containing a set of parameters, the source of the merge.
   * @returns A merged model where the values of 'data' remain untouched: only new parameters and values from 'model' make it in.
+  * @example
+  * dst = {a: 1, b: 2, c: "three"};
+  * src = {c: "three", d: "four"};
+  * merged = help.mergeWithModel(dst,src);
+  * merged => {a: 1, b: 2, c: 3, d: "four"};
   */	
 	mergeWithModel:function(data,model) {
 		if (data==null) data={};
@@ -272,10 +277,15 @@ You need at least a null entry, followed by one numerical entry for each tile ty
 	},
 	
   /**
-  * Merges two objects together overwriting any existing parameters. This merges model->data, and if data and model share parameters, data's are overwritten by model's.
+  * Merges two sets of parameters together overwriting any existing parameters. This merges model->data, and if data and model share parameters, data's are overwritten by model's.
   * @param {Object} data An object containing a set of parameters, the destination of the merge.
   * @param {Object} model An object containing a set of parameters, the source of the merge.
   * @returns A merged model where the values of 'model' take precedence over those of 'data'. The 'data' object is returned and will be an exact copy of 'model', plus any parameters that 'data' had before the merge that 'model' did not.
+  * @example
+  * dst = {a: 1, b: 2, c: "three"};
+  * src = {c: "three", d: "four"};
+  * merged = help.mergeWithModel(dst,src);
+  * merged => {a: 1, b: 2, c: "three", d: "four"}
   */	
 	copyModel:function(data,model) {
 		if (data==null) data={};
@@ -283,15 +293,32 @@ You need at least a null entry, followed by one numerical entry for each tile ty
 			for (var i in model) data[i]=model[i];
 		return data;
 	},
-	
-	// Create a model from an object (copies attributes)
+
+  /**
+  * Creates a subset of an existing set of parameters.
+  * @param {Object} obj An object containing a set of parameters, the source of the data.
+  * @param {Array} attrs An array of strings, containing the names of parameters you wish to copy.
+  * @returns A new set of parameters based on the subset specified.
+  * @example
+  * data = {a: 1, b: 2, c: "three"};
+  * newdata = help.createModel(data, ["a", "c"]);
+  * newdata => {a: 1, c: "three"}
+  */	
 	createModel:function(obj,attrs) {
 		var ret={};
 		for (var i=0;i<attrs.length;i++) ret[attrs[i]]=obj[attrs[i]];
 		return ret;
 	},
 	
-	// Clones an objecy
+  /**
+  * Creates a duplicate of an existing set of parameters.
+  * @param {Object} model An object containing a set of parameters.
+  * @returns A new object, equivalent to 'model'.
+  * @example
+  * data = {a: 1, b: 2, c: "three"};
+  * newdata = help.cloneObject(data);
+  * newdata => {a: 1, b: 2, c: "three"}
+  */	
 	cloneObject:function(model) {
 		if (!model) return model;
 		var data={};
@@ -299,7 +326,20 @@ You need at least a null entry, followed by one numerical entry for each tile ty
 		return data;
 	},
 	
-	// Blit a tile in a map and changes a surface accordingly
+  /**
+  * @function
+  * Sets a tile in the map and draws it. Does not return anything.
+  * @param {Object} ctx The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")
+  * @param {Object} map The game map object.
+  * @param {Integer} x The index of the tile column within the map array -- so a 1 would mean the second column of tiles. 
+  * @param {Integer} y The index of the tile row within the map array -- so a 1 would mean the second row of tiles. 
+  * @param {Integer} tile The integer representing the new tile you wish to draw. This is its index within the tileset; a null value will erase whatever tile is present.
+  * @param {String} The ID of the map. Defaults to 'map'.
+  * @example
+  * // Remove the second tile to the right and down from the upper left corner of the tile map. Assumes our map canvas is called 'map_canvas'.
+  * help.setTileInMap(gbox.getCanvasContext("map_canvas"),map,1,1,null,"map");
+  */	  
+ help.setTileInMap(gbox.getCanvasContext("map_canvas"),map,1,1,null,"map");
 	setTileInMap:function(ctx,tilemap,x,y,tile,map) {
 		var ts=gbox.getTiles(tilemap.tileset);
 		tilemap[(map==null?"map":map)][y][x]=tile;
@@ -309,7 +349,13 @@ You need at least a null entry, followed by one numerical entry for each tile ty
 			gbox.blitTile(ctx,{tileset:tilemap.tileset,tile:tile,dx:x*ts.tilew,dy:y*ts.tilew});
 	},
 	
-	// Get the item of an array, if available. Else returns the last one
+
+  /**
+  * Returns the Nth element in an array. If the array is shorter than N, it returns the last element of the array.
+  * @param {Array} a An array.
+  * @param {Integer} id An index to the array.
+  * @returns If id > a.length, it returns a[a.length-1]. Otherwise returns a[id].
+  */	
 	getArrayCapped:function(a,id) {
 		if (id>=a.length) return a[a.length-1]; else return a[id];
 	},
@@ -323,7 +369,17 @@ You need at least a null entry, followed by one numerical entry for each tile ty
 	},
 	
 			
-	// Convert frames to minutes, seconds and csecs
+  /**
+  * Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds). Calculated using the current frames per second.
+  * @param {Integer} frames A quantity of frames.
+  * @returns A string containing a timestamp formatted "mm:ss:cs", representing the length of time it would take to render that many frames.
+  * @example
+  * // Assuming 25 frames per second, Akihabara's default.
+  * timestamp = help.framestotime(25);
+  * timestamp => '00:01:00';
+  * timestamp = help.framestotime(25 * 60);
+  * timestamp => '01:00:00';  
+  */	
 	framestotime:function(frames) {
 		var csec=Math.ceil(frames/gbox.getFps()*100);
 		return this.prepad((Math.floor(csec/6000)%60),2,"0")+":"+this.prepad((Math.floor(csec/100)%60),2,"0")+":"+this.prepad(csec%100,2,"0");
