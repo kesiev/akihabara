@@ -7,2217 +7,2641 @@
 		
 		<title>JsDoc Reference - help</title>
 
-		<style type="text/css">
-			/* default.css */
-body
-{
-	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
-	width: 800px;
-}
-
-.header
-{
-	clear: both;
-	background-color: #ccc;
-	padding: 8px;
-}
-
-h1
-{
-	font-size: 150%;
-	font-weight: bold;
-	padding: 0;
-	margin: 1em 0 0 .3em;
-}
-
-hr
-{
-	border: none 0;
-	border-top: 1px solid #7F8FB1;
-	height: 1px;
-}
-
-pre.code
-{
-	display: block;
-	padding: 8px;
-	border: 1px dashed #ccc;
-}
-
-#index
-{
-	margin-top: 24px;
-	float: left;
-	width: 160px;
-	position: absolute;
-	left: 8px;
-	background-color: #F3F3F3;
-	padding: 8px;
-}
-
-#content
-{
-	margin-left: 190px;
-	width: 600px;
-}
-
-.classList
-{
-	list-style-type: none;
-	padding: 0;
-	margin: 0 0 0 8px;
-	font-family: arial, sans-serif;
-	font-size: 1em;
-	overflow: auto;
-}
-
-.classList li
-{
-	padding: 0;
-	margin: 0 0 8px 0;
-}
-
-.summaryTable { width: 100%; }
-
-h1.classTitle
-{
-	font-size:170%;
-	line-height:130%;
-}
-
-h2 { font-size: 110%; }
-caption, div.sectionTitle
-{
-	background-color: #7F8FB1;
-	color: #fff;
-	font-size:130%;
-	text-align: left;
-	padding: 2px 6px 2px 6px;
-	border: 1px #7F8FB1 solid;
-}
-
-div.sectionTitle { margin-bottom: 8px; }
-.summaryTable thead { display: none; }
-
-.summaryTable td
-{
-	vertical-align: top;
-	padding: 4px;
-	border-bottom: 1px #7F8FB1 solid;
-	border-right: 1px #7F8FB1 solid;
-}
-
-/*col#summaryAttributes {}*/
-.summaryTable td.attributes
-{
-	border-left: 1px #7F8FB1 solid;
-	width: 140px;
-	text-align: right;
-}
-
-td.attributes, .fixedFont
-{
-	line-height: 15px;
-	color: #002EBE;
-	font-family: "Courier New",Courier,monospace;
-	font-size: 13px;
-}
-
-.summaryTable td.nameDescription
-{
-	text-align: left;
-	font-size: 13px;
-	line-height: 15px;
-}
-
-.summaryTable td.nameDescription, .description
-{
-	line-height: 15px;
-	padding: 4px;
-	padding-left: 4px;
-}
-
-.summaryTable { margin-bottom: 8px; }
-
-ul.inheritsList
-{
-	list-style: square;
-	margin-left: 20px;
-	padding-left: 0;
-}
-
-.detailList {
-	margin-left: 20px; 
-	line-height: 15px;
-}
-.detailList dt { margin-left: 20px; }
-
-.detailList .heading
-{
-	font-weight: bold;
-	padding-bottom: 6px;
-	margin-left: 0;
-}
-
-.light, td.attributes, .light a:link, .light a:visited
-{
-	color: #777;
-	font-style: italic;
-}
-
-.fineprint
-{
-	text-align: right;
-	font-size: 10px;
-}
-		</style>
+    <script type="text/javascript" src="../jproton.js"></script>
+    <script type="text/javascript" src="../ui.js"></script>
+    <script type="text/javascript" src="../sh.js"></script>
+		<link rel=stylesheet href="../sh.css" type="text/css">
+		<link rel=stylesheet href="../default.css" type="text/css">
 	</head>
 
 	<body>
-<!-- ============================== header ================================= -->	
-		<!-- begin static/header.html -->
-		<div id="header">
-</div>
-		<!-- end static/header.html -->
-
+		<div id="main-wrapper">
+			<div id="main">
 <!-- ============================== classes index ============================ -->
-		<div id="index">
-			<!-- begin publish.classesIndex -->
-			<div align="center"><a href="../index.html">Class Index</a>
-| <a href="../files.html">File Index</a></div>
-<hr />
-<h2>Classes</h2>
-<ul class="classList">
+				<div id="index" class="fixed">
+					<div id="index-wrapper">
+	<div class="header">
+	  <div id="index-close" title="Esconde o outline.">&nbsp;</div>
+	  <div id="index-title">Project Outline</div>
+	</div>
+	<div id="index-menu"><a href="../index.html">Class Index</a>
+	| <a href="../files.html">File Index</a></div>
 	
-	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
-	
-	<li><a href="../symbols/gbox.html">gbox</a></li>
-	
-	<li><a href="../symbols/help.html">help</a></li>
-	
-	<li><a href="../symbols/iphopad.html">iphopad</a></li>
-	
-	<li><a href="../symbols/tool.html">tool</a></li>
-	
-	<li><a href="../symbols/trigo.html">trigo</a></li>
-	
-</ul>
-<hr />
-			<!-- end publish.classesIndex -->
-		</div>
+	<div id="index-content">
 		
-		<div id="content">
+		<div class="classList">
+			
+			<div class="section">
+				<div title='Global namespace.' class='itemName namespace'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><i><a href="../symbols/_global_.html">_global_</a></i></span></div><div class='sectionItems'><div class='sectionItem classProperty'><b class='icon' title='Gamecycle contains your basic game loop: intro, menus, crossfading between stages/lifes, gameover and ending.'><a href="../symbols/_global_.html#gamecycle">gamecycle</a></b></div><div class='sectionItem classProperty'><b class='icon' title='Fretboard module provides a touchpad for touch-based device (for now, Android and iDevices).'><a href="../symbols/_global_.html#iphofretboard">iphofretboard</a></b></div><div class='sectionItem classProperty'><b class='icon' title='Toys module provides lots of common routines during the game developing: from effects for screen titles to HUD handling to platform/SHMUP/RPG oriented routines, like jumping characters, Z-Indexed objects, bullets, sparks, staff rolls, bonus screens, dialogues etc.'><a href="../symbols/_global_.html#toys">toys</a></b></div></div></div>
+			
+			<div class="section">
+				<div title='' class='itemName namespace'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/gbox.html">gbox</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setCanLog">setCanLog</a></b><span class='signature'>(<span>c</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.canLog">canLog</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.log">log</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Sets the gbox.'><a href="../symbols/gbox.html#.setForcedIdle">setForcedIdle</a></b><span class='signature'>(<span title="(Boolean) The value to write to gbox.">f</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns a gbox flag at index f.'><a href="../symbols/gbox.html#.getFlag">getFlag</a></b><span class='signature'>(<span title="(Object) The index of the flag you want returned.">f</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Sets the gbox.'><a href="../symbols/gbox.html#.setStatusBar">setStatusBar</a></b><span class='signature'>(<span title="(Boolean) The value to write to gbox.">f</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setScreenBorder">setScreenBorder</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Initializes the screen to a certain width and height, applies zoom attributes, populates the body of the HTML document including the canvas element, sets an initial camera, creates a '_buffer' canvas, sets keyboard event listeners, and many other initialization functions.'><a href="../symbols/gbox.html#.initScreen">initScreen</a></b><span class='signature'>(<span title="(Integer) The width of the main canvas.">w</span>, <span title="(Integer) The height of the main canvas.">h</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Sets the gbox.'><a href="../symbols/gbox.html#.setDoubleBuffering">setDoubleBuffering</a></b><span class='signature'>(<span title="(Boolean) The value to write to gbox.">db</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Writes text to the status bar, but only if the status bar is enabled.'><a href="../symbols/gbox.html#.setStatBar">setStatBar</a></b><span class='signature'>(<span title="(String) The text to write to the status bar.">txt</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Set the frames per second rate.'><a href="../symbols/gbox.html#.setFps">setFps</a></b><span class='signature'>(<span title="(Integer) Total frames per second for the game to run at.">f</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Get the frames per second rate (default is 25).'><a href="../symbols/gbox.html#.getFps">getFps</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAutoskip">setAutoskip</a></b><span class='signature'>(<span>f</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setFrameskip">setFrameskip</a></b><span class='signature'>(<span>f</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Get the screen height.'><a href="../symbols/gbox.html#.getScreenH">getScreenH</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Get the screen width.'><a href="../symbols/gbox.html#.getScreenW">getScreenW</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Get the screen half-height.'><a href="../symbols/gbox.html#.getScreenHH">getScreenHH</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Get the screen half-width.'><a href="../symbols/gbox.html#.getScreenHW">getScreenHW</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Sets the gbox.'><a href="../symbols/gbox.html#.setZoom">setZoom</a></b><span class='signature'>(<span title="(Integer) factor.">Zoom</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Deprecated: gbox.'><a href="../symbols/gbox.html#.setCallback">setCallback</a></b><span class='signature'>(<span title="(String) name of the function to be called once gbox.loadAll is completed.">The</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='This function is called once per frame.'><a href="../symbols/gbox.html#.go">go</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Displays basic audio, object, and performance statistics in the status bar.'><a href="../symbols/gbox.html#.debugGetstats">debugGetstats</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setZindex">setZindex</a></b><span class='signature'>(<span>th</span>, <span>z</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns true if a given key in this.'><a href="../symbols/gbox.html#.keyIsHit">keyIsHit</a></b><span class='signature'>(<span title="(String) A key in the keymap.">id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns true if a given key in this.'><a href="../symbols/gbox.html#.keyIsPressed">keyIsPressed</a></b><span class='signature'>(<span title="(String) A key in the keymap.">id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns true if a given key in this.'><a href="../symbols/gbox.html#.keyIsHold">keyIsHold</a></b><span class='signature'>(<span title="(String) A key in the keymap.">id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns true if a given key in this.'><a href="../symbols/gbox.html#.keyIsReleased">keyIsReleased</a></b><span class='signature'>(<span title="(String) A key in the keymap.">id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Saves data to a browser cookie as a key-value pair, which can be restored later using gbox.dataLoad.'><a href="../symbols/gbox.html#.dataSave">dataSave</a></b><span class='signature'>(<span title="(String) The key which identifies the value you are storing.">k</span>, <span title="(String) The value you wish to store.">v</span>, <span title="(String) A date offset, to be added to the current date.">d</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Loads data from a browser cookie.'><a href="../symbols/gbox.html#.dataLoad">dataLoad</a></b><span class='signature'>(<span title="(String) The key which identifies the value you are loading.">k</span>, <span title="(String) A switch to determine whether a string or a number is returned.">a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Clears a value stored in a key-value pair in a browser cookie.'><a href="../symbols/gbox.html#.dataClear">dataClear</a></b><span class='signature'>(<span title="(String) The key which identifies the value you are clearing.">k</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Gets the current camera object.'><a href="../symbols/gbox.html#.getCamera">getCamera</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Sets the y value of the current camera object.'><a href="../symbols/gbox.html#.setCameraY">setCameraY</a></b><span class='signature'>(<span title="(Integer) The camera object's new y value.">y</span>, <span title="(Object) An object containing parameters h and w, which are a bounding box that the camera is not supposed to leave.">viewdata</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Sets the x value of the current camera object.'><a href="../symbols/gbox.html#.setCameraX">setCameraX</a></b><span class='signature'>(<span title="(Integer) The camera object's new x value.">x</span>, <span title="(Object) An object containing parameters h and w, which are a bounding box that the camera is not supposed to leave.">viewdata</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Centers the camera.'><a href="../symbols/gbox.html#.centerCamera">centerCamera</a></b><span class='signature'>(<span title="(Object) An object containing x and y parameters -- typically the object you wish to center the camera on.">data</span>, <span title="(Object) An object containing parameters h and w, which are a bounding box that the camera is not supposed to leave.">viewdata</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Get an array containing the names of each group in the game, in order of rendering.'><a href="../symbols/gbox.html#.getGroups">getGroups</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Defines the names of each group in the game along with their rendering order.'><a href="../symbols/gbox.html#.setGroups">setGroups</a></b><span class='signature'>(<span title="(Array) An array of strings of group names, in the order in which the groups should be rendered.">g</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='A method of setting the render order of groups independently of gbox.setGroups.'><a href="../symbols/gbox.html#.setRenderOrder">setRenderOrder</a></b><span class='signature'>(<span title="(Array) An array of strings of group names, in the order in which the groups should be rendered.">g</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='If a group is disabled, this will enable the group.'><a href="../symbols/gbox.html#.playGroup">playGroup</a></b><span class='signature'>(<span title="(String) The id of the group.">gid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='If a group is enabled, this will disable the group.'><a href="../symbols/gbox.html#.stopGroup">stopGroup</a></b><span class='signature'>(<span title="(String) The id of the group.">gid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Toggles a group between enabled and disabled status.'><a href="../symbols/gbox.html#.toggleGroup">toggleGroup</a></b><span class='signature'>(<span title="(String) The id of the group.">gid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Turns off all groups except for the one specified.'><a href="../symbols/gbox.html#.soloGroup">soloGroup</a></b><span class='signature'>(<span title="(String) The id of the group.">gid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Enables all groups, toggling any groups that are currently disabled.'><a href="../symbols/gbox.html#.playAllGroups">playAllGroups</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='Destroys all objects in a given group.'><a href="../symbols/gbox.html#.clearGroup">clearGroup</a></b><span class='signature'>(<span title="(String) The id of the group.">gid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.playGroups">playGroups</a></b><span class='signature'>(<span>gid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.stopGroups">stopGroups</a></b><span class='signature'>(<span>gid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.toggleGroups">toggleGroups</a></b><span class='signature'>(<span>gid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Given a group and an id for a particular object instance, this returns the instance requested.'><a href="../symbols/gbox.html#.getObject">getObject</a></b><span class='signature'>(<span title="(String) The id of the group that contains the object.">group</span>, <span title="(String) The id of the instance of the object.">id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Creates a font.'><a href="../symbols/gbox.html#.addFont">addFont</a></b><span class='signature'>(<span title="(Object) An object formatted as detailed above.">data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns a font object containing data about the font.'><a href="../symbols/gbox.html#.getFont">getFont</a></b><span class='signature'>(<span title="(String) The id of the font, as set in gbox.addFont.">id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Deletes an object, keeping a record of its group and id in gbox.'><a href="../symbols/gbox.html#.trashObject">trashObject</a></b><span class='signature'>(<span title="(Object) The object you wish to delete.">obj</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Clears the record held in gbox.'><a href="../symbols/gbox.html#.purgeGarbage">purgeGarbage</a></b><span class='signature'>(<span title="(Object) The object you wish to delete.">obj</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Deletes every object in a given group.'><a href="../symbols/gbox.html#.trashGroup">trashGroup</a></b><span class='signature'>(<span title="(String) The group id.">group</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns whether an object is due to be trashed.'><a href="../symbols/gbox.html#.objectIsTrash">objectIsTrash</a></b><span class='signature'>(<span title="(Object) The object you're checking.">o</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Creates a new game object.'><a href="../symbols/gbox.html#.addObject">addObject</a></b><span class='signature'>(<span title="(Object) The object you wish to create.">data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns whether a given group contains no objets.'><a href="../symbols/gbox.html#.groupIsEmpty">groupIsEmpty</a></b><span class='signature'>(<span title="(String) The group you're checking.">gid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.createCanvas">createCanvas</a></b><span class='signature'>(<span>id</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.deleteCanvas">deleteCanvas</a></b><span class='signature'>(<span>id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.imageIsLoaded">imageIsLoaded</a></b><span class='signature'>(<span>id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getImage">getImage</a></b><span class='signature'>(<span>id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getBuffer">getBuffer</a></b><span class='signature'>(<span>id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getBufferContext">getBufferContext</a></b><span class='signature'>(<span>id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getCanvas">getCanvas</a></b><span class='signature'>(<span>id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getCanvasContext">getCanvasContext</a></b><span class='signature'>(<span>id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.addImage">addImage</a></b><span class='signature'>(<span>id</span>, <span>filename</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.deleteImage">deleteImage</a></b><span class='signature'>(<span>id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.addTiles">addTiles</a></b><span class='signature'>(<span>t</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getTiles">getTiles</a></b><span class='signature'>(<span>t</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.loadAll">loadAll</a></b><span class='signature'>(<span>cb</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.blitTile">blitTile</a></b><span class='signature'>(<span>tox</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.blitAll">blitAll</a></b><span class='signature'>(<span>tox</span>, <span>image</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.blit">blit</a></b><span class='signature'>(<span>tox</span>, <span>image</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.blitTilemap">blitTilemap</a></b><span class='signature'>(<span>tox</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.blitText">blitText</a></b><span class='signature'>(<span>tox</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.blitClear">blitClear</a></b><span class='signature'>(<span>image</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.blitImageToScreen">blitImageToScreen</a></b><span class='signature'>(<span>image</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.blitFade">blitFade</a></b><span class='signature'>(<span>tox</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.blitRect">blitRect</a></b><span class='signature'>(<span>tox</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.collides">collides</a></b><span class='signature'>(<span>o1</span>, <span>o2</span>, <span>t</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.pixelcollides">pixelcollides</a></b><span class='signature'>(<span>o1</span>, <span>o2</span>, <span>t</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.objectIsVisible">objectIsVisible</a></b><span class='signature'>(<span>obj</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getAudioIsSingleChannel">getAudioIsSingleChannel</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioPositionDelay">setAudioPositionDelay</a></b><span class='signature'>(<span>m</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioDequeueTime">setAudioDequeueTime</a></b><span class='signature'>(<span>m</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setShowPlayers">setShowPlayers</a></b><span class='signature'>(<span>m</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioCompatMode">setAudioCompatMode</a></b><span class='signature'>(<span>m</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioCreateMode">setAudioCreateMode</a></b><span class='signature'>(<span>m</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.addAudio">addAudio</a></b><span class='signature'>(<span>id</span>, <span>filename</span>, <span>def</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.deleteAudio">deleteAudio</a></b><span class='signature'>(<span>id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.playAudio">playAudio</a></b><span class='signature'>(<span>a</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.hitAudio">hitAudio</a></b><span class='signature'>(<span>a</span>, <span>data</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.stopAudio">stopAudio</a></b><span class='signature'>(<span>a</span>, <span>permissive</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setSplashSettings">setSplashSettings</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.resetChannel">resetChannel</a></b><span class='signature'>(<span>ch</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getChannelDefaultVolume">getChannelDefaultVolume</a></b><span class='signature'>(<span>ch</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setChannelVolume">setChannelVolume</a></b><span class='signature'>(<span>ch</span>, <span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getChannelVolume">getChannelVolume</a></b><span class='signature'>(<span>ch</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.changeChannelVolume">changeChannelVolume</a></b><span class='signature'>(<span>ch</span>, <span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.stopChannel">stopChannel</a></b><span class='signature'>(<span>ch</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioUnmute">setAudioUnmute</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioMute">setAudioMute</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getAudioMute">getAudioMute</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioVolume">setAudioVolume</a></b><span class='signature'>(<span>a</span>, <span>vol</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getAudioVolume">getAudioVolume</a></b><span class='signature'>(<span>a</span>, <span>vol</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioPosition">setAudioPosition</a></b><span class='signature'>(<span>a</span>, <span>p</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getAudioPosition">getAudioPosition</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.getAudioDuration">getAudioDuration</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.changeAudioVolume">changeAudioVolume</a></b><span class='signature'>(<span>a</span>, <span>vol</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setCanAudio">setCanAudio</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioChannels">setAudioChannels</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setAudioTeam">setAudioTeam</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.setLowerAudioTeam">setLowerAudioTeam</a></b><span class='signature'>(<span>a</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.addScript">addScript</a></b><span class='signature'>(<span>call</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.addBundle">addBundle</a></b><span class='signature'>(<span>call</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.readBundleData">readBundleData</a></b><span class='signature'>(<span>pack</span>, <span>call</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/gbox.html#.clearCache">clearCache</a></b><span class='signature'>()</span></div></div></div>
+			
+			<div class="section">
+				<div title='' class='itemName namespace'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/help.html">help</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='Generates numbers from st to ed, along with a skip value.'><a href="../symbols/help.html#.seq">seq</a></b><span class='signature'>(<span title="(Integer) Starting number.">st</span>, <span title="(Integer) Ending number.">ed</span>, <span title="(Integer) Number to increment by.">skip</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Multiplies two numbers together, returning the result, unless the first parameter is less than 2, in which case it returns 1.'><a href="../symbols/help.html#.multiplier">multiplier</a></b><span class='signature'>(<span title="(Float) First value.">v</span>, <span title="(Float) Second value.">mul</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Prepends a string with repeated instances of another string until it the result is greater than or equal to a desired length.'><a href="../symbols/help.html#.prepad">prepad</a></b><span class='signature'>(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to prepend to str.">pad</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Postpends a string with repeated instances of another string until it the result is greater than or equal to a desired length.'><a href="../symbols/help.html#.postpad">postpad</a></b><span class='signature'>(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to postpend to str.">pad</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Tests to see if an object is being "jumped on" by another object.'><a href="../symbols/help.html#.isSquished">isSquished</a></b><span class='signature'>(<span title="(Object) The object that is (possibly) being jumped on.">th</span>, <span title="(Object) The object doing the jumping-on.">by</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Generates uniformly distributed random integers between min and min+range, non-inclusive.'><a href="../symbols/help.html#.random">random</a></b><span class='signature'>(<span title="(Integer) The minimum random value to be returned by the function.">min</span>, <span title="(Integer) The number of different values returned by the function.">range</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Determines which frame of a given animation to display.'><a href="../symbols/help.html#.decideFrame">decideFrame</a></b><span class='signature'>(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Determines which frame of a given animation to display.'><a href="../symbols/help.html#.decideFrameOnce">decideFrameOnce</a></b><span class='signature'>(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce.'><a href="../symbols/help.html#.isLastFrameOnce">isLastFrameOnce</a></b><span class='signature'>(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Given an incrementing value each step, this will return a value increasing from 0 until max/2, at which point it will decrement to 0, then go back up to max/2, in an endless cycle.'><a href="../symbols/help.html#.upAndDown">upAndDown</a></b><span class='signature'>(<span title="(Integer) A counter.">counter</span>, <span title="(Integer) This determines the period of the function -- assuming counter is incrementing by one, a complete back-and-forth will take 'max' steps.">max</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Given x,y coordinates and map information, this returns the tile at a given point.'><a href="../symbols/help.html#.getTileInMap">getTileInMap</a></b><span class='signature'>(<span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Object) The map object.">map</span>, <span title="(Object) An object or value to be returned if the x,y coordinate pair is outside the map.">ifout</span>, <span title="(String) The id for the map array within the map object.">mapid</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format.'><a href="../symbols/help.html#.asciiArtToMap">asciiArtToMap</a></b><span class='signature'>(<span title="(Array) An array of characters representing a map.">map</span>, <span title="(Array) A translation array.">tra</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Calculates and sets the width and height (map.h, map.w) and half-width and half-height (map.hh, map.hw) of a map object.'><a href="../symbols/help.html#.finalizeTilemap">finalizeTilemap</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Converts an x-coordinate of a pixel to its corresponding tile x-coordinate.'><a href="../symbols/help.html#.xPixelToTileX">xPixelToTileX</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) (Not used.">gap</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Converts a y-coordinate of a pixel to its corresponding tile y-coordinate.'><a href="../symbols/help.html#.yPixelToTileY">yPixelToTileY</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) (Not used.">gap</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Converts an x-coordinate of a pixel to the x-coordinate of the tile column it's in.'><a href="../symbols/help.html#.xPixelToTile">xPixelToTile</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) Number of pixels gap in tilemap.">gap</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Converts a y-coordinate of a pixel to the y-coordinate of the tile row it's in.'><a href="../symbols/help.html#.yPixelToTile">yPixelToTile</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) Number of pixels gap in tilemap.">gap</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Limits a number to a certain range.'><a href="../symbols/help.html#.limit">limit</a></b><span class='signature'>(<span title="(Float) A value.">v</span>, <span title="(Float) The minimum limit.">min</span>, <span title="(Float) The maximum limit.">max</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Subtracts or adds 1 to a value, always converging to zero.'><a href="../symbols/help.html#.goToZero">goToZero</a></b><span class='signature'>(<span title="(Integer) A value.">v</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Merges two sets of parameters together without overwriting existing parameters.'><a href="../symbols/help.html#.mergeWithModel">mergeWithModel</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Merges two sets of parameters together overwriting any existing parameters.'><a href="../symbols/help.html#.copyModel">copyModel</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Creates a subset of an existing set of parameters.'><a href="../symbols/help.html#.createModel">createModel</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters, the source of the data.">obj</span>, <span title="(Array) An array of strings, containing the names of parameters you wish to copy.">attrs</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Creates a duplicate of an existing set of parameters.'><a href="../symbols/help.html#.cloneObject">cloneObject</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters.">model</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Sets a tile in the map and draws it.'><a href="../symbols/help.html#.setTileInMap">setTileInMap</a></b><span class='signature'>(<span title="(Object) The canvas context for the map.">ctx</span>, <span title="(Object) The game map object.">map</span>, <span title="(Integer) The index of the tile column within the map array -- so a 1 would mean the second column of tiles.">x</span>, <span title="(Integer) The index of the tile row within the map array -- so a 1 would mean the second row of tiles.">y</span>, <span title="(Integer) The integer representing the new tile you wish to draw.">tile</span>, <span title="(String) ID of the map.">The</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Returns the Nth element in an array.'><a href="../symbols/help.html#.getArrayCapped">getArrayCapped</a></b><span class='signature'>(<span title="(Array) An array.">a</span>, <span title="(Integer) An index to the array.">id</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title=''><a href="../symbols/help.html#.getArrayIndexed">getArrayIndexed</a></b><span class='signature'>(<span>a</span>, <span>value</span>, <span>field</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds).'><a href="../symbols/help.html#.framestotime">framestotime</a></b><span class='signature'>(<span title="(Integer) A quantity of frames.">frames</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Reads the value of a query parameter from the URL of the web page.'><a href="../symbols/help.html#.geturlparameter">geturlparameter</a></b><span class='signature'>(<span title="(String) The name of the URL parameter.">name</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Writes the contents of an object to a string.'><a href="../symbols/help.html#.objToStr">objToStr</a></b><span class='signature'>(<span title="(Object) object.">Any</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Tests whether an object contains a given parameter.'><a href="../symbols/help.html#.isDefined">isDefined</a></b><span class='signature'>(<span title="(Object) reference to a parameter of an object.">A</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Automatically configures a bunch of settings depending on the web browser and device that is viewing the game.'><a href="../symbols/help.html#.getDeviceConfig">getDeviceConfig</a></b><span class='signature'>()</span></div><div class='sectionItem classMethod'><b class='icon' title='This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc.'><a href="../symbols/help.html#.akihabaraInit">akihabaraInit</a></b><span class='signature'>(<span title="(Object) An optional object containing parameters you wish to set.">data</span>)</span></div></div></div>
+			
+			<div class="section">
+				<div title='' class='itemName namespace'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/iphopad.html">iphopad</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='Initializes the game controls for use with an I-product or Android device.'><a href="../symbols/iphopad.html#.initialize">initialize</a></b><span class='signature'>(<span title="(Object) Passes in information about the screen and its traits such as size.">data</span>)</span></div></div></div>
+			
+			<div class="section">
+				<div title='' class='itemName namespace'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/tool.html">tool</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='This makes the image cells for an animation and adds the load event listeners that the other stuff work to them.'><a href="../symbols/tool.html#.makecels">makecels</a></b><span class='signature'>(<span title="(Object) This is the created animation data being passed in to be used by the function.">data</span>)</span></div></div></div>
+			
+			<div class="section">
+				<div title='' class='itemName namespace'>
+				<div class='method-toggler'>&nbsp;</div><span class='icon'><a href="../symbols/trigo.html">trigo</a></span></div><div class='sectionItems'><div class='sectionItem classMethod'><b class='icon' title='Adds two angles together (radians).'><a href="../symbols/trigo.html#.addAngle">addAngle</a></b><span class='signature'>(<span title="(Float) Base angle.">a</span>, <span title="(Float) The angle you're adding to the base angle.">add</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Gets the distance between two points.'><a href="../symbols/trigo.html#.getDistance">getDistance</a></b><span class='signature'>(<span title="(Object) This is an object containing x and y params for the first point.">p1</span>, <span title="(Object) This is an object containing x and y params for the second point.">p2</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Calculates the angle between two points.'><a href="../symbols/trigo.html#.getAngle">getAngle</a></b><span class='signature'>(<span title="(Object) This is an object containing x and y params for the first point.">p1</span>, <span title="(Object) This is an object containing x and y params for the second point.">p2</span>, <span title="(Float) (Optional) Adds an angle (in radians) to the result.">transl</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Translates a point by a vector defined by angle and distance.'><a href="../symbols/trigo.html#.translate">translate</a></b><span class='signature'>(<span title="(Object) This is an object containing x and y params for the point.">p1</span>, <span title="(Float) The angle of translation (rad).">a</span>, <span title="(Float) The distance of translation.">d</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Translates an x component of a coordinate by a vector defined by angle and distance.'><a href="../symbols/trigo.html#.translateX">translateX</a></b><span class='signature'>(<span title="(Float) This is an x coordinate.">x1</span>, <span title="(Float) The angle of translation (rad).">a</span>, <span title="(Float) The distance of translation.">d</span>)</span></div><div class='sectionItem classMethod'><b class='icon' title='Translates a y component of a coordinate by a vector defined by angle and distance.'><a href="../symbols/trigo.html#.translateY">translateY</a></b><span class='signature'>(<span title="(Float) This is a y coordinate.">y1</span>, <span title="(Float) The angle of translation (rad).">a</span>, <span title="(Float) The distance of translation.">d</span>)</span></div></div></div>
+			
+		</div>
+	</div>
+</div>
+	
+
+				</div>
+				<div id="index-toggler" class="fixed">&laquo;</div>
+
+<!-- ============================== header ================================= -->	
+				<!-- begin static/header.html -->
+				<div class="header">
+  Framework jProton
+</div>
+
+				<!-- end static/header.html -->
+		
+				<div id="content">
 <!-- ============================== class title ============================ -->
-			<h1 class="classTitle">
-				
-				Namespace help
-			</h1>
-
-<!-- ============================== class summary ========================== -->			
-			<p class="description">
-				
-				
-			
-				Help module provides some Javascript-specific functions, such object copying, randomizing functions, string/array handlers and the akihabaraInit function.
-				
-				
-					<br /><i>Defined in: </i> <a href="../symbols/src/c__Users_Darius_Desktop_akihabara-1.1_kesiev_akihabara_akihabara_help.js.html">help.js</a>.
-				
-			</p>
-
-<!-- ============================== constructor summary ==================== -->			
-			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class help.">
-				<caption>Namespace Summary</caption>
-				<thead>
-					<tr>
-						<th scope="col">Constructor Attributes</th>
-						<th scope="col">Constructor Name and Description</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="attributes">&nbsp;</td>
-						<td class="nameDescription" >
-							<div class="fixedFont">
-								<b><a href="../symbols/help.html#constructor">help</a></b>
-							</div>
-							<div class="description"></div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-
-<!-- ============================== properties summary ===================== -->
-			
-
-<!-- ============================== methods summary ======================== -->
-			
-				
-				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class help.">
-					<caption>Method Summary</caption>
-					<thead>
-						<tr>
-							<th scope="col">Method Attributes</th>
-							<th scope="col">Method Name and Description</th>
-						</tr>
-					</thead>
-					<tbody>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.akihabaraInit">akihabaraInit</a></b>(data)
-								</div>
-								<div class="description">This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.asciiArtToMap">asciiArtToMap</a></b>(map, tra)
-								</div>
-								<div class="description">Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.cloneObject">cloneObject</a></b>(model)
-								</div>
-								<div class="description">Creates a duplicate of an existing set of parameters.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.copyModel">copyModel</a></b>(data, model)
-								</div>
-								<div class="description">Merges two sets of parameters together overwriting any existing parameters.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.createModel">createModel</a></b>(obj, attrs)
-								</div>
-								<div class="description">Creates a subset of an existing set of parameters.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.decideFrame">decideFrame</a></b>(cnt, anim)
-								</div>
-								<div class="description">Determines which frame of a given animation to display.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.decideFrameOnce">decideFrameOnce</a></b>(cnt, anim)
-								</div>
-								<div class="description">Determines which frame of a given animation to display.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.finalizeTilemap">finalizeTilemap</a></b>(map)
-								</div>
-								<div class="description">Calculates and sets the width and height (map.h, map.w) and half-width and half-height (map.hh, map.hw) of a map object.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.framestotime">framestotime</a></b>(frames)
-								</div>
-								<div class="description">Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds).</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.getArrayCapped">getArrayCapped</a></b>(a, id)
-								</div>
-								<div class="description">Returns the Nth element in an array.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.getArrayIndexed">getArrayIndexed</a></b>(a, value, field)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.getDeviceConfig">getDeviceConfig</a></b>()
-								</div>
-								<div class="description">Automatically configures a bunch of settings depending on the web browser and device that is viewing the game.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.getTileInMap">getTileInMap</a></b>(x, y, map, ifout, mapid)
-								</div>
-								<div class="description">Given x,y coordinates and map information, this returns the tile at a given point.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.geturlparameter">geturlparameter</a></b>(name)
-								</div>
-								<div class="description">Reads the value of a query parameter from the URL of the web page.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.goToZero">goToZero</a></b>(v)
-								</div>
-								<div class="description">Subtracts or adds 1 to a value, always converging to zero.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.isDefined">isDefined</a></b>(A)
-								</div>
-								<div class="description">Tests whether an object contains a given parameter.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.isLastFrameOnce">isLastFrameOnce</a></b>(cnt, anim)
-								</div>
-								<div class="description">Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.isSquished">isSquished</a></b>(th, by)
-								</div>
-								<div class="description">Tests to see if an object is being "jumped on" by another object.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.limit">limit</a></b>(v, min, max)
-								</div>
-								<div class="description">Limits a number to a certain range.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.mergeWithModel">mergeWithModel</a></b>(data, model)
-								</div>
-								<div class="description">Merges two sets of parameters together without overwriting existing parameters.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.multiplier">multiplier</a></b>(v, mul)
-								</div>
-								<div class="description">Multiplies two numbers together, returning the result, unless the first parameter is less than 2, in which case it returns 1.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.objToStr">objToStr</a></b>(Any)
-								</div>
-								<div class="description">Writes the contents of an object to a string.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.postpad">postpad</a></b>(str, len, pad)
-								</div>
-								<div class="description">Postpends a string with repeated instances of another string until it the result is greater than or equal to a desired length.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.prepad">prepad</a></b>(str, len, pad)
-								</div>
-								<div class="description">Prepends a string with repeated instances of another string until it the result is greater than or equal to a desired length.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.random">random</a></b>(min, range)
-								</div>
-								<div class="description">Generates uniformly distributed random integers between min and min+range, non-inclusive.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.seq">seq</a></b>(st, ed, skip)
-								</div>
-								<div class="description">Generates numbers from st to ed, along with a skip value.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.setTileInMap">setTileInMap</a></b>(ctx, map, x, y, tile, The)
-								</div>
-								<div class="description">Sets a tile in the map and draws it.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.upAndDown">upAndDown</a></b>(counter, max)
-								</div>
-								<div class="description">Given an incrementing value each step, this will return a value increasing from 0 until max/2, at which point it will decrement to 0, then go back up to max/2, in an endless cycle.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.xPixelToTile">xPixelToTile</a></b>(map, x, gap)
-								</div>
-								<div class="description">Converts an x-coordinate of a pixel to the x-coordinate of the tile column it's in.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.xPixelToTileX">xPixelToTileX</a></b>(map, x, gap)
-								</div>
-								<div class="description">Converts an x-coordinate of a pixel to its corresponding tile x-coordinate.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.yPixelToTile">yPixelToTile</a></b>(map, y, gap)
-								</div>
-								<div class="description">Converts a y-coordinate of a pixel to the y-coordinate of the tile row it's in.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.yPixelToTileY">yPixelToTileY</a></b>(map, y, gap)
-								</div>
-								<div class="description">Converts a y-coordinate of a pixel to its corresponding tile y-coordinate.</div>
-							</td>
-						</tr>
-					
-					</tbody>
-				</table>
-				
-				
-				
-			
-<!-- ============================== events summary ======================== -->
-			
-
-<!-- ============================== constructor details ==================== -->		
-			
-			<div class="details"><a name="constructor"> </a>
-				<div class="sectionTitle">
-					Namespace Detail
-				</div>
-				
-				<div class="fixedFont">
-						<b>help</b>
-				</div>
-				
-				<div class="description">
-					
-					
-				</div>
-				
-				
-				
-				
-					
-					
-					
-					
-					
-					
-					
-
-			</div>
-			
-
-<!-- ============================== field details ========================== -->		
-			
-
-<!-- ============================== method details ========================= -->		
-			
-				<div class="sectionTitle">
-					Method Detail
-				</div>
-				
-					<a name=".akihabaraInit"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>akihabaraInit</b>(data)
-					
-					</div>
-					<div class="description">
-						This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc. Many of these settings canbe set manually by passing an object with the parameters defined, or via URL parameters.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>data</b>
-									
-								</dt>
-								<dd>An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".asciiArtToMap"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>asciiArtToMap</b>(map, tra)
-					
-					</div>
-					<div class="description">
-						Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Array}</span> <b>map</b>
-									
-								</dt>
-								<dd>An array of characters representing a map.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Array}</span> <b>tra</b>
-									
-								</dt>
-								<dd>A translation array. This is an array of arrays, formatted like [ [null, char1], [0, char2], [1, char3] ]. There must at least be a null entry, followed by one numerical entry for each tile type you want to render, corresponding to the unique characters in the map array. The null entry maps a character to empty space.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A map array formatted such that it can be attached to a map object.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".cloneObject"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>cloneObject</b>(model)
-					
-					</div>
-					<div class="description">
-						Creates a duplicate of an existing set of parameters.
-						
-						
-					</div>
-					
-					
-					
-					<pre class="code">data = {a: 1, b: 2, c: "three"};newdata = help.cloneObject(data);newdata; // => {a: 1, b: 2, c: "three"}</pre>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>model</b>
-									
-								</dt>
-								<dd>An object containing a set of parameters.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A new object, equivalent to 'model'.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".copyModel"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>copyModel</b>(data, model)
-					
-					</div>
-					<div class="description">
-						Merges two sets of parameters together overwriting any existing parameters. This merges model->data, and if data and model share parameters, data's are overwritten by model's.
-						
-						
-					</div>
-					
-					
-					
-					<pre class="code">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged; // => {a: 1, b: 2, c: "three", d: "four"}</pre>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>data</b>
-									
-								</dt>
-								<dd>An object containing a set of parameters, the destination of the merge.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>model</b>
-									
-								</dt>
-								<dd>An object containing a set of parameters, the source of the merge.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A merged model where the values of 'model' take precedence over those of 'data'. The 'data' object is returned and will be an exact copy of 'model', plus any parameters that 'data' had before the merge that 'model' did not.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".createModel"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>createModel</b>(obj, attrs)
-					
-					</div>
-					<div class="description">
-						Creates a subset of an existing set of parameters.
-						
-						
-					</div>
-					
-					
-					
-					<pre class="code">data = {a: 1, b: 2, c: "three"};newdata = help.createModel(data, ["a", "c"]);newdata; // => {a: 1, c: "three"}</pre>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>obj</b>
-									
-								</dt>
-								<dd>An object containing a set of parameters, the source of the data.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Array}</span> <b>attrs</b>
-									
-								</dt>
-								<dd>An array of strings, containing the names of parameters you wish to copy.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A new set of parameters based on the subset specified.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".decideFrame"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>decideFrame</b>(cnt, anim)
-					
-					</div>
-					<div class="description">
-						Determines which frame of a given animation to display. Will loop an animation.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>cnt</b>
-									
-								</dt>
-								<dd>A global frame counter.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>anim</b>
-									
-								</dt>
-								<dd>An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>The particular animation frame to display during this step.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".decideFrameOnce"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>decideFrameOnce</b>(cnt, anim)
-					
-					</div>
-					<div class="description">
-						Determines which frame of a given animation to display. Will remain on the last frame when the animation has played once.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>cnt</b>
-									
-								</dt>
-								<dd>A global frame counter.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>anim</b>
-									
-								</dt>
-								<dd>An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>The particular animation frame to display during this step.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".finalizeTilemap"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>finalizeTilemap</b>(map)
-					
-					</div>
-					<div class="description">
-						Calculates and sets the width and height (map.h, map.w) and half-width and half-height (map.hh, map.hw) of a map object.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>map</b>
-									
-								</dt>
-								<dd>A map object, containing a map array and a tileset array.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A map object with map.w, map.h, map.hh, and map.hw set correctly.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".framestotime"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>framestotime</b>(frames)
-					
-					</div>
-					<div class="description">
-						Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds). Calculated using the current frames per second.
-						
-						
-					</div>
-					
-					
-					
-					<pre class="code">// Assuming 25 frames per second, Akihabara's default.timestamp = help.framestotime(25);timestamp; // => '00:01:00';timestamp = help.framestotime(25 * 60);timestamp; // => '01:00:00';</pre>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>frames</b>
-									
-								</dt>
-								<dd>A quantity of frames.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A string containing a timestamp formatted "mm:ss:cs", representing the length of time it would take to render that many frames.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".getArrayCapped"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>getArrayCapped</b>(a, id)
-					
-					</div>
-					<div class="description">
-						Returns the Nth element in an array. If the array is shorter than N, it returns the last element of the array.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Array}</span> <b>a</b>
-									
-								</dt>
-								<dd>An array.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>id</b>
-									
-								</dt>
-								<dd>An index to the array.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>If id > a.length, it returns a[a.length-1]. Otherwise returns a[id].</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".getArrayIndexed"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>getArrayIndexed</b>(a, value, field)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>a</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>value</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>field</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".getDeviceConfig"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>getDeviceConfig</b>()
-					
-					</div>
-					<div class="description">
-						Automatically configures a bunch of settings depending on the web browser and device that is viewing the game. Mostly sets the maximum number of audio channels and touch settings.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".getTileInMap"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>getTileInMap</b>(x, y, map, ifout, mapid)
-					
-					</div>
-					<div class="description">
-						Given x,y coordinates and map information, this returns the tile at a given point.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>x</b>
-									
-								</dt>
-								<dd>An x-coordinate.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>y</b>
-									
-								</dt>
-								<dd>A y-coordinate.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>map</b>
-									
-								</dt>
-								<dd>The map object.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>ifout</b>
-									
-								</dt>
-								<dd>An object or value to be returned if the x,y coordinate pair is outside the map.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>mapid</b>
-									
-								</dt>
-								<dd>The id for the map array within the map object. Default is 'map'.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>An integer representing the value of the tile in the map array at that x,y coordinate. If there is no tile, null is returned.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".geturlparameter"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>geturlparameter</b>(name)
-					
-					</div>
-					<div class="description">
-						Reads the value of a query parameter from the URL of the web page.
-						
-						
-					</div>
-					
-					
-					
-					<pre class="code">// If the URL is http://example.com/game.html?lives=3player.lives = help.geturlparameter("lives");player.lives; // => 3</pre>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>name</b>
-									
-								</dt>
-								<dd>The name of the URL parameter.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>The value of the URL parameter, as a string.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".goToZero"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>goToZero</b>(v)
-					
-					</div>
-					<div class="description">
-						Subtracts or adds 1 to a value, always converging to zero. For example, passing -3 yields -2, 5 yields 4, etc. Works best with integers.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>v</b>
-									
-								</dt>
-								<dd>A value.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A value that is one closer to 0 on the number line than v.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".isDefined"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>isDefined</b>(A)
-					
-					</div>
-					<div class="description">
-						Tests whether an object contains a given parameter.
-						
-						
-					</div>
-					
-					
-					
-					<pre class="code">foo = {a: 1, b: 2};help.isDefined(foo.a); // => truehelp.isDefined(foo.c); // => false</pre>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>A</b>
-									
-								</dt>
-								<dd>reference to a parameter of an object.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>True if the object contains that parameter, false if it does not.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".isLastFrameOnce"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>isLastFrameOnce</b>(cnt, anim)
-					
-					</div>
-					<div class="description">
-						Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>cnt</b>
-									
-								</dt>
-								<dd>A global frame counter.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>anim</b>
-									
-								</dt>
-								<dd>An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A boolean, true if the animation has been played at least once.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".isSquished"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>isSquished</b>(th, by)
-					
-					</div>
-					<div class="description">
-						Tests to see if an object is being "jumped on" by another object. Only works for platformers, since it assumes accy>0 means you're falling onto something else.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>th</b>
-									
-								</dt>
-								<dd>The object that is (possibly) being jumped on.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>by</b>
-									
-								</dt>
-								<dd>The object doing the jumping-on.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>True if the two objects are overlapping enough and by.accy>0.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".limit"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>limit</b>(v, min, max)
-					
-					</div>
-					<div class="description">
-						Limits a number to a certain range. If the number is below the minimum, the minimum is returned. If the number is above the maximum, the maximum is returned.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Float}</span> <b>v</b>
-									
-								</dt>
-								<dd>A value.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Float}</span> <b>min</b>
-									
-								</dt>
-								<dd>The minimum limit.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Float}</span> <b>max</b>
-									
-								</dt>
-								<dd>The maximum limit.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A value equal to v if min<v<max. Returns min if v<min, max if v>max.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".mergeWithModel"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>mergeWithModel</b>(data, model)
-					
-					</div>
-					<div class="description">
-						Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact.
-						
-						
-					</div>
-					
-					
-					
-					<pre class="code">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged; // => {a: 1, b: 2, c: 3, d: "four"};</pre>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>data</b>
-									
-								</dt>
-								<dd>An object containing a set of parameters, the destination of the merge.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>model</b>
-									
-								</dt>
-								<dd>An object containing a set of parameters, the source of the merge.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A merged model where the values of 'data' remain untouched: only new parameters and values from 'model' make it in.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".multiplier"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>multiplier</b>(v, mul)
-					
-					</div>
-					<div class="description">
-						Multiplies two numbers together, returning the result, unless the first parameter is less than 2, in which case it returns 1.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Float}</span> <b>v</b>
-									
-								</dt>
-								<dd>First value.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Float}</span> <b>mul</b>
-									
-								</dt>
-								<dd>Second value.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>An integer, v*mul, unless v<2 in which case it returns 1.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".objToStr"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>objToStr</b>(Any)
-					
-					</div>
-					<div class="description">
-						Writes the contents of an object to a string. Useful for debugging.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>Any</b>
-									
-								</dt>
-								<dd>object.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A string containing all the contents of an object. If the object contains functions, the string will contain the code for those functions.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".postpad"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>postpad</b>(str, len, pad)
-					
-					</div>
-					<div class="description">
-						Postpends a string with repeated instances of another string until it the result is greater than or equal to a desired length.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>str</b>
-									
-								</dt>
-								<dd>The string you wish to modify.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>len</b>
-									
-								</dt>
-								<dd>The desired length of your resultant string.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>pad</b>
-									
-								</dt>
-								<dd>The string you wish to postpend to str.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A string whose length is no greater than len+pad.length, with pad postpending str repeatedly.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".prepad"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>prepad</b>(str, len, pad)
-					
-					</div>
-					<div class="description">
-						Prepends a string with repeated instances of another string until it the result is greater than or equal to a desired length.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>str</b>
-									
-								</dt>
-								<dd>The string you wish to modify.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>len</b>
-									
-								</dt>
-								<dd>The desired length of your resultant string.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>pad</b>
-									
-								</dt>
-								<dd>The string you wish to prepend to str.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A string whose length is no greater than len+pad.length, with pad prepending str repeatedly.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".random"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>random</b>(min, range)
-					
-					</div>
-					<div class="description">
-						Generates uniformly distributed random integers between min and min+range, non-inclusive. So help.random(0,2) will only return 0 and 1, etc.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>min</b>
-									
-								</dt>
-								<dd>The minimum random value to be returned by the function.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>range</b>
-									
-								</dt>
-								<dd>The number of different values returned by the function.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>An integer between min (includive) and min+range (noninclusive).</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".seq"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>seq</b>(st, ed, skip)
-					
-					</div>
-					<div class="description">
-						Generates numbers from st to ed, along with a skip value.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>st</b>
-									
-								</dt>
-								<dd>Starting number.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>ed</b>
-									
-								</dt>
-								<dd>Ending number.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>skip</b>
-									
-								</dt>
-								<dd>Number to increment by.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>An array containing the set of numbers from st to ed, incrementing by skip.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".setTileInMap"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>setTileInMap</b>(ctx, map, x, y, tile, The)
-					
-					</div>
-					<div class="description">
-						Sets a tile in the map and draws it. Does not return anything.
-						
-						
-					</div>
-					
-					
-					
-					<pre class="code">// Remove the second tile to the right and down from the upper left corner of the tile map. Assumes our map canvas is called 'map_canvas'.help.setTileInMap(gbox.getCanvasContext("map_canvas"),map,1,1,null,"map");</pre>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>ctx</b>
-									
-								</dt>
-								<dd>The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>map</b>
-									
-								</dt>
-								<dd>The game map object.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>x</b>
-									
-								</dt>
-								<dd>The index of the tile column within the map array -- so a 1 would mean the second column of tiles.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>y</b>
-									
-								</dt>
-								<dd>The index of the tile row within the map array -- so a 1 would mean the second row of tiles.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>tile</b>
-									
-								</dt>
-								<dd>The integer representing the new tile you wish to draw. This is its index within the tileset; a null value will erase whatever tile is present.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{String}</span> <b>The</b>
-									
-								</dt>
-								<dd>ID of the map. Defaults to 'map'.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
-					<a name=".upAndDown"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>upAndDown</b>(counter, max)
-					
-					</div>
-					<div class="description">
-						Given an incrementing value each step, this will return a value increasing from 0 until max/2, at which point it will decrement to 0, then go back up to max/2, in an endless cycle.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>counter</b>
-									
-								</dt>
-								<dd>A counter.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>max</b>
-									
-								</dt>
-								<dd>This determines the period of the function -- assuming counter is incrementing by one, a complete back-and-forth will take 'max' steps.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>An integer.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".xPixelToTile"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>xPixelToTile</b>(map, x, gap)
-					
-					</div>
-					<div class="description">
-						Converts an x-coordinate of a pixel to the x-coordinate of the tile column it's in. This effectively "snaps" an x coordinate to a tile edge.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>map</b>
-									
-								</dt>
-								<dd>A map object, containing a map array and a tileset array.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>x</b>
-									
-								</dt>
-								<dd>An x-coordinate.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>gap</b>
-									
-								</dt>
-								<dd>Number of pixels gap in tilemap. Default is 0.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>The x-coordinate in pixels of the tile column.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".xPixelToTileX"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>xPixelToTileX</b>(map, x, gap)
-					
-					</div>
-					<div class="description">
-						Converts an x-coordinate of a pixel to its corresponding tile x-coordinate.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>map</b>
-									
-								</dt>
-								<dd>A map object, containing a map array and a tileset array.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>x</b>
-									
-								</dt>
-								<dd>An x-coordinate.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>gap</b>
-									
-								</dt>
-								<dd>(Not used.)</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A map object with map.w, map.h, map.hh, and map.hw set correctly.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".yPixelToTile"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>yPixelToTile</b>(map, y, gap)
-					
-					</div>
-					<div class="description">
-						Converts a y-coordinate of a pixel to the y-coordinate of the tile row it's in. This effectively "snaps" a y coordinate to a tile edge.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>map</b>
-									
-								</dt>
-								<dd>A map object, containing a map array and a tileset array.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>y</b>
-									
-								</dt>
-								<dd>A y-coordinate.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>gap</b>
-									
-								</dt>
-								<dd>Number of pixels gap in tilemap. Default is 0.</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>The y-coordinate in pixels of the tile row.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".yPixelToTileY"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">help.</span><b>yPixelToTileY</b>(map, y, gap)
-					
-					</div>
-					<div class="description">
-						Converts a y-coordinate of a pixel to its corresponding tile y-coordinate.
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{Object}</span> <b>map</b>
-									
-								</dt>
-								<dd>A map object, containing a map array and a tileset array.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>y</b>
-									
-								</dt>
-								<dd>A y-coordinate.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{Integer}</span> <b>gap</b>
-									
-								</dt>
-								<dd>(Not used.)</dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>A map object with map.w, map.h, map.hh, and map.hw set correctly.</dd>
-							
-							</dl>
-						
-						
-						
-
-					
-				
-			
-			
-<!-- ============================== event details ========================= -->		
-			
-			
-			<hr />
-		</div>
-
+					<h1 class="classTitle">
+						Namespace help
+					</h1>
 		
+<!-- ============================== class summary ========================== -->			
+<!-- 
+					
+-->
+					<div class="full-description">
+						<p>Help module provides some Javascript-specific functions, such object copying, randomizing functions, string/array handlers and the akihabaraInit function.</p>
+					</div>
+					
+						<p class="fileName itemName"><i>Defined in: </i> <span class="icon"><a href="../symbols/src/c__Users_Darius_Desktop_akihabara-1.1_kesiev_akihabara_akihabara_help.js.html">help.js</a>.</span></p>
+					
+		
+<!-- ============================== constructor summary ==================== -->			
+					
+		
+<!-- ============================== properties summary ===================== -->
+					
+		
+<!-- ============================== methods summary ======================== -->
+					
+						
+						
+						<div class="summary section">
+							<div class="sectionTitle">Method Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Generates numbers from st to ed, along with a skip value."><a href="../symbols/help.html#.seq">seq</a></b><span class='signature'>(<span title="(Integer) Starting number.">st</span>, <span title="(Integer) Ending number.">ed</span>, <span title="(Integer) Number to increment by.">skip</span>)</span>
+									<span class='description'>Generates numbers from st to ed, along with a skip value.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Multiplies two numbers together, returning the result, unless the first parameter is less than 2, in which case it returns 1."><a href="../symbols/help.html#.multiplier">multiplier</a></b><span class='signature'>(<span title="(Float) First value.">v</span>, <span title="(Float) Second value.">mul</span>)</span>
+									<span class='description'>Multiplies two numbers together, returning the result, unless the first parameter is less than 2, in which case it returns 1.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Prepends a string with repeated instances of another string until it the result is greater than or equal to a desired length."><a href="../symbols/help.html#.prepad">prepad</a></b><span class='signature'>(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to prepend to str.">pad</span>)</span>
+									<span class='description'>Prepends a string with repeated instances of another string until it the result is greater than or equal to a desired length.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Postpends a string with repeated instances of another string until it the result is greater than or equal to a desired length."><a href="../symbols/help.html#.postpad">postpad</a></b><span class='signature'>(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to postpend to str.">pad</span>)</span>
+									<span class='description'>Postpends a string with repeated instances of another string until it the result is greater than or equal to a desired length.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Tests to see if an object is being "jumped on" by another object."><a href="../symbols/help.html#.isSquished">isSquished</a></b><span class='signature'>(<span title="(Object) The object that is (possibly) being jumped on.">th</span>, <span title="(Object) The object doing the jumping-on.">by</span>)</span>
+									<span class='description'>Tests to see if an object is being "jumped on" by another object.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Generates uniformly distributed random integers between min and min+range, non-inclusive."><a href="../symbols/help.html#.random">random</a></b><span class='signature'>(<span title="(Integer) The minimum random value to be returned by the function.">min</span>, <span title="(Integer) The number of different values returned by the function.">range</span>)</span>
+									<span class='description'>Generates uniformly distributed random integers between min and min+range, non-inclusive.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Determines which frame of a given animation to display."><a href="../symbols/help.html#.decideFrame">decideFrame</a></b><span class='signature'>(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
+									<span class='description'>Determines which frame of a given animation to display.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Determines which frame of a given animation to display."><a href="../symbols/help.html#.decideFrameOnce">decideFrameOnce</a></b><span class='signature'>(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
+									<span class='description'>Determines which frame of a given animation to display.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce."><a href="../symbols/help.html#.isLastFrameOnce">isLastFrameOnce</a></b><span class='signature'>(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
+									<span class='description'>Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Given an incrementing value each step, this will return a value increasing from 0 until max/2, at which point it will decrement to 0, then go back up to max/2, in an endless cycle."><a href="../symbols/help.html#.upAndDown">upAndDown</a></b><span class='signature'>(<span title="(Integer) A counter.">counter</span>, <span title="(Integer) This determines the period of the function -- assuming counter is incrementing by one, a complete back-and-forth will take 'max' steps.">max</span>)</span>
+									<span class='description'>Given an incrementing value each step, this will return a value increasing from 0 until max/2, at which point it will decrement to 0, then go back up to max/2, in an endless cycle.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Given x,y coordinates and map information, this returns the tile at a given point."><a href="../symbols/help.html#.getTileInMap">getTileInMap</a></b><span class='signature'>(<span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Object) The map object.">map</span>, <span title="(Object) An object or value to be returned if the x,y coordinate pair is outside the map.">ifout</span>, <span title="(String) The id for the map array within the map object.">mapid</span>)</span>
+									<span class='description'>Given x,y coordinates and map information, this returns the tile at a given point.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format."><a href="../symbols/help.html#.asciiArtToMap">asciiArtToMap</a></b><span class='signature'>(<span title="(Array) An array of characters representing a map.">map</span>, <span title="(Array) A translation array.">tra</span>)</span>
+									<span class='description'>Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Calculates and sets the width and height (map.h, map.w) and half-width and half-height (map.hh, map.hw) of a map object."><a href="../symbols/help.html#.finalizeTilemap">finalizeTilemap</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>)</span>
+									<span class='description'>Calculates and sets the width and height (map.h, map.w) and half-width and half-height (map.hh, map.hw) of a map object.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Converts an x-coordinate of a pixel to its corresponding tile x-coordinate."><a href="../symbols/help.html#.xPixelToTileX">xPixelToTileX</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) (Not used.">gap</span>)</span>
+									<span class='description'>Converts an x-coordinate of a pixel to its corresponding tile x-coordinate.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Converts a y-coordinate of a pixel to its corresponding tile y-coordinate."><a href="../symbols/help.html#.yPixelToTileY">yPixelToTileY</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) (Not used.">gap</span>)</span>
+									<span class='description'>Converts a y-coordinate of a pixel to its corresponding tile y-coordinate.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Converts an x-coordinate of a pixel to the x-coordinate of the tile column it's in."><a href="../symbols/help.html#.xPixelToTile">xPixelToTile</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) Number of pixels gap in tilemap.">gap</span>)</span>
+									<span class='description'>Converts an x-coordinate of a pixel to the x-coordinate of the tile column it's in.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Converts a y-coordinate of a pixel to the y-coordinate of the tile row it's in."><a href="../symbols/help.html#.yPixelToTile">yPixelToTile</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) Number of pixels gap in tilemap.">gap</span>)</span>
+									<span class='description'>Converts a y-coordinate of a pixel to the y-coordinate of the tile row it's in.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Limits a number to a certain range."><a href="../symbols/help.html#.limit">limit</a></b><span class='signature'>(<span title="(Float) A value.">v</span>, <span title="(Float) The minimum limit.">min</span>, <span title="(Float) The maximum limit.">max</span>)</span>
+									<span class='description'>Limits a number to a certain range.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Subtracts or adds 1 to a value, always converging to zero."><a href="../symbols/help.html#.goToZero">goToZero</a></b><span class='signature'>(<span title="(Integer) A value.">v</span>)</span>
+									<span class='description'>Subtracts or adds 1 to a value, always converging to zero.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Merges two sets of parameters together without overwriting existing parameters."><a href="../symbols/help.html#.mergeWithModel">mergeWithModel</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span>
+									<span class='description'>Merges two sets of parameters together without overwriting existing parameters.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Merges two sets of parameters together overwriting any existing parameters."><a href="../symbols/help.html#.copyModel">copyModel</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span>
+									<span class='description'>Merges two sets of parameters together overwriting any existing parameters.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Creates a subset of an existing set of parameters."><a href="../symbols/help.html#.createModel">createModel</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters, the source of the data.">obj</span>, <span title="(Array) An array of strings, containing the names of parameters you wish to copy.">attrs</span>)</span>
+									<span class='description'>Creates a subset of an existing set of parameters.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Creates a duplicate of an existing set of parameters."><a href="../symbols/help.html#.cloneObject">cloneObject</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters.">model</span>)</span>
+									<span class='description'>Creates a duplicate of an existing set of parameters.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Sets a tile in the map and draws it."><a href="../symbols/help.html#.setTileInMap">setTileInMap</a></b><span class='signature'>(<span title="(Object) The canvas context for the map.">ctx</span>, <span title="(Object) The game map object.">map</span>, <span title="(Integer) The index of the tile column within the map array -- so a 1 would mean the second column of tiles.">x</span>, <span title="(Integer) The index of the tile row within the map array -- so a 1 would mean the second row of tiles.">y</span>, <span title="(Integer) The integer representing the new tile you wish to draw.">tile</span>, <span title="(String) ID of the map.">The</span>)</span>
+									<span class='description'>Sets a tile in the map and draws it.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Returns the Nth element in an array."><a href="../symbols/help.html#.getArrayCapped">getArrayCapped</a></b><span class='signature'>(<span title="(Array) An array.">a</span>, <span title="(Integer) An index to the array.">id</span>)</span>
+									<span class='description'>Returns the Nth element in an array.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title=""><a href="../symbols/help.html#.getArrayIndexed">getArrayIndexed</a></b><span class='signature'>(<span>a</span>, <span>value</span>, <span>field</span>)</span>
+									<span class='description'></span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds)."><a href="../symbols/help.html#.framestotime">framestotime</a></b><span class='signature'>(<span title="(Integer) A quantity of frames.">frames</span>)</span>
+									<span class='description'>Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds).</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Reads the value of a query parameter from the URL of the web page."><a href="../symbols/help.html#.geturlparameter">geturlparameter</a></b><span class='signature'>(<span title="(String) The name of the URL parameter.">name</span>)</span>
+									<span class='description'>Reads the value of a query parameter from the URL of the web page.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Writes the contents of an object to a string."><a href="../symbols/help.html#.objToStr">objToStr</a></b><span class='signature'>(<span title="(Object) object.">Any</span>)</span>
+									<span class='description'>Writes the contents of an object to a string.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Tests whether an object contains a given parameter."><a href="../symbols/help.html#.isDefined">isDefined</a></b><span class='signature'>(<span title="(Object) reference to a parameter of an object.">A</span>)</span>
+									<span class='description'>Tests whether an object contains a given parameter.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="Automatically configures a bunch of settings depending on the web browser and device that is viewing the game."><a href="../symbols/help.html#.getDeviceConfig">getDeviceConfig</a></b><span class='signature'>()</span>
+									<span class='description'>Automatically configures a bunch of settings depending on the web browser and device that is viewing the game.</span>
+								</div>
+							
+								<div class="sectionItem classMethod">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title="This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc."><a href="../symbols/help.html#.akihabaraInit">akihabaraInit</a></b><span class='signature'>(<span title="(Object) An optional object containing parameters you wish to set.">data</span>)</span>
+									<span class='description'>This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc.</span>
+								</div>
+							
+							</div>
+						</div>
+						
+					
+		
+<!-- ============================== constructor details ==================== -->		
+					
+		
+<!-- ============================== field details ========================== -->		
+					
+		
+<!-- ============================== method details ========================= -->		
+					
+					<div class="details section">
+						<div class="sectionTitle">
+							Method Detail
+						</div>
+						<div class="sectionItems">
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".seq"> </a>
+									<div class="itemTitle icon">
+										help.seq<span class="signature">(<span title="(Integer) Starting number.">st</span>, <span title="(Integer) Ending number.">ed</span>, <span title="(Integer) Number to increment by.">skip</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Generates numbers from st to ed, along with a skip value.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>st</b>
+												</td>
+												<td class="methodItemDesc">
+											    Starting number.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>ed</b>
+												</td>
+												<td class="methodItemDesc">
+											    Ending number.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>skip</b>
+												</td>
+												<td class="methodItemDesc">
+											    Number to increment by.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													An array containing the set of numbers from st to ed, incrementing by skip.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".multiplier"> </a>
+									<div class="itemTitle icon">
+										help.multiplier<span class="signature">(<span title="(Float) First value.">v</span>, <span title="(Float) Second value.">mul</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Multiplies two numbers together, returning the result, unless the first parameter is less than 2, in which case it returns 1.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Float}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>v</b>
+												</td>
+												<td class="methodItemDesc">
+											    First value.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Float}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>mul</b>
+												</td>
+												<td class="methodItemDesc">
+											    Second value.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													An integer, v*mul, unless v<2 in which case it returns 1.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".prepad"> </a>
+									<div class="itemTitle icon">
+										help.prepad<span class="signature">(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to prepend to str.">pad</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Prepends a string with repeated instances of another string until it the result is greater than or equal to a desired length.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{String}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>str</b>
+												</td>
+												<td class="methodItemDesc">
+											    The string you wish to modify.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>len</b>
+												</td>
+												<td class="methodItemDesc">
+											    The desired length of your resultant string.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{String}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>pad</b>
+												</td>
+												<td class="methodItemDesc">
+											    The string you wish to prepend to str.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A string whose length is no greater than len+pad.length, with pad prepending str repeatedly.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".postpad"> </a>
+									<div class="itemTitle icon">
+										help.postpad<span class="signature">(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to postpend to str.">pad</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Postpends a string with repeated instances of another string until it the result is greater than or equal to a desired length.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{String}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>str</b>
+												</td>
+												<td class="methodItemDesc">
+											    The string you wish to modify.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>len</b>
+												</td>
+												<td class="methodItemDesc">
+											    The desired length of your resultant string.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{String}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>pad</b>
+												</td>
+												<td class="methodItemDesc">
+											    The string you wish to postpend to str.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A string whose length is no greater than len+pad.length, with pad postpending str repeatedly.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".isSquished"> </a>
+									<div class="itemTitle icon">
+										help.isSquished<span class="signature">(<span title="(Object) The object that is (possibly) being jumped on.">th</span>, <span title="(Object) The object doing the jumping-on.">by</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Tests to see if an object is being "jumped on" by another object. Only works for platformers, since it assumes accy>0 means you're falling onto something else.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>th</b>
+												</td>
+												<td class="methodItemDesc">
+											    The object that is (possibly) being jumped on.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>by</b>
+												</td>
+												<td class="methodItemDesc">
+											    The object doing the jumping-on.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													True if the two objects are overlapping enough and by.accy>0.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".random"> </a>
+									<div class="itemTitle icon">
+										help.random<span class="signature">(<span title="(Integer) The minimum random value to be returned by the function.">min</span>, <span title="(Integer) The number of different values returned by the function.">range</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Generates uniformly distributed random integers between min and min+range, non-inclusive. So help.random(0,2) will only return 0 and 1, etc.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>min</b>
+												</td>
+												<td class="methodItemDesc">
+											    The minimum random value to be returned by the function.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>range</b>
+												</td>
+												<td class="methodItemDesc">
+											    The number of different values returned by the function.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													An integer between min (includive) and min+range (noninclusive).
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".decideFrame"> </a>
+									<div class="itemTitle icon">
+										help.decideFrame<span class="signature">(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Determines which frame of a given animation to display. Will loop an animation.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>cnt</b>
+												</td>
+												<td class="methodItemDesc">
+											    A global frame counter.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>anim</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													The particular animation frame to display during this step.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".decideFrameOnce"> </a>
+									<div class="itemTitle icon">
+										help.decideFrameOnce<span class="signature">(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Determines which frame of a given animation to display. Will remain on the last frame when the animation has played once.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>cnt</b>
+												</td>
+												<td class="methodItemDesc">
+											    A global frame counter.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>anim</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													The particular animation frame to display during this step.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".isLastFrameOnce"> </a>
+									<div class="itemTitle icon">
+										help.isLastFrameOnce<span class="signature">(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>cnt</b>
+												</td>
+												<td class="methodItemDesc">
+											    A global frame counter.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>anim</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A boolean, true if the animation has been played at least once.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".upAndDown"> </a>
+									<div class="itemTitle icon">
+										help.upAndDown<span class="signature">(<span title="(Integer) A counter.">counter</span>, <span title="(Integer) This determines the period of the function -- assuming counter is incrementing by one, a complete back-and-forth will take 'max' steps.">max</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Given an incrementing value each step, this will return a value increasing from 0 until max/2, at which point it will decrement to 0, then go back up to max/2, in an endless cycle.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>counter</b>
+												</td>
+												<td class="methodItemDesc">
+											    A counter.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>max</b>
+												</td>
+												<td class="methodItemDesc">
+											    This determines the period of the function -- assuming counter is incrementing by one, a complete back-and-forth will take 'max' steps.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													An integer.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".getTileInMap"> </a>
+									<div class="itemTitle icon">
+										help.getTileInMap<span class="signature">(<span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Object) The map object.">map</span>, <span title="(Object) An object or value to be returned if the x,y coordinate pair is outside the map.">ifout</span>, <span title="(String) The id for the map array within the map object.">mapid</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Given x,y coordinates and map information, this returns the tile at a given point.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>x</b>
+												</td>
+												<td class="methodItemDesc">
+											    An x-coordinate.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>y</b>
+												</td>
+												<td class="methodItemDesc">
+											    A y-coordinate.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>map</b>
+												</td>
+												<td class="methodItemDesc">
+											    The map object.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>ifout</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object or value to be returned if the x,y coordinate pair is outside the map.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{String}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>mapid</b>
+												</td>
+												<td class="methodItemDesc">
+											    The id for the map array within the map object. Default is 'map'.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													An integer representing the value of the tile in the map array at that x,y coordinate. If there is no tile, null is returned.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".asciiArtToMap"> </a>
+									<div class="itemTitle icon">
+										help.asciiArtToMap<span class="signature">(<span title="(Array) An array of characters representing a map.">map</span>, <span title="(Array) A translation array.">tra</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Array}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>map</b>
+												</td>
+												<td class="methodItemDesc">
+											    An array of characters representing a map.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Array}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>tra</b>
+												</td>
+												<td class="methodItemDesc">
+											    A translation array. This is an array of arrays, formatted like [ [null, char1], [0, char2], [1, char3] ]. There must at least be a null entry, followed by one numerical entry for each tile type you want to render, corresponding to the unique characters in the map array. The null entry maps a character to empty space.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A map array formatted such that it can be attached to a map object.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".finalizeTilemap"> </a>
+									<div class="itemTitle icon">
+										help.finalizeTilemap<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Calculates and sets the width and height (map.h, map.w) and half-width and half-height (map.hh, map.hw) of a map object.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>map</b>
+												</td>
+												<td class="methodItemDesc">
+											    A map object, containing a map array and a tileset array.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A map object with map.w, map.h, map.hh, and map.hw set correctly.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".xPixelToTileX"> </a>
+									<div class="itemTitle icon">
+										help.xPixelToTileX<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) (Not used.">gap</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Converts an x-coordinate of a pixel to its corresponding tile x-coordinate.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>map</b>
+												</td>
+												<td class="methodItemDesc">
+											    A map object, containing a map array and a tileset array.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>x</b>
+												</td>
+												<td class="methodItemDesc">
+											    An x-coordinate.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>gap</b>
+												</td>
+												<td class="methodItemDesc">
+											    (Not used.)
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A map object with map.w, map.h, map.hh, and map.hw set correctly.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".yPixelToTileY"> </a>
+									<div class="itemTitle icon">
+										help.yPixelToTileY<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) (Not used.">gap</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Converts a y-coordinate of a pixel to its corresponding tile y-coordinate.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>map</b>
+												</td>
+												<td class="methodItemDesc">
+											    A map object, containing a map array and a tileset array.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>y</b>
+												</td>
+												<td class="methodItemDesc">
+											    A y-coordinate.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>gap</b>
+												</td>
+												<td class="methodItemDesc">
+											    (Not used.)
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A map object with map.w, map.h, map.hh, and map.hw set correctly.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".xPixelToTile"> </a>
+									<div class="itemTitle icon">
+										help.xPixelToTile<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) Number of pixels gap in tilemap.">gap</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Converts an x-coordinate of a pixel to the x-coordinate of the tile column it's in. This effectively "snaps" an x coordinate to a tile edge.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>map</b>
+												</td>
+												<td class="methodItemDesc">
+											    A map object, containing a map array and a tileset array.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>x</b>
+												</td>
+												<td class="methodItemDesc">
+											    An x-coordinate.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>gap</b>
+												</td>
+												<td class="methodItemDesc">
+											    Number of pixels gap in tilemap. Default is 0.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													The x-coordinate in pixels of the tile column.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".yPixelToTile"> </a>
+									<div class="itemTitle icon">
+										help.yPixelToTile<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) Number of pixels gap in tilemap.">gap</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Converts a y-coordinate of a pixel to the y-coordinate of the tile row it's in. This effectively "snaps" a y coordinate to a tile edge.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>map</b>
+												</td>
+												<td class="methodItemDesc">
+											    A map object, containing a map array and a tileset array.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>y</b>
+												</td>
+												<td class="methodItemDesc">
+											    A y-coordinate.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>gap</b>
+												</td>
+												<td class="methodItemDesc">
+											    Number of pixels gap in tilemap. Default is 0.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													The y-coordinate in pixels of the tile row.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".limit"> </a>
+									<div class="itemTitle icon">
+										help.limit<span class="signature">(<span title="(Float) A value.">v</span>, <span title="(Float) The minimum limit.">min</span>, <span title="(Float) The maximum limit.">max</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Limits a number to a certain range. If the number is below the minimum, the minimum is returned. If the number is above the maximum, the maximum is returned.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Float}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>v</b>
+												</td>
+												<td class="methodItemDesc">
+											    A value.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Float}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>min</b>
+												</td>
+												<td class="methodItemDesc">
+											    The minimum limit.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Float}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>max</b>
+												</td>
+												<td class="methodItemDesc">
+											    The maximum limit.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A value equal to v if min<v<max. Returns min if v<min, max if v>max.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".goToZero"> </a>
+									<div class="itemTitle icon">
+										help.goToZero<span class="signature">(<span title="(Integer) A value.">v</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Subtracts or adds 1 to a value, always converging to zero. For example, passing -3 yields -2, 5 yields 4, etc. Works best with integers.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>v</b>
+												</td>
+												<td class="methodItemDesc">
+											    A value.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A value that is one closer to 0 on the number line than v.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".mergeWithModel"> </a>
+									<div class="itemTitle icon">
+										help.mergeWithModel<span class="signature">(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact.
+										
+										
+									
+										
+										<pre class="prettyprint">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged; // => {a: 1, b: 2, c: 3, d: "four"};</pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>data</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object containing a set of parameters, the destination of the merge.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>model</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object containing a set of parameters, the source of the merge.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A merged model where the values of 'data' remain untouched: only new parameters and values from 'model' make it in.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".copyModel"> </a>
+									<div class="itemTitle icon">
+										help.copyModel<span class="signature">(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Merges two sets of parameters together overwriting any existing parameters. This merges model->data, and if data and model share parameters, data's are overwritten by model's.
+										
+										
+									
+										
+										<pre class="prettyprint">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged; // => {a: 1, b: 2, c: "three", d: "four"}</pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>data</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object containing a set of parameters, the destination of the merge.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>model</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object containing a set of parameters, the source of the merge.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A merged model where the values of 'model' take precedence over those of 'data'. The 'data' object is returned and will be an exact copy of 'model', plus any parameters that 'data' had before the merge that 'model' did not.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".createModel"> </a>
+									<div class="itemTitle icon">
+										help.createModel<span class="signature">(<span title="(Object) An object containing a set of parameters, the source of the data.">obj</span>, <span title="(Array) An array of strings, containing the names of parameters you wish to copy.">attrs</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Creates a subset of an existing set of parameters.
+										
+										
+									
+										
+										<pre class="prettyprint">data = {a: 1, b: 2, c: "three"};newdata = help.createModel(data, ["a", "c"]);newdata; // => {a: 1, c: "three"}</pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>obj</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object containing a set of parameters, the source of the data.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Array}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>attrs</b>
+												</td>
+												<td class="methodItemDesc">
+											    An array of strings, containing the names of parameters you wish to copy.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A new set of parameters based on the subset specified.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".cloneObject"> </a>
+									<div class="itemTitle icon">
+										help.cloneObject<span class="signature">(<span title="(Object) An object containing a set of parameters.">model</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Creates a duplicate of an existing set of parameters.
+										
+										
+									
+										
+										<pre class="prettyprint">data = {a: 1, b: 2, c: "three"};newdata = help.cloneObject(data);newdata; // => {a: 1, b: 2, c: "three"}</pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>model</b>
+												</td>
+												<td class="methodItemDesc">
+											    An object containing a set of parameters.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A new object, equivalent to 'model'.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".setTileInMap"> </a>
+									<div class="itemTitle icon">
+										help.setTileInMap<span class="signature">(<span title="(Object) The canvas context for the map.">ctx</span>, <span title="(Object) The game map object.">map</span>, <span title="(Integer) The index of the tile column within the map array -- so a 1 would mean the second column of tiles.">x</span>, <span title="(Integer) The index of the tile row within the map array -- so a 1 would mean the second row of tiles.">y</span>, <span title="(Integer) The integer representing the new tile you wish to draw.">tile</span>, <span title="(String) ID of the map.">The</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Sets a tile in the map and draws it. Does not return anything.
+										
+										
+									
+										
+										<pre class="prettyprint">// Remove the second tile to the right and down from the upper left corner of the tile map. Assumes our map canvas is called 'map_canvas'.help.setTileInMap(gbox.getCanvasContext("map_canvas"),map,1,1,null,"map");</pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>ctx</b>
+												</td>
+												<td class="methodItemDesc">
+											    The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>map</b>
+												</td>
+												<td class="methodItemDesc">
+											    The game map object.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>x</b>
+												</td>
+												<td class="methodItemDesc">
+											    The index of the tile column within the map array -- so a 1 would mean the second column of tiles.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>y</b>
+												</td>
+												<td class="methodItemDesc">
+											    The index of the tile row within the map array -- so a 1 would mean the second row of tiles.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>tile</b>
+												</td>
+												<td class="methodItemDesc">
+											    The integer representing the new tile you wish to draw. This is its index within the tileset; a null value will erase whatever tile is present.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{String}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>The</b>
+												</td>
+												<td class="methodItemDesc">
+											    ID of the map. Defaults to 'map'.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".getArrayCapped"> </a>
+									<div class="itemTitle icon">
+										help.getArrayCapped<span class="signature">(<span title="(Array) An array.">a</span>, <span title="(Integer) An index to the array.">id</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Returns the Nth element in an array. If the array is shorter than N, it returns the last element of the array.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Array}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>a</b>
+												</td>
+												<td class="methodItemDesc">
+											    An array.
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>id</b>
+												</td>
+												<td class="methodItemDesc">
+											    An index to the array.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													If id > a.length, it returns a[a.length-1]. Otherwise returns a[id].
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".getArrayIndexed"> </a>
+									<div class="itemTitle icon">
+										help.getArrayIndexed<span class="signature">(<span>a</span>, <span>value</span>, <span>field</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>a</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>value</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>field</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".framestotime"> </a>
+									<div class="itemTitle icon">
+										help.framestotime<span class="signature">(<span title="(Integer) A quantity of frames.">frames</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds). Calculated using the current frames per second.
+										
+										
+									
+										
+										<pre class="prettyprint">// Assuming 25 frames per second, Akihabara's default.timestamp = help.framestotime(25);timestamp; // => '00:01:00';timestamp = help.framestotime(25 * 60);timestamp; // => '01:00:00';</pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Integer}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>frames</b>
+												</td>
+												<td class="methodItemDesc">
+											    A quantity of frames.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A string containing a timestamp formatted "mm:ss:cs", representing the length of time it would take to render that many frames.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".geturlparameter"> </a>
+									<div class="itemTitle icon">
+										help.geturlparameter<span class="signature">(<span title="(String) The name of the URL parameter.">name</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Reads the value of a query parameter from the URL of the web page.
+										
+										
+									
+										
+										<pre class="prettyprint">// If the URL is http://example.com/game.html?lives=3player.lives = help.geturlparameter("lives");player.lives; // => 3</pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{String}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>name</b>
+												</td>
+												<td class="methodItemDesc">
+											    The name of the URL parameter.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													The value of the URL parameter, as a string.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".objToStr"> </a>
+									<div class="itemTitle icon">
+										help.objToStr<span class="signature">(<span title="(Object) object.">Any</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Writes the contents of an object to a string. Useful for debugging.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>Any</b>
+												</td>
+												<td class="methodItemDesc">
+											    object.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													A string containing all the contents of an object. If the object contains functions, the string will contain the code for those functions.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".isDefined"> </a>
+									<div class="itemTitle icon">
+										help.isDefined<span class="signature">(<span title="(Object) reference to a parameter of an object.">A</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										Tests whether an object contains a given parameter.
+										
+										
+									
+										
+										<pre class="prettyprint">foo = {a: 1, b: 2};help.isDefined(foo.a); // => truehelp.isDefined(foo.c); // => false</pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>A</b>
+												</td>
+												<td class="methodItemDesc">
+											    reference to a parameter of an object.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+										<div class="heading">Returns:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+													
+												</td>
+												<td class="methodItemDesc">
+													True if the object contains that parameter, false if it does not.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".getDeviceConfig"> </a>
+									<div class="itemTitle icon">
+										help.getDeviceConfig<span class="signature">()</span>
+										
+									</div>
+									<div class="full-description">
+										Automatically configures a bunch of settings depending on the web browser and device that is viewing the game. Mostly sets the maximum number of audio channels and touch settings.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+									
+									
+									
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".akihabaraInit"> </a>
+									<div class="itemTitle icon">
+										help.akihabaraInit<span class="signature">(<span title="(Object) An optional object containing parameters you wish to set.">data</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc. Many of these settings canbe set manually by passing an object with the parameters defined, or via URL parameters.
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  <span class="light">{Object}</span> 
+												</td>
+												<td class="methodItemName">
+												  <b>data</b>
+												</td>
+												<td class="methodItemDesc">
+											    An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+									
+									
+				
+								</div>
+							
+						</div>
+					</div>
+					
+					
+				</div>
+				
 <!-- ============================== footer ================================= -->
-		<div class="fineprint" style="clear:both">
-			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 14:32:03 GMT-0400 (EDT)
+				<div class="fineprint" style="clear:both">
+					
+					Documentation generated by <a href="http://www.jsdoctoolkit.org/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 15:40:30 GMT-0400 (EDT)
+				</div>
+				
+			</div>
 		</div>
+		
 	</body>
 </html>

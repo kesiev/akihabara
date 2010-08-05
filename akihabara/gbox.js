@@ -496,7 +496,7 @@ var gbox={
 	},
 
   /**
-  * This function kicks off the main loop and state machine for the game.
+  * This function is called once per frame. This is where the basic rendering and processing of groups occurs.
   */
 	go:function() {
 		if (gbox._loaderqueue.isBusy()) {
@@ -843,7 +843,7 @@ var gbox={
 	getObject:function(group,id) {return this._objects[group][id]},
 
   /**
-  * Creates a font. Must be send an object containing: <ul><li>id: the id of the font</li>
+  * Creates a font. Must be sent an object containing: <ul><li>id: the id of the font</li>
   * <li>image: reference to the font image loaded (must contain font character tiles in ASCII order)</li>
   * <li>firstletter: the ASCII character that the font image's first character corresponds to</li>
   * <li>tileh: height in pixels of the character tiles</li>
@@ -871,12 +871,20 @@ var gbox={
 		return this._fonts[id];
 	},
 
-
+  /**
+  * Deletes an object, keeping a record of its group and id in gbox._garbage.
+  * @param {Object} obj The object you wish to delete.
+  */  
 	trashObject:function(obj) {
 		if (!this._garbage[obj.group]) this._garbage[obj.group]={};
 		this._garbage[obj.group][obj.id]=1;
 		obj.__trashing=true;
 	},
+  
+  /**
+  * Clears the record held in gbox._garbage of what has been deleted.
+  * @param {Object} obj The object you wish to delete.
+  */    
 	purgeGarbage:function() {
 		for (var group in this._garbage)
 			for (var id in this._garbage[group]) {
@@ -886,12 +894,46 @@ var gbox={
 			}
 		gbox._garbage={};
 	},
+  
+  /**
+  * Deletes every object in a given group.
+  * @param {String} group The group id.
+  */    
 	trashGroup:function(group) {
 		if (!this._garbage[group]) this._garbage[group]={};
 		for (var obj in this._objects[group])
 			this._garbage[group][obj]=1;
 	},
+  
+  /**
+  * Returns whether an object is due to be trashed. Useful in cases you want to check if
+  * an object is marked as trash before it is actually deleted.
+  * @param {Object} o The object you're checking.
+  * @returns {Boolean} True if the object is marked as trash.
+  */      
 	objectIsTrash:function(o) { return o.__trashing },
+  
+  /**
+  * Creates a new game object. Generally speaking you pass a fully-defined object as the parameter (including a group, id, tileset, and so on).
+  * A group must be specified, or the program will crash. If no id is specified, then it will automatically provide 
+  * an id of 'obj-XXXX' where 'XXXX' is an automatically incrementing integer. This is where the <i>initialize</i>, <i>first</i>, and <i>blit</i>
+  * functions are defined, as well.
+  * @param {Object} data The object you wish to create.
+  * @returns {Object} The object you created.
+  * @example
+  * data = {
+  *   group: 'player',
+  *   id: 'player_id',
+  *   tileset: 'player_tiles', 
+  *   x: 0,
+  *   y: 0,
+  *   initialize: function() {
+      this.x = 10;
+      this.y = 10;
+      },
+  * };
+  * gbox.addObject(data);
+  */    
 	addObject:function(data) {
 		// Extras
 		if (!data.id) {
@@ -909,7 +951,15 @@ var gbox={
 			this.setZindex(this._objects[data.group][data.id],data.zindex);
 		return this._objects[data.group][data.id];
 	},
+  
+   /**
+  * Returns whether a given group contains no objets.
+  * @param {String} gid The group you're checking.
+  * @returns {Boolean} True if the group contains no objects.
+  */    
 	groupIsEmpty:function(gid) { for (var i in this._objects[gid]) return false; return true; },
+  
+  
 	createCanvas:function(id,data) {
 		this.deleteCanvas(id);
 		this._canvas[id]=document.createElement("canvas");
