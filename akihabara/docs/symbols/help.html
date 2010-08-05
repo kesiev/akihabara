@@ -193,6 +193,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/help.html">help</a></li>
 	
+	<li><a href="../symbols/iphopad.html">iphopad</a></li>
+	
 	<li><a href="../symbols/tool.html">tool</a></li>
 	
 	<li><a href="../symbols/trigo.html">trigo</a></li>
@@ -214,7 +216,7 @@ ul.inheritsList
 				
 				
 			
-				Help module provides some Javascript-specific functions, such object copying, randomizing functions, string/array handlers and the akihabaraInit function, that automatically sets a comfortable preset of configurations: 25fps, double-sized display for non-mobile devices, dynamic frameskip.
+				Help module provides some Javascript-specific functions, such object copying, randomizing functions, string/array handlers and the akihabaraInit function.
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/c__Users_Darius_Desktop_akihabara-1.1_kesiev_akihabara_akihabara_help.js.html">help.js</a>.
@@ -267,7 +269,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">help.<b><a href="../symbols/help.html#.akihabaraInit">akihabaraInit</a></b>(data)
 								</div>
-								<div class="description"></div>
+								<div class="description">This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc.</div>
 							</td>
 						</tr>
 					
@@ -366,7 +368,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">help.<b><a href="../symbols/help.html#.getDeviceConfig">getDeviceConfig</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">Automatically configures a bunch of settings depending on the web browser and device that is viewing the game.</div>
 							</td>
 						</tr>
 					
@@ -384,7 +386,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">help.<b><a href="../symbols/help.html#.geturlparameter">geturlparameter</a></b>(name)
 								</div>
-								<div class="description"></div>
+								<div class="description">Reads the value of a query parameter from the URL of the web page.</div>
 							</td>
 						</tr>
 					
@@ -400,9 +402,9 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.isDefined">isDefined</a></b>(v)
+								<div class="fixedFont">help.<b><a href="../symbols/help.html#.isDefined">isDefined</a></b>(A)
 								</div>
-								<div class="description"></div>
+								<div class="description">Tests whether an object contains a given parameter.</div>
 							</td>
 						</tr>
 					
@@ -454,9 +456,9 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.objToStr">objToStr</a></b>(o)
+								<div class="fixedFont">help.<b><a href="../symbols/help.html#.objToStr">objToStr</a></b>(Any)
 								</div>
-								<div class="description"></div>
+								<div class="description">Writes the contents of an object to a string.</div>
 							</td>
 						</tr>
 					
@@ -499,9 +501,9 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">help.<b><a href="../symbols/help.html#.setTileInMap">setTileInMap</a></b>(ctx, tilemap, x, y, tile, map)
+								<div class="fixedFont">help.<b><a href="../symbols/help.html#.setTileInMap">setTileInMap</a></b>(ctx, map, x, y, tile, The)
 								</div>
-								<div class="description"></div>
+								<div class="description">Sets a tile in the map and draws it.</div>
 							</td>
 						</tr>
 					
@@ -606,7 +608,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc. Many of these settings canbe set manually by passing an object with the parameters defined, or via URL parameters.
 						
 						
 					</div>
@@ -618,10 +620,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>data</b>
+									<span class="light fixedFont">{Object}</span> <b>data</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.</dd>
 							
 							</dl>
 						
@@ -698,7 +700,7 @@ ul.inheritsList
 					
 					
 					
-					<pre class="code">data = {a: 1, b: 2, c: "three"};newdata = help.cloneObject(data);newdata => {a: 1, b: 2, c: "three"}</pre>
+					<pre class="code">data = {a: 1, b: 2, c: "three"};newdata = help.cloneObject(data);newdata; // => {a: 1, b: 2, c: "three"}</pre>
 					
 					
 					
@@ -745,7 +747,7 @@ ul.inheritsList
 					
 					
 					
-					<pre class="code">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged => {a: 1, b: 2, c: "three", d: "four"}</pre>
+					<pre class="code">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged; // => {a: 1, b: 2, c: "three", d: "four"}</pre>
 					
 					
 					
@@ -798,7 +800,7 @@ ul.inheritsList
 					
 					
 					
-					<pre class="code">data = {a: 1, b: 2, c: "three"};newdata = help.createModel(data, ["a", "c"]);newdata => {a: 1, c: "three"}</pre>
+					<pre class="code">data = {a: 1, b: 2, c: "three"};newdata = help.createModel(data, ["a", "c"]);newdata; // => {a: 1, c: "three"}</pre>
 					
 					
 					
@@ -992,7 +994,7 @@ ul.inheritsList
 					
 					
 					
-					<pre class="code">// Assuming 25 frames per second, Akihabara's default.timestamp = help.framestotime(25);timestamp => '00:01:00';timestamp = help.framestotime(25 * 60);timestamp => '01:00:00';</pre>
+					<pre class="code">// Assuming 25 frames per second, Akihabara's default.timestamp = help.framestotime(25);timestamp; // => '00:01:00';timestamp = help.framestotime(25 * 60);timestamp; // => '01:00:00';</pre>
 					
 					
 					
@@ -1129,7 +1131,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Automatically configures a bunch of settings depending on the web browser and device that is viewing the game. Mostly sets the maximum number of audio channels and touch settings.
 						
 						
 					</div>
@@ -1221,10 +1223,14 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Reads the value of a query parameter from the URL of the web page.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">// If the URL is http://example.com/game.html?lives=3player.lives = help.geturlparameter("lives");player.lives; // => 3</pre>
 					
 					
 					
@@ -1233,16 +1239,23 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>name</b>
+									<span class="light fixedFont">{String}</span> <b>name</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The name of the URL parameter.</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>The value of the URL parameter, as a string.</dd>
+							
+							</dl>
 						
 						
 						
@@ -1296,14 +1309,18 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">help.</span><b>isDefined</b>(v)
+					<span class="light">help.</span><b>isDefined</b>(A)
 					
 					</div>
 					<div class="description">
-						
+						Tests whether an object contains a given parameter.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">foo = {a: 1, b: 2};help.isDefined(foo.a); // => truehelp.isDefined(foo.c); // => false</pre>
 					
 					
 					
@@ -1312,16 +1329,23 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>v</b>
+									<span class="light fixedFont">{Object}</span> <b>A</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>reference to a parameter of an object.</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>True if the object contains that parameter, false if it does not.</dd>
+							
+							</dl>
 						
 						
 						
@@ -1496,7 +1520,7 @@ ul.inheritsList
 					
 					
 					
-					<pre class="code">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged => {a: 1, b: 2, c: 3, d: "four"};</pre>
+					<pre class="code">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged; // => {a: 1, b: 2, c: 3, d: "four"};</pre>
 					
 					
 					
@@ -1587,11 +1611,11 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">help.</span><b>objToStr</b>(o)
+					<span class="light">help.</span><b>objToStr</b>(Any)
 					
 					</div>
 					<div class="description">
-						
+						Writes the contents of an object to a string. Useful for debugging.
 						
 						
 					</div>
@@ -1603,16 +1627,23 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>o</b>
+									<span class="light fixedFont">{Object}</span> <b>Any</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>object.</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>A string containing all the contents of an object. If the object contains functions, the string will contain the code for those functions.</dd>
+							
+							</dl>
 						
 						
 						
@@ -1837,14 +1868,18 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">help.</span><b>setTileInMap</b>(ctx, tilemap, x, y, tile, map)
+					<span class="light">help.</span><b>setTileInMap</b>(ctx, map, x, y, tile, The)
 					
 					</div>
 					<div class="description">
-						
+						Sets a tile in the map and draws it. Does not return anything.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">// Remove the second tile to the right and down from the upper left corner of the tile map. Assumes our map canvas is called 'map_canvas'.help.setTileInMap(gbox.getCanvasContext("map_canvas"),map,1,1,null,"map");</pre>
 					
 					
 					
@@ -1853,40 +1888,40 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>ctx</b>
+									<span class="light fixedFont">{Object}</span> <b>ctx</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")</dd>
 							
 								<dt>
-									<b>tilemap</b>
+									<span class="light fixedFont">{Object}</span> <b>map</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The game map object.</dd>
 							
 								<dt>
-									<b>x</b>
+									<span class="light fixedFont">{Integer}</span> <b>x</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The index of the tile column within the map array -- so a 1 would mean the second column of tiles.</dd>
 							
 								<dt>
-									<b>y</b>
+									<span class="light fixedFont">{Integer}</span> <b>y</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The index of the tile row within the map array -- so a 1 would mean the second row of tiles.</dd>
 							
 								<dt>
-									<b>tile</b>
+									<span class="light fixedFont">{Integer}</span> <b>tile</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The integer representing the new tile you wish to draw. This is its index within the tileset; a null value will erase whatever tile is present.</dd>
 							
 								<dt>
-									<b>map</b>
+									<span class="light fixedFont">{String}</span> <b>The</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>ID of the map. Defaults to 'map'.</dd>
 							
 							</dl>
 						
@@ -2180,7 +2215,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 10:09:24 GMT-0400 (EDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 11:12:21 GMT-0400 (EDT)
 		</div>
 	</body>
 </html>

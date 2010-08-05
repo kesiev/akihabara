@@ -4,8 +4,7 @@
 
 /**
  * @namespace Help module provides some Javascript-specific functions, such object copying, randomizing functions, 
- * string/array handlers and the akihabaraInit function, that automatically sets a comfortable 
- * preset of configurations: 25fps, double-sized display for non-mobile devices, dynamic frameskip.
+ * string/array handlers and the akihabaraInit function.
  */
 var help={
 
@@ -259,7 +258,7 @@ var help={
   * dst = {a: 1, b: 2, c: "three"};
   * src = {c: "three", d: "four"};
   * merged = help.mergeWithModel(dst,src);
-  * merged => {a: 1, b: 2, c: 3, d: "four"};
+  * merged; // => {a: 1, b: 2, c: 3, d: "four"};
   */	
 	mergeWithModel:function(data,model) {
 		if (data==null) data={};
@@ -278,7 +277,7 @@ var help={
   * dst = {a: 1, b: 2, c: "three"};
   * src = {c: "three", d: "four"};
   * merged = help.mergeWithModel(dst,src);
-  * merged => {a: 1, b: 2, c: "three", d: "four"}
+  * merged; // => {a: 1, b: 2, c: "three", d: "four"}
   */	
 	copyModel:function(data,model) {
 		if (data==null) data={};
@@ -295,7 +294,7 @@ var help={
   * @example
   * data = {a: 1, b: 2, c: "three"};
   * newdata = help.createModel(data, ["a", "c"]);
-  * newdata => {a: 1, c: "three"}
+  * newdata; // => {a: 1, c: "three"}
   */	
 	createModel:function(obj,attrs) {
 		var ret={};
@@ -310,7 +309,7 @@ var help={
   * @example
   * data = {a: 1, b: 2, c: "three"};
   * newdata = help.cloneObject(data);
-  * newdata => {a: 1, b: 2, c: "three"}
+  * newdata; // => {a: 1, b: 2, c: "three"}
   */	
 	cloneObject:function(model) {
 		if (!model) return model;
@@ -320,7 +319,6 @@ var help={
 	},
 	
   /**
-  * @function
   * Sets a tile in the map and draws it. Does not return anything.
   * @param {Object} ctx The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")
   * @param {Object} map The game map object.
@@ -332,7 +330,6 @@ var help={
   * // Remove the second tile to the right and down from the upper left corner of the tile map. Assumes our map canvas is called 'map_canvas'.
   * help.setTileInMap(gbox.getCanvasContext("map_canvas"),map,1,1,null,"map");
   */	  
- help.setTileInMap(gbox.getCanvasContext("map_canvas"),map,1,1,null,"map");
 	setTileInMap:function(ctx,tilemap,x,y,tile,map) {
 		var ts=gbox.getTiles(tilemap.tileset);
 		tilemap[(map==null?"map":map)][y][x]=tile;
@@ -369,9 +366,9 @@ var help={
   * @example
   * // Assuming 25 frames per second, Akihabara's default.
   * timestamp = help.framestotime(25);
-  * timestamp => '00:01:00';
+  * timestamp; // => '00:01:00';
   * timestamp = help.framestotime(25 * 60);
-  * timestamp => '01:00:00';  
+  * timestamp; // => '01:00:00';  
   */	
 	framestotime:function(frames) {
 		var csec=Math.ceil(frames/gbox.getFps()*100);
@@ -379,7 +376,15 @@ var help={
 		
 	},
 	
-	// get an url parameter
+  /**
+  * Reads the value of a query parameter from the URL of the web page. 
+  * @param {String} name The name of the URL parameter.
+  * @returns The value of the URL parameter, as a string.
+  * @example
+  * // If the URL is http://example.com/game.html?lives=3
+  * player.lives = help.geturlparameter("lives");
+  * player.lives; // => 3
+  */	
 	geturlparameter:function( name ) {
 	  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
 	  var regexS = "[\\?&]"+name+"=([^&#]*)";
@@ -391,19 +396,33 @@ var help={
 		return results[1];
 	},
 	
-	// transform simple object in string, for debug
+  /**
+  * Writes the contents of an object to a string. Useful for debugging.
+  * @param {Object} Any object.
+  * @returns A string containing all the contents of an object. If the object contains functions, the string will contain the code for those functions.
+  */	
 	objToStr:function(o) {
 		var ret="";
 		for (var n in o) ret+=n+":["+o[n]+"] ";
 		return ret;
 	},
 	
-	// Check if a variable is defined or not
+  /**
+  * Tests whether an object contains a given parameter.
+  * @param {Object} A reference to a parameter of an object.
+  * @returns True if the object contains that parameter, false if it does not.
+  * @example
+  * foo = {a: 1, b: 2};
+  * help.isDefined(foo.a); // => true
+  * help.isDefined(foo.c); // => false
+  */	
 	isDefined:function(v) {
 		return ((typeof(v) !== 'undefined') || (v===null));
 	},
 	
-	// Get device configuration
+  /**
+  * Automatically configures a bunch of settings depending on the web browser and device that is viewing the game. Mostly sets the maximum number of audio channels and touch settings.
+  */	
 	getDeviceConfig:function() {
 
 		var cap;
@@ -444,7 +463,11 @@ var help={
 		return cap;
 	},
 
-	// The default Akihabara initialization. Low-res, low-framerate, zoomed view
+  /**
+  * This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc. Many of these settings can
+  * be set manually by passing an object with the parameters defined, or via URL parameters.
+  * @param {Object} data An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.
+  */	
 	akihabaraInit:function(data) {
 		if ((typeof data).toLowerCase() == "string") data={title:data};
 		var device=this.getDeviceConfig();

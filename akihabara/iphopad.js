@@ -3,6 +3,7 @@
 // ---
 
 /**
+ * @namespace
  * Iphopad module provides a touchpad for touch-based device (for now, Android and iDevices).
  */
 var iphopad={
@@ -69,6 +70,11 @@ var iphopad={
 			]
 		});
 	},
+	
+	/**
+	* Initializes the game controls for use with an I-product or Android device.
+	* @param {Object} data Passes in information about the screen and its traits such as size. 
+	*/
 	initialize:function(data) {
 		var oElement=document.createElement("div");
 		oElement.style.margin="auto";
