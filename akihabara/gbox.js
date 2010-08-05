@@ -608,14 +608,14 @@ var gbox={
 
   /**
   * Returns true if a given key in this._keymap is pressed. Only returns true on the transition from unpressed to pressed.
-  * @param {String} A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
+  * @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
   * @returns {Boolean} True if the given key is transitioning from unpressed to pressed in this frame.
   */
 	keyIsHit:function(id) { return this._keyboard[this._keymap[id]]==1},
   
   /**
   * Returns true if a given key in this._keymap is being held down. Returns true as long as the key is held down.
-  * @param {String} A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
+  * @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
   * @returns {Boolean} True if the given key is held down.
   */  
 	keyIsPressed:function(id) { return this._keyboard[this._keymap[id]]>0},
@@ -623,14 +623,14 @@ var gbox={
   /**
   * Returns true if a given key in this._keymap has been held down for at least one frame. Will not return true if a key
   * is quickly tapped, only once it has been held down for a frame.
-  * @param {String} A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
+  * @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
   * @returns {Boolean} True if the given key has been held down for at least one frame.
   */  
 	keyIsHold:function(id) { return this._keyboard[this._keymap[id]]>1},
   
   /**
   * Returns true if a given key in this._keymap is released. Only returns true on the transition from pressed to unpressed.
-  * @param {String} A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
+  * @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
   * @returns {Boolean} True if the given key is transitioning from pressed to unpressed in this frame.
   */
 	keyIsReleased:function(id) { return this._keyboard[this._keymap[id]]==-1},
@@ -657,11 +657,30 @@ var gbox={
 			}
 		}
 	},
+
+  /**
+  * Saves data to a browser cookie as a key-value pair, which can be restored later using gbox.dataLoad. Only works if user has cookies enabled.
+  * @param {String} k The key which identifies the value you are storing.
+  * @param {String} v The value you wish to store. Needs to be a string!
+  * @param {String} d A date switch TODO: update this
+  * @example
+  * // (from Capman)
+  * gbox.dataSave("capman-hiscore",maingame.hud.getNumberValue("score","value"));
+  */
 	dataSave:function(k,v,d) { 
 		var date = new Date();
 		date.setTime(date.getTime()+((d?d:356*10)*24*60*60*1000));
 		document.cookie =this._systemcookie+"~"+k+"="+v+"; expires="+date.toGMTString()+"; path=/";
 	},
+  
+  /**
+  * Loads data from a browser cookie. Send it a key and it returns a value (if available). Only works if user has cookies enabled.
+  * @param {String} k The key which identifies the value you are loading.
+  * @param {String} a A switch to determine whether a string or a number is returned. By default a string is returned.
+  * @returns {Object} A string or a number loaded from the cookie.
+  * @example
+  * hiscore = gbox.dataLoad("hiscore");
+  */
 	dataLoad:function(k,a) {
 		var nameeq=this._systemcookie+"~"+k+"=";
 		var ca = document.cookie.split(";");
@@ -672,11 +691,19 @@ var gbox={
 			if (c.indexOf(nameeq)==0) {
 				rt=c.substring(nameeq.length,c.length);
 				if (a&&a.number) return rt*1; else return rt;
+				if (a&&a.number) return rt*1; else return rt;
 			}
 		}
 		return null;
 	},
+
+  /**
+  * Clears a value stored in a  key-value pair in a browser cookie. Sets value to "". Only works if user has cookies enabled.
+  * @param {String} k The key which identifies the value you are clearing.
+  */
 	dataClear:function(k) { this.dataSave(k,"",-1) },
+  
+
 	getCamera:function() { return this._camera; },
 	setCameraY:function(y,viewdata) {
 		this._camera.y=y;

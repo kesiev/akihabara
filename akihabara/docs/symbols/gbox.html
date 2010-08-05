@@ -487,7 +487,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.dataClear">dataClear</a></b>(k)
 								</div>
-								<div class="description"></div>
+								<div class="description">Clears a value stored in a  key-value pair in a browser cookie.</div>
 							</td>
 						</tr>
 					
@@ -496,7 +496,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.dataLoad">dataLoad</a></b>(k, a)
 								</div>
-								<div class="description"></div>
+								<div class="description">Loads data from a browser cookie.</div>
 							</td>
 						</tr>
 					
@@ -505,7 +505,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.dataSave">dataSave</a></b>(k, v, d)
 								</div>
-								<div class="description"></div>
+								<div class="description">Saves data to a browser cookie as a key-value pair, which can be restored later using gbox.dataLoad.</div>
 							</td>
 						</tr>
 					
@@ -800,7 +800,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.keyIsHit">keyIsHit</a></b>(A)
+								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.keyIsHit">keyIsHit</a></b>(id)
 								</div>
 								<div class="description">Returns true if a given key in this._keymap is pressed.</div>
 							</td>
@@ -809,7 +809,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.keyIsHold">keyIsHold</a></b>(A)
+								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.keyIsHold">keyIsHold</a></b>(id)
 								</div>
 								<div class="description">Returns true if a given key in this._keymap has been held down for at least one frame.</div>
 							</td>
@@ -818,7 +818,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.keyIsPressed">keyIsPressed</a></b>(A)
+								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.keyIsPressed">keyIsPressed</a></b>(id)
 								</div>
 								<div class="description">Returns true if a given key in this._keymap is being held down.</div>
 							</td>
@@ -827,7 +827,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.keyIsReleased">keyIsReleased</a></b>(A)
+								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.keyIsReleased">keyIsReleased</a></b>(id)
 								</div>
 								<div class="description">Returns true if a given key in this._keymap is released.</div>
 							</td>
@@ -2313,7 +2313,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Clears a value stored in a  key-value pair in a browser cookie. Sets value to "". Only works if user has cookies enabled.
 						
 						
 					</div>
@@ -2325,10 +2325,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>k</b>
+									<span class="light fixedFont">{String}</span> <b>k</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The key which identifies the value you are clearing.</dd>
 							
 							</dl>
 						
@@ -2344,15 +2344,19 @@ ul.inheritsList
 					<a name=".dataLoad"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					
+					<span class="light">{Object}</span>
 					<span class="light">gbox.</span><b>dataLoad</b>(k, a)
 					
 					</div>
 					<div class="description">
-						
+						Loads data from a browser cookie. Send it a key and it returns a value (if available). Only works if user has cookies enabled.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">hiscore = gbox.dataLoad("hiscore");</pre>
 					
 					
 					
@@ -2361,22 +2365,29 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>k</b>
+									<span class="light fixedFont">{String}</span> <b>k</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The key which identifies the value you are loading.</dd>
 							
 								<dt>
-									<b>a</b>
+									<span class="light fixedFont">{String}</span> <b>a</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>A switch to determine whether a string or a number is returned. By default a string is returned.</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> A string or a number loaded from the cookie.</dd>
+							
+							</dl>
 						
 						
 						
@@ -2391,10 +2402,14 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Saves data to a browser cookie as a key-value pair, which can be restored later using gbox.dataLoad. Only works if user has cookies enabled.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">// (from Capman)gbox.dataSave("capman-hiscore",maingame.hud.getNumberValue("score","value"));</pre>
 					
 					
 					
@@ -2403,22 +2418,22 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>k</b>
+									<span class="light fixedFont">{String}</span> <b>k</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The key which identifies the value you are storing.</dd>
 							
 								<dt>
-									<b>v</b>
+									<span class="light fixedFont">{String}</span> <b>v</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The value you wish to store. Needs to be a string!</dd>
 							
 								<dt>
-									<b>d</b>
+									<span class="light fixedFont">{String}</span> <b>d</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>A date switch TODO: update this</dd>
 							
 							</dl>
 						
@@ -3536,7 +3551,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{Boolean}</span>
-					<span class="light">gbox.</span><b>keyIsHit</b>(A)
+					<span class="light">gbox.</span><b>keyIsHit</b>(id)
 					
 					</div>
 					<div class="description">
@@ -3552,10 +3567,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{String}</span> <b>A</b>
+									<span class="light fixedFont">{String}</span> <b>id</b>
 									
 								</dt>
-								<dd>key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"</dd>
+								<dd>A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"</dd>
 							
 							</dl>
 						
@@ -3579,7 +3594,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{Boolean}</span>
-					<span class="light">gbox.</span><b>keyIsHold</b>(A)
+					<span class="light">gbox.</span><b>keyIsHold</b>(id)
 					
 					</div>
 					<div class="description">
@@ -3595,10 +3610,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{String}</span> <b>A</b>
+									<span class="light fixedFont">{String}</span> <b>id</b>
 									
 								</dt>
-								<dd>key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"</dd>
+								<dd>A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"</dd>
 							
 							</dl>
 						
@@ -3622,7 +3637,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{Boolean}</span>
-					<span class="light">gbox.</span><b>keyIsPressed</b>(A)
+					<span class="light">gbox.</span><b>keyIsPressed</b>(id)
 					
 					</div>
 					<div class="description">
@@ -3638,10 +3653,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{String}</span> <b>A</b>
+									<span class="light fixedFont">{String}</span> <b>id</b>
 									
 								</dt>
-								<dd>key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"</dd>
+								<dd>A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"</dd>
 							
 							</dl>
 						
@@ -3665,7 +3680,7 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					<span class="light">{Boolean}</span>
-					<span class="light">gbox.</span><b>keyIsReleased</b>(A)
+					<span class="light">gbox.</span><b>keyIsReleased</b>(id)
 					
 					</div>
 					<div class="description">
@@ -3681,10 +3696,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{String}</span> <b>A</b>
+									<span class="light fixedFont">{String}</span> <b>id</b>
 									
 								</dt>
-								<dd>key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"</dd>
+								<dd>A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"</dd>
 							
 							</dl>
 						
@@ -5621,7 +5636,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 13:33:10 GMT-0400 (EDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 13:53:24 GMT-0400 (EDT)
 		</div>
 	</body>
 </html>
