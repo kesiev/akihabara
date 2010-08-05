@@ -139,15 +139,8 @@ var help={
 		return map[mapid][ty][tx];
 	},
 
-First we pass in  — you can see above that we’ve essentially drawn our map using “x” and ” ” (space) characters. 
-Then we pass in a translation array, which is an 
-
-
-
-You need at least a null entry, followed by one numerical entry for each tile type you want to render. The null entry maps char1 (in this case the ” ” (space) character) to empty space.
-  
  /**
- * Given x,y coordinates and map information, this returns the tile at a given point.
+ * Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format.
  * @param {Array} map An array of characters representing a map.
  * @param {Array} tra A translation array. This is an array of arrays, formatted like [ [null, char1], [0, char2], [1, char3] ]. There must at least be a null entry, followed by one numerical entry for each tile type you want to render, corresponding to the unique characters in the map array. The null entry maps a character to empty space.
  * @returns A map array formatted such that it can be attached to a map object.
