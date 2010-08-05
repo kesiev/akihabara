@@ -182,6 +182,7 @@ var cachelist={
 }
 
 /**
+ * @namespace
  * Gamebox module allows multiple grouped objects to move simultaneously, it helps with collisions, 
  * rendering and moving objects. It also provides monospaced pixel-font rendering, keyboard handling,  
  * audio, double buffering and eventually FSEs. Gamebox can also store and load data from cookies! 
@@ -327,6 +328,13 @@ var gbox={
 	getFlag:function(f) { return this._flags[f] },
 	setStatusBar:function(a) { this._statbar=a },
 	setScreenBorder:function(a) { this._border=a},
+  /**
+  * Initializes the screen to a certain width and height, applies zoom attributes, populates the 
+  * body of the HTML document including the canvas element, sets an initial camera, creates a '_buffer'
+  * canvas, sets keyboard event listeners, and many other initialization functions.
+  * @param {Integer} w The width of the main canvas.
+  * @param {Integer} h The height of the main canvas.
+  */	
 	initScreen:function(w,h) {
 		document.body.style.textAlign="center";
 		var container=document.createElement("div");
@@ -694,7 +702,6 @@ var gbox={
 		this._tiles[t.id]=t;
 	},
 	getTiles:function(t) { return this._tiles[t] },
-	getFont:function(t){ return this._fonts[t] },
 	loadAll:function(cb) {
 		// Setup logger
 		if (this._canlog) this.log=console.log;
