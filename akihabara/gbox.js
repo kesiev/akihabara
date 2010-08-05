@@ -703,26 +703,57 @@ var gbox={
   */
 	dataClear:function(k) { this.dataSave(k,"",-1) },
   
-
+  /**
+  * Gets the current camera object.
+  * @returns {Object} The camera object.
+  */
 	getCamera:function() { return this._camera; },
+  
+  /**
+  * Sets the y value of the current camera object.
+  * @param {Integer} y The camera object's new y value.
+  * @param {Object} viewdata An object containing parameters h and w, which are a bounding box that the camera is
+  * not supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.
+  */
 	setCameraY:function(y,viewdata) {
 		this._camera.y=y;
 		if (this._camera.y+this._camera.h>viewdata.h) this._camera.y=viewdata.h-this._screenh;
 		if (this._camera.y<0) this._camera.y=0;
 	},
+
+  /**
+  * Sets the x value of the current camera object.
+  * @param {Integer} x The camera object's new x value.
+  * @param {Object} viewdata An object containing parameters h and w, which are a bounding box that the camera is
+  * not supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.
+  */  
 	setCameraX:function(x,viewdata) {
 		this._camera.x=x;
 		if (this._camera.x+this._camera.w>viewdata.w) this._camera.x=viewdata.w-this._screenw;
 		if (this._camera.x<0) this._camera.x=0;
 	},
+  
+  /**
+  * Centers the camera.
+  * @param {Object} data An object containing x and y parameters -- typically the object you wish to center the camera on.
+  * @param {Object} viewdata An object containing parameters h and w, which are a bounding box that the camera is
+  * not supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.
+  * @example
+  * // Center the camera on the player object
+  * gbox.centerCamera(gbox.getObject('player', 'player_id'), {w: map.w, h: map.h});
+  */
 	centerCamera:function(data,viewdata) {
 		this.setCameraX(data.x-this._screenhw,viewdata);
 		this.setCameraY(data.y-this._screenhh,viewdata);
 	},
-	
-	
 
-	getGroups:function() { return this._groups; },
+  /**
+  * Get an array containing the names of each group in the game, in order of rendering.
+  * @example
+  * grouplist = gbox.getGroups();
+  * grouplist; // => ["background", "player", "enemy", "game"]	
+  */
+  getGroups:function() { return this._groups; },
 	setGroups:function(g){
 		this._groups=g;
 		this._groupplay[gbox.ZINDEX_LAYER]=true;

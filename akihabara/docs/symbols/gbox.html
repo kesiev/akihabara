@@ -424,7 +424,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.centerCamera">centerCamera</a></b>(data, viewdata)
 								</div>
-								<div class="description"></div>
+								<div class="description">Centers the camera.</div>
 							</td>
 						</tr>
 					
@@ -613,7 +613,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.getCamera">getCamera</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">Gets the current camera object.</div>
 							</td>
 						</tr>
 					
@@ -685,7 +685,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.getGroups">getGroups</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">Get an array containing the names of each group in the game, in order of rendering.</div>
 							</td>
 						</tr>
 					
@@ -1054,7 +1054,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.setCameraX">setCameraX</a></b>(x, viewdata)
 								</div>
-								<div class="description"></div>
+								<div class="description">Sets the x value of the current camera object.</div>
 							</td>
 						</tr>
 					
@@ -1063,7 +1063,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.setCameraY">setCameraY</a></b>(y, viewdata)
 								</div>
-								<div class="description"></div>
+								<div class="description">Sets the y value of the current camera object.</div>
 							</td>
 						</tr>
 					
@@ -2036,10 +2036,14 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Centers the camera.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">// Center the camera on the player objectgbox.centerCamera(gbox.getObject('player', 'player_id'), {w: map.w, h: map.h});</pre>
 					
 					
 					
@@ -2048,16 +2052,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>data</b>
+									<span class="light fixedFont">{Object}</span> <b>data</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An object containing x and y parameters -- typically the object you wish to center the camera on.</dd>
 							
 								<dt>
-									<b>viewdata</b>
+									<span class="light fixedFont">{Object}</span> <b>viewdata</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An object containing parameters h and w, which are a bounding box that the camera isnot supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.</dd>
 							
 							</dl>
 						
@@ -2829,12 +2833,12 @@ ul.inheritsList
 					<a name=".getCamera"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					
+					<span class="light">{Object}</span>
 					<span class="light">gbox.</span><b>getCamera</b>()
 					
 					</div>
 					<div class="description">
-						
+						Gets the current camera object.
 						
 						
 					</div>
@@ -2845,6 +2849,13 @@ ul.inheritsList
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> The camera object.</dd>
+							
+							</dl>
 						
 						
 						
@@ -3107,10 +3118,14 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Get an array containing the names of each group in the game, in order of rendering.
 						
 						
 					</div>
+					
+					
+					
+					<pre class="code">grouplist = gbox.getGroups();grouplist; // => ["background", "player", "enemy", "game"]</pre>
 					
 					
 					
@@ -4594,7 +4609,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Sets the x value of the current camera object.
 						
 						
 					</div>
@@ -4606,16 +4621,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>x</b>
+									<span class="light fixedFont">{Integer}</span> <b>x</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The camera object's new x value.</dd>
 							
 								<dt>
-									<b>viewdata</b>
+									<span class="light fixedFont">{Object}</span> <b>viewdata</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An object containing parameters h and w, which are a bounding box that the camera isnot supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.</dd>
 							
 							</dl>
 						
@@ -4636,7 +4651,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Sets the y value of the current camera object.
 						
 						
 					</div>
@@ -4648,16 +4663,16 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>y</b>
+									<span class="light fixedFont">{Integer}</span> <b>y</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The camera object's new y value.</dd>
 							
 								<dt>
-									<b>viewdata</b>
+									<span class="light fixedFont">{Object}</span> <b>viewdata</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An object containing parameters h and w, which are a bounding box that the camera isnot supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.</dd>
 							
 							</dl>
 						
@@ -5636,7 +5651,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 13:53:24 GMT-0400 (EDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 14:04:01 GMT-0400 (EDT)
 		</div>
 	</body>
 </html>
