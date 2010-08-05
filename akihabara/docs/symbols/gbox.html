@@ -458,9 +458,9 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.clearGroup">clearGroup</a></b>(group)
+								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.clearGroup">clearGroup</a></b>(gid)
 								</div>
-								<div class="description"></div>
+								<div class="description">Destroys all objects in a given group.</div>
 							</td>
 						</tr>
 					
@@ -883,7 +883,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.playAllGroups">playAllGroups</a></b>()
 								</div>
-								<div class="description"></div>
+								<div class="description">Enables all groups, toggling any groups that are currently disabled.</div>
 							</td>
 						</tr>
 					
@@ -901,7 +901,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.playGroup">playGroup</a></b>(gid)
 								</div>
-								<div class="description"></div>
+								<div class="description">If a group is disabled, this will enable the group.</div>
 							</td>
 						</tr>
 					
@@ -1135,7 +1135,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.setGroups">setGroups</a></b>(g)
 								</div>
-								<div class="description"></div>
+								<div class="description">Defines the names of each group in the game along with their rendering order.</div>
 							</td>
 						</tr>
 					
@@ -1153,7 +1153,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.setRenderOrder">setRenderOrder</a></b>(g)
 								</div>
-								<div class="description"></div>
+								<div class="description">A method of setting the render order of groups independently of gbox.setGroups.</div>
 							</td>
 						</tr>
 					
@@ -1225,7 +1225,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.soloGroup">soloGroup</a></b>(gid)
 								</div>
-								<div class="description"></div>
+								<div class="description">Turns off all groups except for the one specified.</div>
 							</td>
 						</tr>
 					
@@ -1252,7 +1252,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.stopGroup">stopGroup</a></b>(gid)
 								</div>
-								<div class="description"></div>
+								<div class="description">If a group is enabled, this will disable the group.</div>
 							</td>
 						</tr>
 					
@@ -1270,7 +1270,7 @@ ul.inheritsList
 							<td class="nameDescription">
 								<div class="fixedFont">gbox.<b><a href="../symbols/gbox.html#.toggleGroup">toggleGroup</a></b>(gid)
 								</div>
-								<div class="description"></div>
+								<div class="description">Toggles a group between enabled and disabled status.</div>
 							</td>
 						</tr>
 					
@@ -2187,11 +2187,11 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">gbox.</span><b>clearGroup</b>(group)
+					<span class="light">gbox.</span><b>clearGroup</b>(gid)
 					
 					</div>
 					<div class="description">
-						
+						Destroys all objects in a given group.
 						
 						
 					</div>
@@ -2203,10 +2203,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>group</b>
+									<span class="light fixedFont">{String}</span> <b>gid</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The id of the group.</dd>
 							
 							</dl>
 						
@@ -3923,7 +3923,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Enables all groups, toggling any groups that are currently disabled.
 						
 						
 					</div>
@@ -3990,7 +3990,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						If a group is disabled, this will enable the group.
 						
 						
 					</div>
@@ -4002,10 +4002,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>gid</b>
+									<span class="light fixedFont">{String}</span> <b>gid</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The id of the group.</dd>
 							
 							</dl>
 						
@@ -4951,7 +4951,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Defines the names of each group in the game along with their rendering order.
 						
 						
 					</div>
@@ -4963,10 +4963,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>g</b>
+									<span class="light fixedFont">{Array}</span> <b>g</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An array of strings of group names, in the order in which the groups should be rendered. Sog[0] will contain the first group to render, g[1] the second group to render, etc.</dd>
 							
 							</dl>
 						
@@ -5023,7 +5023,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						A method of setting the render order of groups independently of gbox.setGroups. Sets gbox._renderorder, which by default is equivalent to gbox._groups. However, gbox._renderorder is what ultimately determinesthe rendering order of groups. If you need to change your rendering order on the fly, use this function by passing it a reordered array of group names.
 						
 						
 					</div>
@@ -5035,10 +5035,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>g</b>
+									<span class="light fixedFont">{Array}</span> <b>g</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>An array of strings of group names, in the order in which the groups should be rendered. Sog[0] will contain the first group to render, g[1] the second group to render, etc.</dd>
 							
 							</dl>
 						
@@ -5317,7 +5317,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Turns off all groups except for the one specified.
 						
 						
 					</div>
@@ -5329,10 +5329,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>gid</b>
+									<span class="light fixedFont">{String}</span> <b>gid</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The id of the group.</dd>
 							
 							</dl>
 						
@@ -5431,7 +5431,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						If a group is enabled, this will disable the group.
 						
 						
 					</div>
@@ -5443,10 +5443,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>gid</b>
+									<span class="light fixedFont">{String}</span> <b>gid</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The id of the group.</dd>
 							
 							</dl>
 						
@@ -5503,7 +5503,7 @@ ul.inheritsList
 					
 					</div>
 					<div class="description">
-						
+						Toggles a group between enabled and disabled status.
 						
 						
 					</div>
@@ -5515,10 +5515,10 @@ ul.inheritsList
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>gid</b>
+									<span class="light fixedFont">{String}</span> <b>gid</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The id of the group.</dd>
 							
 							</dl>
 						
@@ -5651,7 +5651,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 14:04:01 GMT-0400 (EDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Aug 05 2010 14:16:10 GMT-0400 (EDT)
 		</div>
 	</body>
 </html>

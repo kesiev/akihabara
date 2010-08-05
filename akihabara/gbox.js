@@ -754,6 +754,12 @@ var gbox={
   * grouplist; // => ["background", "player", "enemy", "game"]	
   */
   getGroups:function() { return this._groups; },
+  
+  /**
+  * Defines the names of each group in the game along with their rendering order.
+  * @param {Array} g An array of strings of group names, in the order in which the groups should be rendered. So
+  * g[0] will contain the first group to render, g[1] the second group to render, etc.
+  */
 	setGroups:function(g){
 		this._groups=g;
 		this._groupplay[gbox.ZINDEX_LAYER]=true;
@@ -764,15 +770,53 @@ var gbox={
 				this._renderorder[i]=g[i];
 			}
 	},
+  
+  /**
+  * A method of setting the render order of groups independently of gbox.setGroups. Sets gbox._renderorder, 
+  * which by default is equivalent to gbox._groups. However, gbox._renderorder is what ultimately determines
+  * the rendering order of groups. If you need to change your rendering order on the fly, use this function 
+  * by passing it a reordered array of group names.
+  * @param {Array} g An array of strings of group names, in the order in which the groups should be rendered. So
+  * g[0] will contain the first group to render, g[1] the second group to render, etc.
+  */
 	setRenderOrder:function(g) { this._renderorder=g; },
+  
+  /**
+  * If a group is disabled, this will enable the group.
+  * @param {String} gid The id of the group.
+  */
 	playGroup:function(gid){this._groupplay[gid]=true;},
+
+  /**
+  * If a group is enabled, this will disable the group.
+  * @param {String} gid The id of the group.
+  */
 	stopGroup:function(gid){this._groupplay[gid]=false;},
+  
+  /**
+  * Toggles a group between enabled and disabled status.
+  * @param {String} gid The id of the group.
+  */
 	toggleGroup:function(gid){this._groupplay[gid]=!this._groupplay[gid];},
+  
+  /**
+  * Turns off all groups except for the one specified. 
+  * @param {String} gid The id of the group.
+  */
 	soloGroup:function(gid) {
 		for (var i=0;i<this._groups.length;i++)
 			if (this._groups[i]==gid) this.playGroup(this._groups[i]); else this.stopGroup(this._groups[i]);
 	},
+  
+  /**
+  * Enables all groups, toggling any groups that are currently disabled.
+  */
 	playAllGroups:function() { for (var i=0;i<this._groups.length;i++) this.playGroup(this._groups[i]); },
+
+  /**
+  * Destroys all objects in a given group.
+  * @param {String} gid The id of the group.
+  */
 	clearGroup:function(group) {
 		for (var obj in this._objects[group]) {
 			if (this._objects[group][obj].__zt!=null) this._zindex.remove(this._objects[group][obj].__zt);
@@ -782,6 +826,8 @@ var gbox={
 	playGroups:function(gid){for (var i=0;i<gid.length;i++)this.playGroup(gid[i])},
 	stopGroups:function(gid){for (var i=0;i<gid.length;i++)this.stopGroup(gid[i])},
 	toggleGroups:function(gid){for (var i=0;i<gid.length;i++)this.toggleGroup(gid[i])},
+  
+  
 	getObject:function(group,id) {return this._objects[group][id]},
 	addFont:function(data) {
 		data.tilehh=Math.floor(data.tileh/2);
