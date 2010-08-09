@@ -1028,6 +1028,13 @@ var gbox={
   */
 	getCanvasContext:function(id){return this.getCanvas(id).getContext("2d");},
   
+  /**
+  * Adds an image file to the loader, assigning it to an ID. If adding an image to an existing ID, it checks to see if the file you're
+  * adding is different than the one currently assigned to the ID. If it's different, it overwrites the old image. If it's the same, then
+  * no action is taken.
+  * @param {String} id The identifier of the image.
+  * @param {String} filename The file name of the image.
+  */
 	addImage:function(id,filename) {
 		if (this._images[id])
 			if (this._images[id].getAttribute("src_org")==filename)
@@ -1036,9 +1043,16 @@ var gbox={
 				delete this._images[id];
 		this._addtoloader({type:"image",id:id,filename:filename});
 	},
+  
+  /**
+  * Deletes an image currently in use. Does not delete the image file, but removes it from Akihabara's image list.
+  * @param {String} id The identifier of the image.
+  */
 	deleteImage:function(id) {
 		delete this._images[id];
 	},
+  
+
 	addTiles:function(t) { 
 		t.tilehh=Math.floor(t.tileh/2);
 		t.tilehw=Math.floor(t.tilew/2);
