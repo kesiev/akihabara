@@ -1178,7 +1178,7 @@ var gbox={
   * @param {Object} tox The canvas context to be drawn on.
   * @param {Object} data An object containing a set of tilemap data, including:
   * <ul><li>tileset {String}: (required) the id of the tileset the tilemap is based on</li>
-  * <li>map {Array}: an array whose x and y coord represent the tilemap coordinates, containing integers that correspond to the index of a given tile (or null for no tile)</li>
+  * <li>map {Array}: an array whose x and y coord represent the tilemap coordinates, containing integers that correspond to the index of a given tile (or null for no tile)</li></ul>
   */
 	blitTilemap:function(tox,data) {
 		if (tox==null) return;
@@ -1187,6 +1187,22 @@ var gbox={
 			for (var x=0;x<data.map[y].length;x++)
 				if (data.map[y][x]!=null) this.blitTile(tox,{tileset:data.tileset,tile:data.map[y][x],dx:x*ts.tilew,dy:y*ts.tilew});
 	},
+  
+  
+  /**
+  * Draws text to a canvas context
+  * @param {Object} tox The canvas context to be drawn on.
+  * @param {Object} data An object containing a set of data, including:
+  * <ul><li>font {String}: (required) the id of font to draw the text with</li>
+  * <li>text {String}: (required) the text to display</li>
+  * <li>dx {Integer}: (required) the x coordinate to draw the text at</li>
+  * <li>dy {Integer}: (required) the y coordinate to draw the text at</li>
+  * <li>dw {Integer}: the width of the text area -- required if you define data.halign</li>
+  * <li>dh {Integer}: the height of the text area -- required if you define data.valign</li>
+  * <li>valign {Integer}: either gbox.ALIGN_BOTTOM (aligns from the bottom of the text area) or gbox.ALIGN_MIDDLE (vertically centers text in text area)</li>
+  * <li>halign {Integer}: either gbox.ALIGN_RIGHT (aligns to the right hand side of text area) or gbox.ALIGN_CENTER (horizontallly centers text in text area)</li>
+  * <li>alpha {Float}: alpha value (0 is transparent, 1 is opaque)</li></ul>
+  */
 	blitText:function(tox,data) {
 		if (tox==null) return;
 		data.text+=""; // Convert to string.
@@ -1211,6 +1227,7 @@ var gbox={
 		}
 		tox.restore();
 	},
+  
 	blitClear:function(image,data) {
 		if (image==null) return;
 		if (data==null) data={x:0,y:0};
