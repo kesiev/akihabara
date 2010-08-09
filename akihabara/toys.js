@@ -3,6 +3,7 @@
 // ---
 
 /**
+ * @namespace
  * Toys module provides lots of common routines during the game developing: 
  * from effects for screen titles to HUD handling to platform/SHMUP/RPG oriented routines, 
  * like jumping characters, Z-Indexed objects, bullets, sparks, staff rolls, bonus screens, dialogues etc.
@@ -25,7 +26,10 @@ var toys={
 	FACE_LEFT:3,
 	
 	// Top-view (Zelda-alike) specifics
-	
+/**
+ * @namespace
+ * Topview.
+ */
 	topview:{
 		collides:function(fr,to,t) { // Special collision. Counts also the Z
 			if (Math.abs(fr.z,to.z)<5) return gbox.collides({x:fr.x+fr.colx,y:fr.y+fr.coly,h:fr.colh,w:fr.colw},{x:to.x+to.colx,y:to.y+to.coly,h:to.colh,w:to.colw},t); else return false;

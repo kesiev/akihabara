@@ -750,6 +750,7 @@ var gbox={
 
   /**
   * Get an array containing the names of each group in the game, in order of rendering.
+  * @returns {Array} An array of group names.
   * @example
   * grouplist = gbox.getGroups();
   * grouplist; // => ["background", "player", "enemy", "game"]	
@@ -959,19 +960,52 @@ var gbox={
   */    
 	groupIsEmpty:function(gid) { for (var i in this._objects[gid]) return false; return true; },
   
-  
+  /**
+  * Creates a new canvas. By default, the width and height is the current gbox._screenw and gbox._screenh,
+  * but it can also be set by passing in a data object with the appropriate parameters.
+  * @param {String} id The id of the new canvas.
+  * @param {Object} data (Optional) The height and width of the new canvas, contained in data.h and data.w parameters.
+  * @example
+  * gbox.createCanvas('newCanvas', {w: 640, h: 480});
+  */    
 	createCanvas:function(id,data) {
 		this.deleteCanvas(id);
 		this._canvas[id]=document.createElement("canvas");
 		this._canvas[id].setAttribute('height',(data&&data.h?data.h:this._screenh));
 		this._canvas[id].setAttribute('width',(data&&data.w?data.w:this._screenw));
 	},
+  
+  /**
+  * Deletes a given canvas.
+  * @param {String} id The id of the canvas to be deleted.
+  */  
 	deleteCanvas:function(id) {
 		if (this._canvas[id]) delete this._canvas[id];	
 	},
+  
+  /**
+  * Checks to see if an image was successfully loaded.
+  * @param {String} id The id of the image.
+  * @returns {Boolean} True if the image has been loaded.
+  */    
 	imageIsLoaded:function(id){ return this._images[id]&&(this._images[id].getAttribute("wasloaded"))&&this._images[id].width },
+  
+  /**
+  * Gets information about a loaded image.
+  * @param {String} id The id of the image.
+  * @returns {Object} A DOM Image element, including the URL and last modified date of the image, its ID, and whether it was loaded successfully.
+  * @example
+  * image = gbox.getImage('logo');
+  * image; // => <img src=?"logo.png?_brc=5-7-2010-15-48-42" src_org=?"logo.png" id=?"logo" wasloaded=?"true">?
+  */
 	getImage:function(id){return this._images[id]},
+  
+  /**
+  * Gets the buffer canvas (automatically created by gbox.initScreen).
+  * @returns {Object} A DOM Canvas element, including the width and height of the canvas.
+  */
 	getBuffer:function(id){return this.getCanvas("_buffer")},
+  
 	getBufferContext:function(id){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screen.getContext("2d")):null) },
 	getCanvas:function(id){return this._canvas[id]},
 	getCanvasContext:function(id){return this.getCanvas(id).getContext("2d");},
