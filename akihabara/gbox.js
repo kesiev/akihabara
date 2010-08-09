@@ -1052,13 +1052,40 @@ var gbox={
 		delete this._images[id];
 	},
   
-
+  /**
+  * Creates a new Akihabara tileset, adding it to the engine.
+  * @param {Object} t An object containing: <ul><li>id {String}: the new id of the tileset</li>
+  * <li>image {String}: reference to the tileset image loaded</li>
+  * <li>tileh {Integer}: height in pixels of the tiles</li>
+  * <li>tilew {Integer}: width in pixels of the tiles</li>
+  * <li>tilerow {Integer}: width in pixels of each row in the font image</li>
+  * <li>gapx {Integer}: x-coord gap between tile columns, in pixels</li>
+  * <li>gapy {Integer}: y-coord gap between tile rows, in pixels</li></ul>
+  */
 	addTiles:function(t) { 
 		t.tilehh=Math.floor(t.tileh/2);
 		t.tilehw=Math.floor(t.tilew/2);
 		this._tiles[t.id]=t;
 	},
+
+  /**
+  * Gets an Akihabara tileset, adding it to the engine.
+  * @param {String} t The ID of a tileset.
+  * @returns An object containing: <ul><li>id {String}: the new id of the tileset</li>
+  * <li>image {String}: reference to the tileset image loaded</li>
+  * <li>tileh {Integer}: height in pixels of the tiles</li>
+  * <li>tilew {Integer}: width in pixels of the tiles</li>
+  * <li>tilerow {Integer}: width in pixels of each row in the font image</li>
+  * <li>gapx {Integer}: x-coord gap between tile columns, in pixels</li>
+  * <li>gapy {Integer}: y-coord gap between tile rows, in pixels</li></ul>
+  */
 	getTiles:function(t) { return this._tiles[t] },
+  
+  /**
+  * Loads the initial splash screen and debugging font, then calls gbox._waitforloaded which adds to the game all the previously
+  * defined resources. Once gbox._waitforloaded is done, it calls the callback function cb.
+  * @params {String} cb The name of the function to be called when all assets are done loading.
+  */
 	loadAll:function(cb) {
 		// Setup logger
 		if (this._canlog) this.log=console.log;
@@ -1072,6 +1099,7 @@ var gbox={
 			gbox._minimalexpired=2;
 		this._waitforloaded();
 	},
+  
 	_implicitsargs:function(data) {
 		if (data.camera) {
 			data.dx-=this._camera.x;
@@ -1082,6 +1110,22 @@ var gbox={
 			data.y=this._camera.y*(data.parallaxy?data.parallaxy:1);	
 		}
 	},
+  
+  /**
+  * Draws a tile to the screen for one frame.
+  * @param {Object} tox The canvas context to be drawn on.
+  * @param {Object} data An object containing data about the tile to be drawn, including:
+  * <ul><li>tileset {String}: the id of the tileset</li>
+  * <li>tile {Integer}: the index of the tile within the tileset to be drawn</li>
+  * <li>dx {Integer}: x coordinate to draw the tile at</li>
+  * <li>dy {Integer}: y coordinate to draw the tile at</li>
+  * <li>fliph {Integer}: horizontal flip, either 1 or -1</li>
+  * <li>flipv {Integer}: vertical flip, either 1 or -1</li>
+  * <li>alpha {Float}: alpha value (0 is transparent, 1 is opaque)</li></ul>
+  * @example
+  * // from capman, draws an current object's tile, called from inside its blit function
+  * gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y,fliph:this.fliph,flipv:this.flipv,camera:this.camera,alpha:1});
+  */
 	blitTile:function(tox,data) {
 		if (tox==null) return;
 		var ts=this._tiles[data.tileset];
@@ -1093,6 +1137,21 @@ var gbox={
 		this._safedrawimage(tox,img, ts.gapx+(ts.tilew*(data.tile%ts.tilerow)),ts.gapy+(ts.tileh*Math.floor(data.tile/ts.tilerow)),(data.w==null?ts.tilew:data.w),(data.h==null?ts.tileh:data.h),data.dx*(data.fliph?-1:1),data.dy*(data.flipv?-1:1),(data.w?data.w:ts.tilew),(data.h?data.h:ts.tileh));
 		tox.restore();
 	},
+
+  /**
+  * Draws an image to the screen for one frame.
+  * @param {Object} tox The canvas context to be drawn on.
+  * @param {Object} image The image to draw. Must be a DOM Image element, typicallly accessed via gbox.getImage
+  * @param {Object} data An object containing data about the tile to be drawn, including:
+  * <ul><li>dx {Integer}: (required) x coordinate to draw the image at</li>
+  * <li>dy {Integer}: (required) y coordinate to draw the image at</li>
+  * <li>fliph {Integer}: horizontal flip, either 1 or -1</li>
+  * <li>flipv {Integer}: vertical flip, either 1 or -1</li>
+  * <li>alpha {Float}: alpha value (0 is transparent, 1 is opaque)</li></ul>
+  * @example
+  * // draw an image at (100,100)
+  * gbox.blitAll(gbox.getBufferContext(),gbox.getImage("image_id"),{dx:100,dy:100});
+  */
 	blitAll:function(tox,image,data) {
 		if (tox==null) return;
 		this._implicitsargs(data);
