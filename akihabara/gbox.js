@@ -1112,7 +1112,7 @@ var gbox={
 	},
   
   /**
-  * Draws a tile to the screen for one frame.
+  * Draws a tile to a canvas context
   * @param {Object} tox The canvas context to be drawn on.
   * @param {Object} data An object containing data about the tile to be drawn, including:
   * <ul><li>tileset {String}: the id of the tileset</li>
@@ -1139,7 +1139,7 @@ var gbox={
 	},
 
   /**
-  * Draws an image to the screen for one frame.
+  * Draws an image to a canvas context
   * @param {Object} tox The canvas context to be drawn on.
   * @param {Object} image The image to draw. Must be a DOM Image element, typicallly accessed via gbox.getImage
   * @param {Object} data An object containing data about the tile to be drawn, including:
@@ -1161,6 +1161,7 @@ var gbox={
 		this._safedrawimage(tox,image, 0,0, image.width,image.height,data.dx*(data.fliph?-1:1),data.dy*(data.flipv?-1:1),image.width,image.height);
 		tox.restore();
 	},
+  
 	blit:function(tox,image,data) {
 		if (tox==null) return;
 		this._implicitsargs(data);
@@ -1170,6 +1171,15 @@ var gbox={
 		this._safedrawimage(tox,image,(data.x?data.x:0), (data.y?data.y:0),(data.w?data.w:data.dw),(data.h?data.h:data.dh),data.dx*(data.fliph?-1:1),data.dy*(data.flipv?-1:1),data.dw,data.dh);
 		tox.restore();
 	},
+  
+  
+  /**
+  * Draws a tilemap to a canvas context
+  * @param {Object} tox The canvas context to be drawn on.
+  * @param {Object} data An object containing a set of tilemap data, including:
+  * <ul><li>tileset {String}: (required) the id of the tileset the tilemap is based on</li>
+  * <li>map {Array}: an array whose x and y coord represent the tilemap coordinates, containing integers that correspond to the index of a given tile (or null for no tile)</li>
+  */
 	blitTilemap:function(tox,data) {
 		if (tox==null) return;
 		var ts=this._tiles[data.tileset];
