@@ -1005,8 +1005,14 @@ var gbox={
   * @returns {Object} A DOM Canvas element, including the width and height of the canvas.
   */
 	getBuffer:function(){return this.getCanvas("_buffer")},
+
+  /**
+  * Gets the buffer canvas context.
+  * @returns {Object} A DOM Canvas context object.
+  */
+	getBufferContext:function(){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screen.getContext("2d")):null) },
   
-	getBufferContext:function(id){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screen.getContext("2d")):null) },
+  
 	getCanvas:function(id){return this._canvas[id]},
 	getCanvasContext:function(id){return this.getCanvas(id).getContext("2d");},
 	addImage:function(id,filename) {
