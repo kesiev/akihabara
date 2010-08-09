@@ -1228,15 +1228,30 @@ var gbox={
 		tox.restore();
 	},
   
+  /**
+  * Clears a rectangular area of a canvas context.
+  * @param {Object} image The canvas context to be drawn on.
+  * @param {Object} An object containing a set of data, including:
+  * <ul><li>x {Integer}: (required) the x coordinate of the top-left corner of the rectangle</li>
+  * <li>y {Integer}: (required) the y coordinate of the top-left corner of the rectangle</li>
+  * <li>w {Integer}: the width of the box; defaults to canvas width</li>
+  * <li>h {Integer}: the height the box; defaults to canvas height</li></ul>
+  */
 	blitClear:function(image,data) {
 		if (image==null) return;
 		if (data==null) data={x:0,y:0};
 		this._implicitsargs(data);
 		image.clearRect(data.x,data.y,(data.w==null?image.canvas.width:data.w),(data.h==null?image.canvas.height:data.h));
 	},
+  
+  /**
+  * Draws an image directly to the screen's current canvas context. Used internally in gbox.go(). Probably shouldn't be used otherwise.
+  */
 	blitImageToScreen:function(image) {
 		this._screen.getContext("2d").drawImage(image,0,0);
 	},
+  
+ 
 	blitFade:function(tox,data) { 
 		if (tox) this.blitRect(tox,{x:0,y:0,w:tox.canvas.width,h:tox.canvas.height,alpha:data.alpha,color:data.color});
 	},
