@@ -1004,7 +1004,7 @@ var gbox={
   * Gets the buffer canvas (automatically created by gbox.initScreen).
   * @returns {Object} A DOM Canvas element, including the width and height of the canvas.
   */
-	getBuffer:function(id){return this.getCanvas("_buffer")},
+	getBuffer:function(){return this.getCanvas("_buffer")},
   
 	getBufferContext:function(id){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screen.getContext("2d")):null) },
 	getCanvas:function(id){return this._canvas[id]},
