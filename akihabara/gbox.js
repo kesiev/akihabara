@@ -1012,9 +1012,22 @@ var gbox={
   */
 	getBufferContext:function(){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screen.getContext("2d")):null) },
   
-  
+  /**
+  * Gets a given canvas.
+  * @param {Object} id The identifier of the canvas.
+  * @returns {Object} A DOM Canvas element, including the width and height of the canvas.
+  */
 	getCanvas:function(id){return this._canvas[id]},
+  
+  /**
+  * Gets the two-dimensional canvas context of a given canvas. The object it returns contains all the drawing functions for the canvas.
+  * See <a href = "http://dev.w3.org/html5/spec/Overview.html#the-canvas-element">W3C</a> and
+  * <a href = "https://developer.mozilla.org/en/canvas_tutorial/basic_usage">Mozilla Developer Center</a> for details.
+  * @param {Object} id The identifier of the canvas.
+  * @returns {Object} A DOM Canvas context object.
+  */
 	getCanvasContext:function(id){return this.getCanvas(id).getContext("2d");},
+  
 	addImage:function(id,filename) {
 		if (this._images[id])
 			if (this._images[id].getAttribute("src_org")==filename)
