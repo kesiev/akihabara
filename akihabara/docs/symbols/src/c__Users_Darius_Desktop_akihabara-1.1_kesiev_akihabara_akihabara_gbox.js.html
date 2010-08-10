@@ -481,7 +481,7 @@
 <span class='line'>474</span> 
 <span class='line'>475</span> </span><span class="WHIT">  </span><span class="COMM">/**
 <span class='line'>476</span>   * Deprecated: gbox._cb is now set by passing it directly into gbox.loadAll(). Left in for backwards compatibility.
-<span class='line'>477</span>   * @param {String} The name of the function to be called once gbox.loadAll is completed.
+<span class='line'>477</span>   * @param {String} cb The name of the function to be called once gbox.loadAll is completed.
 <span class='line'>478</span>   */</span><span class="WHIT">
 <span class='line'>479</span> </span><span class="WHIT">	</span><span class="NAME">setCallback</span><span class="PUNC">:</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">cb</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT"> </span><span class="NAME">this._cb</span><span class="PUNC">=</span><span class="NAME">cb</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'>480</span> 
@@ -851,15 +851,15 @@
 <span class='line'>844</span> </span><span class="WHIT">	</span><span class="NAME">getObject</span><span class="PUNC">:</span><span class="KEYW">function</span><span class="PUNC">(</span><span class="NAME">group</span><span class="PUNC">,</span><span class="NAME">id</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this._objects</span><span class="PUNC">[</span><span class="NAME">group</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">id</span><span class="PUNC">]</span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
 <span class='line'>845</span> 
 <span class='line'>846</span> </span><span class="WHIT">  </span><span class="COMM">/**
-<span class='line'>847</span>   * Creates a font. Must be sent an object containing: &lt;ul>&lt;li>id: the id of the font&lt;/li>
-<span class='line'>848</span>   * &lt;li>image: reference to the font image loaded (must contain font character tiles in ASCII order)&lt;/li>
-<span class='line'>849</span>   * &lt;li>firstletter: the ASCII character that the font image's first character corresponds to&lt;/li>
-<span class='line'>850</span>   * &lt;li>tileh: height in pixels of the character tiles&lt;/li>
-<span class='line'>851</span>   * &lt;li>tilew: width in pixels of the character tiles&lt;/li>
-<span class='line'>852</span>   * &lt;li>tilerow: width in pixels of each row in the font image&lt;/li>
-<span class='line'>853</span>   * &lt;li>gapx: x-coord gap between tile columns, in pixels&lt;/li>
-<span class='line'>854</span>   * &lt;li>gapy: y-coord gap between tile rows, in pixels&lt;/li>&lt;/ul>
-<span class='line'>855</span>   * @param {Object} data An object formatted as detailed above.
+<span class='line'>847</span>   * Creates a font.
+<span class='line'>848</span>   * @param {Object} data An object containing: &lt;ul>&lt;li>id: the id of the font&lt;/li>
+<span class='line'>849</span>   * &lt;li>image: reference to the font image loaded (must contain font character tiles in ASCII order)&lt;/li>
+<span class='line'>850</span>   * &lt;li>firstletter: the ASCII character that the font image's first character corresponds to&lt;/li>
+<span class='line'>851</span>   * &lt;li>tileh: height in pixels of the character tiles&lt;/li>
+<span class='line'>852</span>   * &lt;li>tilew: width in pixels of the character tiles&lt;/li>
+<span class='line'>853</span>   * &lt;li>tilerow: width in pixels of each row in the font image&lt;/li>
+<span class='line'>854</span>   * &lt;li>gapx: x-coord gap between tile columns, in pixels&lt;/li>
+<span class='line'>855</span>   * &lt;li>gapy: y-coord gap between tile rows, in pixels&lt;/li>&lt;/ul>
 <span class='line'>856</span>   * @example
 <span class='line'>857</span>   * gbox.addImage('font', 'font.png');
 <span class='line'>858</span>   * gbox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });

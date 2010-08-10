@@ -474,7 +474,7 @@ var gbox={
 
   /**
   * Deprecated: gbox._cb is now set by passing it directly into gbox.loadAll(). Left in for backwards compatibility.
-  * @param {String} The name of the function to be called once gbox.loadAll is completed.
+  * @param {String} cb The name of the function to be called once gbox.loadAll is completed.
   */
 	setCallback:function(cb) { this._cb=cb; },
 
@@ -844,7 +844,8 @@ var gbox={
 	getObject:function(group,id) {return this._objects[group][id]},
 
   /**
-  * Creates a font. Must be sent an object containing: <ul><li>id: the id of the font</li>
+  * Creates a font.
+  * @param {Object} data An object containing: <ul><li>id: the id of the font</li>
   * <li>image: reference to the font image loaded (must contain font character tiles in ASCII order)</li>
   * <li>firstletter: the ASCII character that the font image's first character corresponds to</li>
   * <li>tileh: height in pixels of the character tiles</li>
@@ -852,7 +853,6 @@ var gbox={
   * <li>tilerow: width in pixels of each row in the font image</li>
   * <li>gapx: x-coord gap between tile columns, in pixels</li>
   * <li>gapy: y-coord gap between tile rows, in pixels</li></ul>
-  * @param {Object} data An object formatted as detailed above.
   * @example
   * gbox.addImage('font', 'font.png');
   * gbox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });
