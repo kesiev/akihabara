@@ -468,7 +468,7 @@ var gbox={
   
   /**
   * Sets the gbox._zoom parameter, only works before gbox.initScreen is called.
-  * @param {Integer} Zoom factor.
+  * @param {Integer} z Zoom factor.
   */
 	setZoom:function(z) { this._zoom=z},
 
@@ -1231,7 +1231,7 @@ var gbox={
   /**
   * Clears a rectangular area of a canvas context.
   * @param {Object} image The canvas context to be drawn on.
-  * @param {Object} An object containing a set of data, including:
+  * @param {Object} data An object containing a set of data, including:
   * <ul><li>x {Integer}: (required) the x coordinate of the top-left corner of the rectangle</li>
   * <li>y {Integer}: (required) the y coordinate of the top-left corner of the rectangle</li>
   * <li>w {Integer}: the width of the box; defaults to canvas width</li>
