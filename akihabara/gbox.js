@@ -1281,14 +1281,56 @@ var gbox={
 		tox.fillRect(data.x,data.y,data.w,data.h);
 		tox.restore();
 	},
+  
+  /**
+  * Calculates a box collision between two collision boxes within a given tolerance. A higher tolerance means less precise collision.
+  * @param {Object} o1 A collision box you're testing for collision. Must contain:
+  * <ul><li>x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin</li>
+  * <li>y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin</li>
+  * <li>w {Integer}: (required) the width of the box</li>
+  * <li>h {Integer}: (required) the height the box</li></ul>
+  * @param {Object} o2 A collision box you're testing for collision. Must contain:
+  * <ul><li>x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin</li>
+  * <li>y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin</li>
+  * <li>w {Integer}: (required) the width of the box</li>
+  * <li>h {Integer}: (required) the height the box</li></ul>
+  * @param {Integer} t The tolerance for the collision, in pixels. A value of 0 means pixel-perfect box collision. A value of 2 would mean that the
+  * boxes could overlap by up to 2 pixels without being considered a collision.
+  * @returns True if the two collision boxes are colliding within the given tolerance.
+  */  
 	collides:function(o1,o2,t) {
 		if (!t) t=0;
 		return !((o1.y+o1.h-1-t<o2.y+t) || (o1.y+t> o2.y+o2.h-1-t) || (o1.x+o1.w-1-t<o2.x+t) || (o1.x+t>o2.x+o2.w-1-t));
 	},
+  
+  /**
+  * Calculates a point-box collision between a point and a collision box within a given tolerance. A higher tolerance means less precise collision.
+  * @param {Object} o1 A point you're testing for collision. Must contain:
+  * <ul><li>x {Integer}: (required) the x coordinate of the point</li>
+  * <li>y {Integer}: (required) the y coordinate of the point</li></ul>
+  * @param {Object} o2 A collision box you're testing for collision. Must contain:
+  * <ul><li>x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin</li>
+  * <li>y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin</li>
+  * <li>w {Integer}: (required) the width of the box</li>
+  * <li>h {Integer}: (required) the height the box</li></ul>
+  * @param {Integer} t The tolerance for the collision, in pixels. A value of 0 means pixel-perfect collision. A value of 2 would mean that the
+  * point could exist within the outermost 2 pixels of the box without being considered a collision.
+  * @returns True if the point is colliding with the box within the given tolerance.
+  */  
 	pixelcollides:function(o1,o2,t) {
 		if (!t) t=0;
 		return !((o1.y<o2.y+t) || (o1.y> o2.y+o2.h-1-t) || (o1.x<o2.x+t) || (o1.x>o2.x+o2.w-1-t));
 	},
+  
+  /**
+  * Determines whether an object is visible by seeing if it collides with the camera's viewport.
+  * @param {Object} obj The object you're testing to see if it's visible. Must contain:
+  * <ul><li>x {Integer}: (required) the x coordinate of the object's origin; assumes the Akihabara default of top-left being the origin</li>
+  * <li>y {Integer}: (required) the y coordinate of the object's origin; assumes the Akihabara default of top-left being the origin</li>
+  * <li>w {Integer}: (required) the width of the object's collision box</li>
+  * <li>h {Integer}: (required) the height the object's box</li></ul>
+  * @returns True if the object's collision box is within the camera's viewport.
+  */  
 	objectIsVisible:function(obj) { return this.collides(obj,this._camera,0); },
 	
 	// --- 
