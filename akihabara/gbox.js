@@ -1251,10 +1251,28 @@ var gbox={
 		this._screen.getContext("2d").drawImage(image,0,0);
 	},
   
- 
+   /**
+  * Draws a filled rectangle over an entire canvas context.
+  * @param {Object} tox The canvas context to be filled.
+  * @param {Object} data An object containing a set of data, including:
+  * <ul><li>alpha {Float}: the alpha value of the rectangle; defaults to 1</li>
+  * <li>color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black</li></ul>
+  */
 	blitFade:function(tox,data) { 
 		if (tox) this.blitRect(tox,{x:0,y:0,w:tox.canvas.width,h:tox.canvas.height,alpha:data.alpha,color:data.color});
 	},
+  
+  /**
+  * Draws a filled rectangle to a canvas context.
+  * @param {Object} tox The canvas context to be drawn on.
+  * @param {Object} data An object containing a set of data, including:
+  * <ul><li>x {Integer}: (required) the x coordinate of the top-left corner of the rectangle</li>
+  * <li>y {Integer}: (required) the y coordinate of the top-left corner of the rectangle</li>
+  * <li>w {Integer}: (required) the width of the box</li>
+  * <li>h {Integer}: (required) the height the box</li>
+  * <li>alpha {Float}: the alpha value of the rectangle; defaults to 1</li>
+  * <li>color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black</li></ul>
+  */
 	blitRect:function(tox,data) {
 		if (tox==null) return;
 		tox.save();
