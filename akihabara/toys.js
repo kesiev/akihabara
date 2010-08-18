@@ -25,18 +25,88 @@ var toys={
 	FACE_DOWN:2,
 	FACE_LEFT:3,
 	
-	// Top-view (Zelda-alike) specifics
-/**
- * @namespace
- * Topview.
- */
+	/** 
+	* @namespace
+  * Top-view RPG specific libraries.
+	*/
 	topview:{
+	
+		/**
+		* Checks if an object checks that both objects are on the same Z plane and if so it calls gbox.collides.
+		* @param {Object} fr The object which collision is being checked for. 
+		* <ul>
+		* <li>x{Integer}: (required)Objects x position</li>
+		* <li>y{Integer}: (required)Objects y position</li>
+		* <li>z{Integer}: (required)Objects z position</li>
+		* <li>colx{Integer}: (required)The dimension of the collision box along the x axis</li>
+		* <li>coly{Integer}: (required)The dimension of the collision box along the y axis</li>
+		* <li>colh{Integer}: (required)Collision box height</li>
+		* <li>colw{Integer}: (required)Collision box width</li>
+		* </ul>
+		* @param {Object} to The object that collision is being checked against.
+		* <ul>
+		* <li>x{Integer}: (required)Objects x position</li>
+		* <li>y{Integer}: (required)Objects y position</li>
+		* <li>z{Integer}: (required)Objects z position</li>
+		* <li>colx{Integer}: (required)Collision x</li>
+		* <li>coly{Integer}: (required)Collision y</li>
+		* <li>colh{Integer}: (required)Collision box height</li>
+		* <li>colw{Integer}: (required)Collision box width</li>
+		* </ul>
+		* @param {int} t This is the tollerance (or margin for error) on the collide function.
+		*/
 		collides:function(fr,to,t) { // Special collision. Counts also the Z
 			if (Math.abs(fr.z,to.z)<5) return gbox.collides({x:fr.x+fr.colx,y:fr.y+fr.coly,h:fr.colh,w:fr.colw},{x:to.x+to.colx,y:to.y+to.coly,h:to.colh,w:to.colw},t); else return false;
 		},
+		
+		/**
+		* Checks for pixel collisions with an offset to the X and Y of the colidable using colx and coly.
+		* @param {Object} fr The object which collision is being tested for.
+		* @param {Object} to The object (or point) which collision is being tested against.
+		* @param {int} t The tollerance of the collision algorithm.
+		*/
 		pixelcollides:function(fr,to,t) { // Special collision. Counts also the Z
 			return gbox.pixelcollides(fr,{x:to.x+to.colx,y:to.y+to.coly,h:to.colh,w:to.colw},t);
 		},
+		
+		/**
+		* Initializes the game with the variables needed for topview and whatever else you feed in through data.
+		* @param {Object} th Passes in the object being initialized.
+		* @param {Object} data This is used to pass in everything that's being initiliized. If a value is not in Data then a default value is used instead. This can pass in values which do not have a default.
+		* <ul>
+		* <li>x{Integer}: x position of the object. (defaults to 0)</li>
+		* <li>y{Integer}: y position of the object. (defaults to 0)</li>
+		* <li>z{Integer}: z index of the object. (defaults to 0)</li>
+		* <li>accx{Integer}: The starting x velociyt of the object. (defaults to 0)</li>
+		* <li>accy{Integer}: The starting y velocity of the object. (defaults to 0)</li>
+		* <li>accz{Integer}: The starting z velocity of the object. (defaults to 0)</li>
+		* <li>frames{Object}: This is stores the animation frames for the objects in a map style structure. An empty map means the default image will display with no animation frames. (defaults to an empty map)</li>
+		* <li>shadow: (defaults to null)</li> //incomplete
+		* <li>maxacc{Integer}: (defaults to )4</li>
+		* <li>controlmaxacc{Integer}: (defaults to 4)</li>
+		* <li>responsive: (defaults to 0)</li>
+		* <li>weapon: (defaults to 0)</li>
+		* <li>camera{Boolean}: (defaults to true)</li>
+		* <li>flipv{Boolean}: Notes if the object is flipped vertically(defaults to false)</li>
+		* <li>fliph{Boolean}: Notes if the object is flipped horrizontally(defaults to false)</li>
+		* <li>facing{Integer}: Stores the facing of the object. This is set with pre-defined Integer values from within Toys.(defaults to toys.FACE_DOWN)</li>
+		* <ul>
+		* <li>FACE_UP:0,</li>
+		* <li>FACE_RIGHT:1,</li>
+		* <li>FACE_DOWN:2,</li>
+		* <li>FACE_LEFT:3,</li>
+		* </ul>
+		* <li>flipside{Boolean}: (defaults to true)</li>
+		* <li>haspushing{Boolean}: (defaults to false)</li>
+		* <li>frame: (default to 0)</li>
+		* <li>colh{Integer}: (defaults to gbox.getTiles(th.tileset).tilehh)</li>
+		* <li>colw{Integer}: (defaults to gbox.getTiles(th.tileset).tilew)</li>
+		* <li>colx{Integer}: (defaults to 0)</li>
+		* <li>staticspeed{Integer}: (defaults to 0)</li>
+		* <li>nodiagonals{Boolean}: (defaults to false)</li>
+		* <li>noreset: (defaults to false)</li>
+		* </ul>
+		*/
 		initialize:function(th,data) {
 			help.mergeWithModel(
 				th,
@@ -72,6 +142,17 @@ var toys={
 			
 			toys.topview.spawn(th);
 		},
+		
+		/**
+		* Spawns a new object in the topview namespace. This also merges parameters in data into paramaters in th using help.copyModel.
+    * This initializes some basic basic variables for the object and sets the Z index.
+		* @param {Object} th References 'this' which is the object that called the method (generally).
+		* <ul>
+		* <li>y {Integer}: (required) The object's y position.</li>
+		* <li>h {Integer}: (required) The object's height.</li>
+		* </ul>
+		* @param {Object} data This holds variables to be merged into th's stored info.
+		*/
 		spawn:function(th,data) {
 			th.xpushing=toys.PUSH_NONE; // user is moving side
 			th.vpushing=toys.PUSH_NONE; // user is moving side
@@ -82,6 +163,24 @@ var toys={
 			help.copyModel(th,data);
 			gbox.setZindex(th,th.y+th.h); // these object follows the z-index and uses ZINDEX_LAYER
 		},
+		
+		/**
+		* This sets and runs the control keys for the game. 
+		* @param {Object} th This is the object that is being controlled by the keys (assumed to be the player)
+		* <ul>
+		* <li>accx: the object's currect acceleration in the x direction</li>
+		* <li>accy: the object's currect acceleration in the y direction</li>
+		* <li>responsive: minimum movement speed</li>
+		* <li>staticspeed: turns off acceleration</li>
+		* <li>nodiagonals: boolean determining if the object can move along both axis at once.</li>
+		* <li>xpushing: a boolean that notes whether the object is pushing against something in the x direction.</li>
+		* <li>ypushing: a boolean that notes whether the object is pushing against something in the y direction.</li>
+		* <li>controlmaxacc: max acceleration for the object along an axis</li>
+		* <li>noreset: checks for the object being allowed to reset its pushing status (?)</li>
+		* </ul>
+		* @param {Object} keys These are the control keys being passed in for left, right, up, and down.
+		* //incomplete
+		*/
 		controlKeys:function(th,keys) {
 			var cancelx=false;
 			var cancely=false;
@@ -127,24 +226,116 @@ var toys={
 				if (cancely||!th.noreset) th.ypushing=toys.PUSH_NONE;
 			}
 		},
+		
+		/**
+		* Gets the next X position the object is going to move to.
+		* @param {Object} th The object being checked.
+		* <ul>
+		* <li>x: the current x position of the object</li>
+		* <li>accx: the object's currect acceleration in the x direction</li>
+		* <li>maxacc: the max accleration the object can have (if accx is greater than this then this value is used instead)</li>
+		* </ul>
+		*/
 		getNextX:function(th) { return th.x+help.limit(th.accx,-th.maxacc,th.maxacc); },
+		
+		/**
+		* Gets the next Y position the object is going to move to.
+		* @param {Object} th The object being checked.
+		* <ul>
+		* <li>y: the current y position of the object</li>
+		* <li>accy: the object's currect acceleration in the y direction</li>
+		* <li>maxacc: the max accleration the object can have (if accy is greater than this then this value is used instead)</li>
+		* </ul>
+		*/
 		getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxacc,th.maxacc); },
+		
+		/**
+		* Gets the next Z position the object is going to move to.
+		* @param {Object} th The object being checked.
+		* <ul>
+		* <li>z: the current z position of the object</li>
+		* <li>accz: the object's currect acceleration in the z direction</li>
+		* <li>maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead)</li>
+		* </ul>
+		*/
 		getNextZ:function(th) { return th.z+help.limit(th.accz,-th.maxacc,th.maxacc); },
+		
+		/**
+		* Sets the objects current location to its next location using the getNextX and getNextY methods.
+		* @param {Object} th The object being modified.
+		* <ul>
+		* <li>x: the current x position of the object</li>
+		* <li>y: the current y position of the object</li>
+		* <li>accx: the object's currect acceleration in the x direction</li>
+		* <li>accy: the object's currect acceleration in the y direction</li>
+		* <li>maxacc: the max accleration the object can have (if either acceleration is greater than this then this value is used instead for that acceleration)</li>
+		* </ul>
+		*/
 		applyForces:function(th) {
 			th.x=toys.topview.getNextX(th);
 			th.y=toys.topview.getNextY(th);
 		},
+		
+		/**
+		* This applies acceleration in the Z direction (not nessesarily gravity but whatever the next accerlation on the Z axis is)
+		* @param {Object} th The object being modified.
+		* <ul>
+		* <li>z: the current z position of the object</li>
+		* <li>accz: the object's currect acceleration in the z direction</li>
+		* <li>maxacc: the max accleration the object can have (if accz is greater than this then this value is used instead)</li>
+		* </ul>
+		*/
 		applyGravity:function(th) {
 			th.z=toys.topview.getNextZ(th);
 		},
+		
+		/**
+		* Degrades all accelerations on an object by one toward zero.
+		* @param {Object} th The object being modified.
+		* <ul>
+		* <li>xpushing: a boolean that notes whether the object is pushing against something in the x direction.</li>
+		* <li>ypushing: a boolean that notes whether the object is pushing against something in the y direction.</li>
+		* <li>accx: the object's currect acceleration in the x direction</li>
+		* <li>accy: the object's currect acceleration in the y direction</li>
+		* </ul>
+		*/
 		handleAccellerations:function(th) {
 			if (!th.xpushing) th.accx=help.goToZero(th.accx);
 			if (!th.ypushing) th.accy=help.goToZero(th.accy);
 			
 		},
+		
+		/**
+		* Increases the Z acceleration on the object by one.
+		* @param {Object} th The object being modified.
+		* <ul>
+		* <li>accz: the acceleration on the Z axis</li>
+		* </ul>
+		*/
 		handleGravity:function(th) {
 			th.accz++;
 		},
+		
+		/**
+		* This sets which frame the object is going to display based on an agregate word that describes predefined states.
+		* @param {Object} th The object whose frame is being set.
+		* <ul>
+		* <li>xpushing: a boolean that notes whether the object is pushing against something in the x direction.</li>
+		* <li>ypushing: a boolean that notes whether the object is pushing against something in the y direction.</li>
+		* <li>haspushing: a boolean that notes if the object changes when pushing against something.</li>
+		* <li>toucheddown: a boolean that notes if the object is touching something below it on the screen.</li>
+		* <li>touchedup: a boolean that notes if the object is touching something above it on the screen.<</li>
+		* <li>touchedright: a boolean that notes if the object is touching something right of it on the screen.<</li>
+		* <li>touchedleft: a boolean that notes if the object is touching something left of it on the screen.<</li>
+		* <li>flipside: </li>
+		* <li>fliph: </li>
+		* <li>facing: </li>
+		* <li>frames: </li>
+		* <li>frame: </li>
+		* <li>counter: </li>
+		* </ul>
+		* // incomplete
+		*/
 		setFrame:function(th) {
 			var pref="stand";
 			if (th.xpushing||th.ypushing) 
@@ -153,6 +344,19 @@ var toys={
 				th.fliph=(th.facing==toys.FACE_RIGHT);
 			th.frame=help.decideFrame(th.counter,th.frames[pref+toys.FACES[th.facing]]);
 		},
+		
+		/**
+		* Checks if the specified object is colliding with tiles in the map in an area defined by the object's colw and colh variables as well as the tolerance and approximation variables that are passed in through data. Only tiles in the map marked as solid are checked against. The alogrithm checks the 
+		* @param {Object} th The object that is being checked against the tilemap.
+		* @param {Object} map This is the asci map that the tile map is generated from.
+		* @param {Object} tilemap This is the array of tile objects that it itterated over checking for collisions.
+		* @param {Object} defaulttile The default tile to be returned if nothing can be found. Null can be used here.
+		* @param {Object} data Passes is extra dat to the function. Can be set as null.
+		* <ul>
+		* <li>tolerance{Integer}: This is subtracted from the collision space to get the maximum collision area for the object. This defaults to 6.</li>
+		* <li>approximation{Integer}: This is the amount that the checked values are incremented by until they reach the maximum value allowed. This defaults to 10.</li>
+		* </ul>
+		*/
 		tileCollision:function(th,map,tilemap,defaulttile,data) {
 			
 			th.touchedup=false;
@@ -200,6 +404,24 @@ var toys={
 			}
 			
 		},
+		
+		/**
+		* @param {Object} th The object being checked for collisions.
+		* <ul>
+		* <li></li>
+		* <li></li>
+		* <li></li>
+		* <li></li>
+		* </ul>
+		* @param {Object} data This is used to pass in other data and arguments.
+		* <ul>
+		* <li>group {String}: (required) This is the group of objects being checked against.</li>
+		* <li></li>
+		* <li></li>
+		* <li></li>
+		* <li></li>
+		* </ul> //incomplete
+		*/
 		spritewallCollision:function(th,data) {
 			var wl;
 			for (var i in gbox._objects[data.group])
@@ -226,6 +448,21 @@ var toys={
 				}
 						
 		},
+		
+		/**
+		* This checks if the object's z index is 0 which means it has hit the floor. If this has occured it also plays an impact or bounce noise if one is passed in. Note: The area above the floor is in the negative z index space so a value of 1 for z will return that the object has collided with the floor and z will then be set to zero.
+		* @param {Object} th The object being checked for collision.
+		* <ul>
+		* <li>touchedfloor{boolean}: This value is not passed in but is created or set in the function. This contains the function's return value.</li>
+		* <li></li>
+		* <li></li>
+		* <li></li>
+		* </ul>
+		* @param {Object} data This is used to pass in extra parameters.
+		* <ul>
+		* <li></li>
+		* </ul>
+		*/
 		floorCollision:function(th,data) {
 			th.touchedfloor=false;
 			if (th.z>0) {
@@ -235,9 +472,17 @@ var toys={
 				th.touchedfloor=true;
 			}			
 		},
+		
+		/**
+		* 
+		*/
 		adjustZindex:function(th) {
 			gbox.setZindex(th,th.y+th.h);
 		},
+		
+		/**
+		* 
+		*/
 		// Helper: returns the ahead pixel (i.e. destination use action)
 		getAheadPixel:function(th,data) {
 			switch (th.facing) {
@@ -259,6 +504,10 @@ var toys={
 				}
 			}
 		},
+		
+		/**
+		* 
+		*/
 		// Helper: trigger a method in colliding objects (i.e. "use action")
 		callInColliding:function(th,data) {
 			for (var i in gbox._objects[data.group])
@@ -269,6 +518,10 @@ var toys={
 					}
 			return false;
 		},
+		
+		/**
+		* 
+		*/
 		// Enemy methods
 		wander:function(th,map,tilemap,defaulttile,data) {
 			if ((!th.wandercounter)||(th.toucheddown||th.touchedup||th.touchedleft||th.touchedright)) {
@@ -310,6 +563,10 @@ var toys={
 				}					
 			}
 		},
+		
+		/**
+		* 
+		*/
 		// generators (firebullet specific for topdown - more complex than SHMUP one)
 		fireBullet:function(gr,id,data) {
 
@@ -404,6 +661,10 @@ var toys={
 			return obj;
 		
 		},
+		
+		/**
+		* 
+		*/
 		makedoor:function(gr,id,map,data) {
 
 			var mts=gbox.getTiles(map.tileset);
@@ -507,8 +768,15 @@ var toys={
 	},
 	
 	
+	/**
+	* @namespace shmup The libraries for a 2D top-down Shmup game.
+	*/
 	// Shoot'em up specifics
 	shmup:{
+		
+		/**
+		* 
+		*/
 		initialize:function(th,data) {
 			help.mergeWithModel(
 				th,
@@ -532,6 +800,10 @@ var toys={
 			);
 			toys.shmup.spawn(th);
 		},
+		
+		/**
+		* 
+		*/
 		spawn:function(th,data) {
 			th.xpushing=toys.PUSH_NONE; // user is moving side
 			th.vpushing=toys.PUSH_NONE; // user is moving side
@@ -540,8 +812,20 @@ var toys={
 			th.killed=false;
 			help.copyModel(th,data);
 		},
+		
+		/**
+		* 
+		*/
 		getNextX:function(th) { return th.x+help.limit(th.accx,-th.maxacc,th.maxacc); },
+		
+		/**
+		* 
+		*/
 		getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxacc,th.maxacc); },
+		
+		/**
+		* 
+		*/
 		controlKeys:function(th,keys) {
 			
 			if (gbox.keyIsPressed(keys.left)) {
@@ -563,14 +847,26 @@ var toys={
 				th.accy=help.limit(th.accy+1,-th.controlmaxacc,th.controlmaxacc);
 			} else th.ypushing=toys.PUSH_NONE;
 		},
+		
+		/**
+		* 
+		*/
 		applyForces:function(th) {
 			th.x=toys.shmup.getNextX(th);
 			th.y=toys.shmup.getNextY(th);
 		},
+		
+		/**
+		* 
+		*/
 		handleAccellerations:function(th) {
 			if (!th.xpushing) th.accx=help.goToZero(th.accx);
 			if (!th.ypushing) th.accy=help.goToZero(th.accy);
 		},
+		
+		/**
+		* 
+		*/
 		keepInBounds:function(th) {
 			if (th.x<th.bounds.x) {
 				th.x=th.bounds.x;
@@ -587,11 +883,18 @@ var toys={
 				th.accy=0;				
 			}
 		},
+		
+		/**
+		* 
+		*/
 		setFrame:function(th) {
 			if (th.hittimer) th.hittimer--;
 			th.frame=help.decideFrame(th.counter,(th.hittimer?th.frames.hit:th.frames.still));
 		},
 		
+		/**
+		* 
+		*/
 		fireBullet:function(gr,id,data) {
 		
 			var ts=gbox.getTiles(data.tileset);
@@ -644,6 +947,9 @@ var toys={
 		
 		},
 		
+		/**
+		* 
+		*/
 		hitByBullet:function(th,by) {
 			if (by.power) {
 				th.health-=by.power;
@@ -651,6 +957,9 @@ var toys={
 			}
 		},
 		
+		/**
+		* 
+		*/
 		generateEnemy:function(gr,id,data,model) {
 			help.mergeWithModel(data,model);
 			var obj=gbox.addObject(
@@ -812,6 +1121,10 @@ var toys={
 			return obj;
 
 		},
+		
+		/**
+		* 
+		*/
 		generateScroller:function(gr,id,data) {
 			var obj=gbox.addObject(
 				help.mergeWithModel(
@@ -934,7 +1247,15 @@ var toys={
 			return obj;
 		}
 	},
+		
+	/**
+	* @namespace platformer The libraries for generating a 2D platformer game.
+	*/
 	platformer:{
+		
+		/**
+		* 
+		*/
 		initialize:function(th,data) {
 			help.mergeWithModel(
 				th,
@@ -954,6 +1275,10 @@ var toys={
 			);
 			toys.platformer.spawn(th);
 		},
+		
+		/**
+		* 
+		*/
 		spawn:function(th,data) {
 			th.curjsize=0; // current jump size
 			th.counter=0; // self counter
@@ -965,12 +1290,28 @@ var toys={
 			th.killed=false;
 			help.copyModel(th,data);
 		},
+		
+		/**
+		* 
+		*/
 		getNextX:function(th) { return th.x+th.accx; },
+		
+		/**
+		* 
+		*/
 		getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxaccy,th.maxaccy); },
+		
+		/**
+		* 
+		*/
 		applyGravity:function(th) {
 			th.x=toys.platformer.getNextX(th);
 			th.y=toys.platformer.getNextY(th);
 		},	
+		
+		/**
+		* 
+		*/
 		horizontalKeys:function(th,keys) {
 			if (gbox.keyIsPressed(keys.left)) {
 				th.pushing=toys.PUSH_LEFT;
@@ -980,6 +1321,10 @@ var toys={
 				th.accx=help.limit(th.accx+1,-th.maxaccx,th.maxaccx);
 			} else th.pushing=toys.PUSH_NONE;
 		},
+		
+		/**
+		* 
+		*/
 		verticalTileCollision:function(th,map,tilemap) {
 			var bottom=help.getTileInMap(th.x+(th.w/2),th.y+th.h,map,0,tilemap);
 			var top=help.getTileInMap(th.x+(th.w/2),th.y,map,0,tilemap);
@@ -997,6 +1342,10 @@ var toys={
 				th.touchedfloor=true;
 			}
 		},
+		
+		/**
+		* 
+		*/
 		horizontalTileCollision:function(th,map,tilemap) {
 			var left=0;
 			var right=0;
@@ -1022,9 +1371,18 @@ var toys={
 				t+=gbox.getTiles(map.tileset).tileh;
 			}
 		},
+		
+		/**
+		* Checks if the passed object is touching the floor and can therefore jump at present.
+		* @param th This is the object being checked for jump ability at the time of calling.
+		*/
 		canJump:function(th) {
 			return th.touchedfloor;
 		},
+		
+		/**
+		* 
+		*/
 		jumpKeys:function(th,key) {
 			if ((toys.platformer.canJump(th)||(key.doublejump&&(th.accy>=0)))&&gbox.keyIsHit(key.jump)&&(th.curjsize==0)) {
 				if (key.audiojump) gbox.hitAudio(key.audiojump);
@@ -1037,20 +1395,36 @@ var toys={
 			} else
 				th.curjsize=0;
 			return false;
-		},	
+		},
+		
+		/**
+		* 
+		*/	
 		bounce:function(th,data) {
 			th.curjsize=0;
 			th.accy=-data.jumpsize;
 		},
+		
+		/**
+		* 
+		*/
 		handleAccellerations:function(th) {
 			// Gravity
 			if (!th.touchedfloor) th.accy++;
 			// Attrito
 			if (th.pushing==toys.PUSH_NONE) if (th.accx) th.accx=help.goToZero(th.accx);
 		},
+		
+		/**
+		* 
+		*/
 		setSide:function(th) {
 			if (th.accx) th.side=th.accx>0;
 		},
+		
+		/**
+		* 
+		*/
 		setFrame:function(th) {
 			if (th.touchedfloor)
 				if (th.pushing!=toys.PUSH_NONE)
@@ -1062,7 +1436,10 @@ var toys={
 			else
 				th.frame=help.decideFrame(th.counter,th.frames.jumping);
 		},
-		// ---
+		
+		/**
+		* 
+		*/
 		auto:{
 			// Moves on a platform. It tries to do not fall down, if specified.
 			// Args: (object,{moveWhileFalling:<moves while not touching the floor>,speed:<movement speed>})
@@ -1104,19 +1481,46 @@ var toys={
 	// PRIVATE
 
 	// Generical toys method
+		
+	/**
+	* 
+	*/
 	resetToy:function(th,id) { if (th.toys) delete th.toys[id] },
+	
+	/**
+	* 
+	*/
 	getToyValue:function(th,id,v,def) { return ((th.toys==null)||(th.toys[id]==null)?def:th.toys[id][v]) },
+	
+	/**
+	* 
+	*/
 	getToyStatus:function(th,id) { return ((th.toys==null)||(th.toys[id]==null)?toys.TOY_BUSY:th.toys[id].__status) },
 	
+	/**
+	* 
+	*/
 	_toydone:function(th,id) {
 		if (th.toys[id].__status<toys.TOY_IDLE) th.toys[id].__status++;
 		return th.toys[id].__status;
 	},
+	
+	/**
+	* 
+	*/
 	_toybusy:function(th,id) {
 		th.toys[id].__status=toys.TOY_BUSY;
 		return th.toys[id].__status;
 	},
+	
+	/**
+	* 
+	*/
 	_toyfrombool:function(th,id,b) { return (b?toys._toydone(th,id):toys._toybusy(th,id)) },
+	
+	/**
+	* 
+	*/
 	_maketoy:function(th,id){
 		if (!th.toys) th.toys={};
 		if (!th.toys[id]) {
@@ -1124,8 +1528,16 @@ var toys={
 			return true;
 		} else return false;
 	},
+	
+	/**
+	* @namespace timer Timer functionality based methods
+	*/
 	// Pure timers
 	timer:{
+		
+		/**
+		* 
+		*/
 		randomly:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].time=help.random(data.base,data.range);
@@ -1138,6 +1550,10 @@ var toys={
 				return toys._toydone(th,id);
 			}	
 		},
+		
+		/**
+		* 
+		*/
 		real:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].subtimer=gbox.getFps();
@@ -1162,6 +1578,10 @@ var toys={
 			return toys._toyfrombool(th,id,th.toys[id].done);
 
 		},
+		
+		/**
+		* 
+		*/
 		every:function(th,id,frames){
 			if (toys._maketoy(th,id)) th.toys[id].timer=0;
 			th.toys[id].timer++;
@@ -1170,6 +1590,10 @@ var toys={
 				return toys._toydone(th,id);
 			} else return toys._toybusy(th,id)
 		},
+		
+		/**
+		* 
+		*/
 		after:function(th,id,frames) {
 			if (toys._maketoy(th,id)) th.toys[id].timer=0;
 			if (th.toys[id].timer==frames) return toys._toydone(th,id); else {
@@ -1178,16 +1602,32 @@ var toys={
 			}
 		}
 	},
+	
+	/**
+	* 
+	*/
 	// Logical helpers
 	logic: {
+		
+		/**
+		* 
+		*/
 		once:function(th,id,cond){
 			if (toys._maketoy(th,id)) th.toys[id].done=false;
 			if (th.toys[id].done) return false; else if (cond) th.toys[id].done=true;
 			return cond;
 		}
 	},
+	
+	/**
+	* 
+	*/
 	// UI
 	ui:{
+		
+		/**
+		* 
+		*/
 		menu:function(th,id,opt) {
 			if (toys._maketoy(th,id)||opt.resetmenu) {
 				var fd=gbox.getFont(opt.font);
@@ -1229,6 +1669,9 @@ var toys={
 			} else return toys._toybusy(th,id);
 		},
 		
+		/**
+		* 
+		*/
 		// Returns a full customizable object for optimized huds
 		hud:function(id) {
 			gbox.createCanvas(id);
@@ -1236,6 +1679,9 @@ var toys={
 				w:{},
 				surfaceid:id,
 				
+				/**
+				* 
+				*/
 				updateWidget:function(i){
 					if (!this.w[i].__hidden) {
 						if (this.w[i].widget=="label") {
@@ -1292,25 +1738,39 @@ var toys={
 					}
 				},
 				
+				/**
+				* 
+				*/
 				hideWidgets:function(l) {
 					for (var i=0;i<l.length;i++) this.w[l[i]].__hidden=true;
 					this.redraw();
 				},
 				
+				/**
+				* 
+				*/
 				showWidgets:function(l) {
 					for (var i=0;i<l.length;i++) this.w[l[i]].__hidden=false;
 					this.redraw();
 				},
 				
+				/**
+				* 
+				*/
 				getValue:function(w,k) {
 					return this.w[w][k];
 				},
 				
-
+				/**
+				* 
+				*/
 				getNumberValue:function(w,k) {
 					return this.w[w][k]*1;
 				},
 
+				/**
+				* 
+				*/
 				setValue:function(w,k,v) {
 					if (this.w[w][k]!=v) {
 						if (k=="value") {
@@ -1323,25 +1783,40 @@ var toys={
 					}
 				},
 				
+				/**
+				* 
+				*/
 				pushValue:function(w,k,v) {
 					this.w[w][k].push(v);
 					this.updateWidget(w);
 				},
 				
+				/**
+				* 
+				*/
 				addValue:function(w,k,v) {
 					if (v) this.setValue(w,k,this.w[w][k]+v);
 				},
 				
+				/**
+				* 
+				*/
 				setWidget:function(id,w) {
 					this.w[id]=w;
 					this.updateWidget(id);
 				},
 				
+				/**
+				* 
+				*/
 				redraw:function() {
 					gbox.blitClear(gbox.getCanvasContext(this.surfaceid));
 					for (var i in this.w) this.updateWidget(i);
 				},
 				
+				/**
+				* 
+				*/
 				blit:function() {
 					gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas(this.surfaceid),{dx:0,dy:0});
 				}
@@ -1349,7 +1824,15 @@ var toys={
 			}
 		}
 	},
+	
+	/**
+	* 
+	*/
 	fullscreen:{
+	
+		/**
+		* 
+		*/
 		fadeout:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)||data.resetfade) {
 				th.toys[id].fade=0;
@@ -1368,6 +1851,10 @@ var toys={
 					gbox.setChannelVolume(data.audiochannelfade,th.toys[id].chv*(1-data.alpha));
 			return toys._toyfrombool(th,id,th.toys[id].fade==1)
 		},
+		
+		/**
+		* 
+		*/
 		fadein:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)||data.resetfade) {
 				th.toys[id].fade=1;
@@ -1385,7 +1872,15 @@ var toys={
 			return toys._toyfrombool(th,id,th.toys[id].fade==0);
 		}
 	},
+	
+	/**
+	* 
+	*/
 	text:{
+		
+		/**
+		* 
+		*/
 		blink:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].texttimer=0;
@@ -1401,6 +1896,10 @@ var toys={
 				gbox.blitText(tox,data);
 			return toys._toyfrombool(th,id,(data.times?data.times<th.toys[id].times:false));
 		},
+		
+		/**
+		* 
+		*/
 		fixed:function(th,id,tox,data) {
 			if (toys._maketoy(th,id))
 				th.toys[id].texttimer=0;
@@ -1410,7 +1909,15 @@ var toys={
 			return toys._toyfrombool(th,id,data.time<th.toys[id].texttimer);
 		}
 	},
+	
+	/**
+	* 
+	*/
 	logos:{
+		
+		/**
+		* 
+		*/
 		linear:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].x=data.sx;
@@ -1444,6 +1951,10 @@ var toys={
 				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:th.toys[id].x,dy:th.toys[id].y,alpha:data.alpha});
 			return toys._toyfrombool(th,id,(data.x==th.toys[id].x)&&(data.y==th.toys[id].y));
 		},
+		
+		/**
+		* 
+		*/
 		crossed:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].gapx=data.gapx;
@@ -1465,6 +1976,10 @@ var toys={
 				return toys._toydone(th,id);
 			}
 		},
+		
+		/**
+		* 
+		*/
 		zoomout:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].zoom=data.zoom;
@@ -1484,6 +1999,10 @@ var toys={
 				return toys._toydone(th,id);
 			}
 		},
+		
+		/**
+		* 
+		*/
 		rising:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].cnt=0;
@@ -1506,6 +2025,10 @@ var toys={
 				return toys._toydone(th,id);
 			}
 		},
+		
+		/**
+		* 
+		*/
 		bounce:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
 				th.toys[id].accy=data.accy;
@@ -1527,7 +2050,15 @@ var toys={
 			return toys._toyfrombool(th,id,th.toys[id].done);
 		}
 	},
+	
+	/**
+	* 
+	*/
 	dialogue: {
+		
+		/**
+		* 
+		*/
 		render:function(th,id,data){
 			if (toys._maketoy(th,id)) {
 				th.toys[id].newscene=true;
@@ -1707,7 +2238,15 @@ var toys={
 	
 	// GENERATORS
 	
+		
+	/**
+	* 
+	*/
 	generate: {
+		
+		/**
+		* 
+		*/
 		sparks:{
 			simple:function(th,group,id,data) {
 				var ts=gbox.getTiles(data.tileset);
@@ -1756,6 +2295,10 @@ var toys={
 				
 				return obj;
 			},
+		
+			/**
+			* 
+			*/
 			popupText:function(th,group,id,data) {
 				data.text+="";
 				var fd=gbox.getFont(data.font);
@@ -1794,6 +2337,10 @@ var toys={
 				
 				return obj;
 			},
+		
+			/**
+			* 
+			*/
 			bounceDie:function(th,group,id,data){
 				var obj=gbox.addObject(
 					help.mergeWithModel(
@@ -1833,7 +2380,15 @@ var toys={
 				return obj;
 			}
 		},
+		
+		/**
+		* 
+		*/
 		audio:{
+		
+			/**
+			* 
+			*/
 			fadeOut:function(th,group,id,data){
 				var obj=gbox.addObject(
 					help.mergeWithModel(

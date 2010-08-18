@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - help</title>
+		<title>JsDoc Reference - toys.platformer</title>
 
     <script type="text/javascript" src="../jproton.js"></script>
     <script type="text/javascript" src="../ui.js"></script>
@@ -94,7 +94,7 @@
 				<div id="content">
 <!-- ============================== class title ============================ -->
 					<h1 class="classTitle">
-						Namespace help
+						Namespace toys.platformer
 					</h1>
 		
 <!-- ============================== class summary ========================== -->			
@@ -102,16 +102,34 @@
 					
 -->
 					<div class="full-description">
-						<p>Help module provides some Javascript-specific functions, such object copying, randomizing functions, string/array handlers and the akihabaraInit function.</p>
+						<p>platformer The libraries for generating a 2D platformer game.</p>
 					</div>
 					
-						<p class="fileName itemName"><i>Defined in: </i> <span class="icon"><a href="../symbols/src/c__Users_Darius_Desktop_akihabara-1.1_kesiev_akihabara_akihabara_help.js.html">help.js</a>.</span></p>
+						<p class="fileName itemName"><i>Defined in: </i> <span class="icon"><a href="../symbols/src/c__Users_Darius_Desktop_akihabara-1.1_kesiev_akihabara_akihabara_toys.js.html">toys.js</a>.</span></p>
 					
 		
 <!-- ============================== constructor summary ==================== -->			
 					
 		
 <!-- ============================== properties summary ===================== -->
+					
+						
+						
+						<div class="summary section">
+							<div class="sectionTitle">Field Summary</div>
+							<div class="sectionItems">
+							
+								<div class="sectionItem classProperty">
+								  <!--
+									<div class="module-filter">&nbsp;</div>
+									-->
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.auto">auto</a></b>
+									<span class='description'></span>
+								</div>
+							
+							</div>
+						</div>
+						
 					
 		
 <!-- ============================== methods summary ======================== -->
@@ -127,87 +145,7 @@
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc. Many of these settings can be set manually by passing an object with the parameters defined, or via URL parameters."><a href="../symbols/help.html#.akihabaraInit">akihabaraInit</a></b><span class='signature'>(<span title="(Object) An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.">data</span>)</span>
-									<span class='description'>This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc. Many of these settings can be set manually by passing an object with the parameters defined, or via URL parameters.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format."><a href="../symbols/help.html#.asciiArtToMap">asciiArtToMap</a></b><span class='signature'>(<span title="(Array) An array of characters representing a map.">map</span>, <span title="(Array) A translation array. This is an array of arrays, formatted like [ [null, char1], [0, char2], [1, char3] ].">tra</span>)</span>
-									<span class='description'>Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Creates a duplicate of an existing set of parameters."><a href="../symbols/help.html#.cloneObject">cloneObject</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters.">model</span>)</span>
-									<span class='description'>Creates a duplicate of an existing set of parameters.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Merges two sets of parameters together overwriting any existing parameters. This merges model->data, and if data and model share parameters, data's are overwritten by model's."><a href="../symbols/help.html#.copyModel">copyModel</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span>
-									<span class='description'>Merges two sets of parameters together overwriting any existing parameters. This merges model->data, and if data and model share parameters, data's are overwritten by model's.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Creates a subset of an existing set of parameters."><a href="../symbols/help.html#.createModel">createModel</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters, the source of the data.">obj</span>, <span title="(Array) An array of strings, containing the names of parameters you wish to copy.">attrs</span>)</span>
-									<span class='description'>Creates a subset of an existing set of parameters.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Determines which frame of a given animation to display. Will loop an animation."><a href="../symbols/help.html#.decideFrame">decideFrame</a></b><span class='signature'>(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
-									<span class='description'>Determines which frame of a given animation to display. Will loop an animation.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Determines which frame of a given animation to display. Will remain on the last frame when the animation has played once."><a href="../symbols/help.html#.decideFrameOnce">decideFrameOnce</a></b><span class='signature'>(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
-									<span class='description'>Determines which frame of a given animation to display. Will remain on the last frame when the animation has played once.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Calculates and sets the width and height (map.h, map.w) and half-width and half-height (map.hh, map.hw) of a map object."><a href="../symbols/help.html#.finalizeTilemap">finalizeTilemap</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>)</span>
-									<span class='description'>Calculates and sets the width and height (map.h, map.w) and half-width and half-height (map.hh, map.hw) of a map object.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds). Calculated using the current frames per second."><a href="../symbols/help.html#.framestotime">framestotime</a></b><span class='signature'>(<span title="(Integer) A quantity of frames.">frames</span>)</span>
-									<span class='description'>Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds). Calculated using the current frames per second.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Returns the Nth element in an array. If the array is shorter than N, it returns the last element of the array."><a href="../symbols/help.html#.getArrayCapped">getArrayCapped</a></b><span class='signature'>(<span title="(Array) An array.">a</span>, <span title="(Integer) An index to the array.">id</span>)</span>
-									<span class='description'>Returns the Nth element in an array. If the array is shorter than N, it returns the last element of the array.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title=""><a href="../symbols/help.html#.getArrayIndexed">getArrayIndexed</a></b><span class='signature'>(<span>a</span>, <span>value</span>, <span>field</span>)</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.applyGravity">applyGravity</a></b><span class='signature'>(<span>th</span>)</span>
 									<span class='description'></span>
 								</div>
 							
@@ -215,168 +153,104 @@
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Automatically configures a bunch of settings depending on the web browser and device that is viewing the game. Mostly sets the maximum number of audio channels and touch settings."><a href="../symbols/help.html#.getDeviceConfig">getDeviceConfig</a></b><span class='signature'>()</span>
-									<span class='description'>Automatically configures a bunch of settings depending on the web browser and device that is viewing the game. Mostly sets the maximum number of audio channels and touch settings.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.bounce">bounce</a></b><span class='signature'>(<span>th</span>, <span>data</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Given x,y coordinates and map information, this returns the tile at a given point."><a href="../symbols/help.html#.getTileInMap">getTileInMap</a></b><span class='signature'>(<span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Object) The map object.">map</span>, <span title="(Object) An object or value to be returned if the x,y coordinate pair is outside the map.">ifout</span>, <span title="(String) The id for the map array within the map object. Default is 'map'.">mapid</span>)</span>
-									<span class='description'>Given x,y coordinates and map information, this returns the tile at a given point.</span>
+									<b class="icon" title="Checks if the passed object is touching the floor and can therefore jump at present."><a href="../symbols/toys.platformer.html#.canJump">canJump</a></b><span class='signature'>(<span title="This is the object being checked for jump ability at the time of calling.">th</span>)</span>
+									<span class='description'>Checks if the passed object is touching the floor and can therefore jump at present.</span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Reads the value of a query parameter from the URL of the web page."><a href="../symbols/help.html#.geturlparameter">geturlparameter</a></b><span class='signature'>(<span title="(String) The name of the URL parameter.">name</span>)</span>
-									<span class='description'>Reads the value of a query parameter from the URL of the web page.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.getNextX">getNextX</a></b><span class='signature'>(<span>th</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Subtracts or adds 1 to a value, always converging to zero. For example, passing -3 yields -2, 5 yields 4, etc."><a href="../symbols/help.html#.goToZero">goToZero</a></b><span class='signature'>(<span title="(Integer) A value.">v</span>)</span>
-									<span class='description'>Subtracts or adds 1 to a value, always converging to zero. For example, passing -3 yields -2, 5 yields 4, etc.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.getNextY">getNextY</a></b><span class='signature'>(<span>th</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Tests whether an object contains a given parameter."><a href="../symbols/help.html#.isDefined">isDefined</a></b><span class='signature'>(<span title="(Object) reference to a parameter of an object.">A</span>)</span>
-									<span class='description'>Tests whether an object contains a given parameter.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.handleAccellerations">handleAccellerations</a></b><span class='signature'>(<span>th</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce."><a href="../symbols/help.html#.isLastFrameOnce">isLastFrameOnce</a></b><span class='signature'>(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
-									<span class='description'>Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.horizontalKeys">horizontalKeys</a></b><span class='signature'>(<span>th</span>, <span>keys</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Tests to see if an object is being "jumped on" by another object. Only works for platformers, since it assumes accy>0 means you're falling onto something else."><a href="../symbols/help.html#.isSquished">isSquished</a></b><span class='signature'>(<span title="(Object) The object that is (possibly) being jumped on.">th</span>, <span title="(Object) The object doing the jumping-on.">by</span>)</span>
-									<span class='description'>Tests to see if an object is being "jumped on" by another object. Only works for platformers, since it assumes accy>0 means you're falling onto something else.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.horizontalTileCollision">horizontalTileCollision</a></b><span class='signature'>(<span>th</span>, <span>map</span>, <span>tilemap</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Limits a number to a certain range. If the number is below the minimum, the minimum is returned."><a href="../symbols/help.html#.limit">limit</a></b><span class='signature'>(<span title="(Float) A value.">v</span>, <span title="(Float) The minimum limit.">min</span>, <span title="(Float) The maximum limit.">max</span>)</span>
-									<span class='description'>Limits a number to a certain range. If the number is below the minimum, the minimum is returned.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.initialize">initialize</a></b><span class='signature'>(<span>th</span>, <span>data</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact."><a href="../symbols/help.html#.mergeWithModel">mergeWithModel</a></b><span class='signature'>(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span>
-									<span class='description'>Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.jumpKeys">jumpKeys</a></b><span class='signature'>(<span>th</span>, <span>key</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Multiplies two numbers together, returning the result, unless the first parameter is less than 2, in which case it returns 1."><a href="../symbols/help.html#.multiplier">multiplier</a></b><span class='signature'>(<span title="(Float) First value.">v</span>, <span title="(Float) Second value.">mul</span>)</span>
-									<span class='description'>Multiplies two numbers together, returning the result, unless the first parameter is less than 2, in which case it returns 1.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.setFrame">setFrame</a></b><span class='signature'>(<span>th</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Writes the contents of an object to a string. Useful for debugging."><a href="../symbols/help.html#.objToStr">objToStr</a></b><span class='signature'>(<span title="(Object) object.">Any</span>)</span>
-									<span class='description'>Writes the contents of an object to a string. Useful for debugging.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.setSide">setSide</a></b><span class='signature'>(<span>th</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Postpends a string with repeated instances of another string until it the result is greater than or equal to a desired length."><a href="../symbols/help.html#.postpad">postpad</a></b><span class='signature'>(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to postpend to str.">pad</span>)</span>
-									<span class='description'>Postpends a string with repeated instances of another string until it the result is greater than or equal to a desired length.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.spawn">spawn</a></b><span class='signature'>(<span>th</span>, <span>data</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 								<div class="sectionItem classMethod">
 								  <!--
 									<div class="module-filter">&nbsp;</div>
 									-->
-									<b class="icon" title="Prepends a string with repeated instances of another string until it the result is greater than or equal to a desired length."><a href="../symbols/help.html#.prepad">prepad</a></b><span class='signature'>(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to prepend to str.">pad</span>)</span>
-									<span class='description'>Prepends a string with repeated instances of another string until it the result is greater than or equal to a desired length.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Generates uniformly distributed random integers between min and min+range, non-inclusive. So help.random(0,2) will only return 0 and 1, etc."><a href="../symbols/help.html#.random">random</a></b><span class='signature'>(<span title="(Integer) The minimum random value to be returned by the function.">min</span>, <span title="(Integer) The number of different values returned by the function.">range</span>)</span>
-									<span class='description'>Generates uniformly distributed random integers between min and min+range, non-inclusive. So help.random(0,2) will only return 0 and 1, etc.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Generates numbers from st to ed, along with a skip value."><a href="../symbols/help.html#.seq">seq</a></b><span class='signature'>(<span title="(Integer) Starting number.">st</span>, <span title="(Integer) Ending number.">ed</span>, <span title="(Integer) Number to increment by.">skip</span>)</span>
-									<span class='description'>Generates numbers from st to ed, along with a skip value.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Sets a tile in the map and draws it. Does not return anything."><a href="../symbols/help.html#.setTileInMap">setTileInMap</a></b><span class='signature'>(<span title="(Object) The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")">ctx</span>, <span title="(Object) The game map object.">map</span>, <span title="(Integer) The index of the tile column within the map array -- so a 1 would mean the second column of tiles.">x</span>, <span title="(Integer) The index of the tile row within the map array -- so a 1 would mean the second row of tiles.">y</span>, <span title="(Integer) The integer representing the new tile you wish to draw. This is its index within the tileset; a null value will erase whatever tile is present.">tile</span>, <span title="(String) ID of the map. Defaults to 'map'.">The</span>)</span>
-									<span class='description'>Sets a tile in the map and draws it. Does not return anything.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Given an incrementing value each step, this will return a value increasing from 0 until max/2, at which point it will decrement to 0, then go back up to max/2, in an endless cycle."><a href="../symbols/help.html#.upAndDown">upAndDown</a></b><span class='signature'>(<span title="(Integer) A counter.">counter</span>, <span title="(Integer) This determines the period of the function -- assuming counter is incrementing by one, a complete back-and-forth will take 'max' steps.">max</span>)</span>
-									<span class='description'>Given an incrementing value each step, this will return a value increasing from 0 until max/2, at which point it will decrement to 0, then go back up to max/2, in an endless cycle.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Converts an x-coordinate of a pixel to the x-coordinate of the tile column it's in. This effectively "snaps" an x coordinate to a tile edge."><a href="../symbols/help.html#.xPixelToTile">xPixelToTile</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) Number of pixels gap in tilemap. Default is 0.">gap</span>)</span>
-									<span class='description'>Converts an x-coordinate of a pixel to the x-coordinate of the tile column it's in. This effectively "snaps" an x coordinate to a tile edge.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Converts an x-coordinate of a pixel to its corresponding tile x-coordinate."><a href="../symbols/help.html#.xPixelToTileX">xPixelToTileX</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) (Not used.)">gap</span>)</span>
-									<span class='description'>Converts an x-coordinate of a pixel to its corresponding tile x-coordinate.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Converts a y-coordinate of a pixel to the y-coordinate of the tile row it's in. This effectively "snaps" a y coordinate to a tile edge."><a href="../symbols/help.html#.yPixelToTile">yPixelToTile</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) Number of pixels gap in tilemap. Default is 0.">gap</span>)</span>
-									<span class='description'>Converts a y-coordinate of a pixel to the y-coordinate of the tile row it's in. This effectively "snaps" a y coordinate to a tile edge.</span>
-								</div>
-							
-								<div class="sectionItem classMethod">
-								  <!--
-									<div class="module-filter">&nbsp;</div>
-									-->
-									<b class="icon" title="Converts a y-coordinate of a pixel to its corresponding tile y-coordinate."><a href="../symbols/help.html#.yPixelToTileY">yPixelToTileY</a></b><span class='signature'>(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) (Not used.)">gap</span>)</span>
-									<span class='description'>Converts a y-coordinate of a pixel to its corresponding tile y-coordinate.</span>
+									<b class="icon" title=""><a href="../symbols/toys.platformer.html#.verticalTileCollision">verticalTileCollision</a></b><span class='signature'>(<span>th</span>, <span>map</span>, <span>tilemap</span>)</span>
+									<span class='description'></span>
 								</div>
 							
 							</div>
@@ -389,6 +263,40 @@
 		
 <!-- ============================== field details ========================== -->		
 					
+					<div class="section details">
+						<div class="sectionTitle">
+							Field Detail
+						</div>
+						<div class="sectionItems">
+							
+								<div class='sectionItem classProperty'>
+									<a name=".auto"> </a>
+									<div class="itemTitle signature icon">
+										toys.platformer.<b>auto</b>
+										
+									</div>
+
+									<div class="full-description">
+										
+										
+										
+									</div>
+									
+									
+									<pre class="prettyprint"></pre>
+									
+								
+									
+										
+										
+										
+										
+				
+								</div>
+							
+						</div>
+					</div>
+					
 		
 <!-- ============================== method details ========================= -->		
 					
@@ -400,647 +308,9 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".akihabaraInit"> </a>
+									<a name=".applyGravity"> </a>
 									<div class="itemTitle icon">
-										help.akihabaraInit<span class="signature">(<span title="(Object) An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.">data</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										This provides a number of configurations: fps, display zoom, dynamic frameskip, force touch parameters, etc. Many of these settings canbe set manually by passing an object with the parameters defined, or via URL parameters.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>data</b>
-												</td>
-												<td class="methodItemDesc">
-											    An optional object containing parameters you wish to set. Works for data.zoom, data.splash, data.width, data.height, data.title, data.fps, and data.padmode.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".asciiArtToMap"> </a>
-									<div class="itemTitle icon">
-										help.asciiArtToMap<span class="signature">(<span title="(Array) An array of characters representing a map.">map</span>, <span title="(Array) A translation array. This is an array of arrays, formatted like [ [null, char1], [0, char2], [1, char3] ].">tra</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Array}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>map</b>
-												</td>
-												<td class="methodItemDesc">
-											    An array of characters representing a map.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Array}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>tra</b>
-												</td>
-												<td class="methodItemDesc">
-											    A translation array. This is an array of arrays, formatted like [ [null, char1], [0, char2], [1, char3] ]. There must at least be a null entry, followed by one numerical entry for each tile type you want to render, corresponding to the unique characters in the map array. The null entry maps a character to empty space.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A map array formatted such that it can be attached to a map object.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".cloneObject"> </a>
-									<div class="itemTitle icon">
-										help.cloneObject<span class="signature">(<span title="(Object) An object containing a set of parameters.">model</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Creates a duplicate of an existing set of parameters.
-										
-										
-									
-										
-										<pre class="prettyprint">data = {a: 1, b: 2, c: "three"};newdata = help.cloneObject(data);newdata; // => {a: 1, b: 2, c: "three"}</pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>model</b>
-												</td>
-												<td class="methodItemDesc">
-											    An object containing a set of parameters.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A new object, equivalent to 'model'.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".copyModel"> </a>
-									<div class="itemTitle icon">
-										help.copyModel<span class="signature">(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Merges two sets of parameters together overwriting any existing parameters. This merges model->data, and if data and model share parameters, data's are overwritten by model's.
-										
-										
-									
-										
-										<pre class="prettyprint">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged; // => {a: 1, b: 2, c: "three", d: "four"}</pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>data</b>
-												</td>
-												<td class="methodItemDesc">
-											    An object containing a set of parameters, the destination of the merge.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>model</b>
-												</td>
-												<td class="methodItemDesc">
-											    An object containing a set of parameters, the source of the merge.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A merged model where the values of 'model' take precedence over those of 'data'. The 'data' object is returned and will be an exact copy of 'model', plus any parameters that 'data' had before the merge that 'model' did not.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".createModel"> </a>
-									<div class="itemTitle icon">
-										help.createModel<span class="signature">(<span title="(Object) An object containing a set of parameters, the source of the data.">obj</span>, <span title="(Array) An array of strings, containing the names of parameters you wish to copy.">attrs</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Creates a subset of an existing set of parameters.
-										
-										
-									
-										
-										<pre class="prettyprint">data = {a: 1, b: 2, c: "three"};newdata = help.createModel(data, ["a", "c"]);newdata; // => {a: 1, c: "three"}</pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>obj</b>
-												</td>
-												<td class="methodItemDesc">
-											    An object containing a set of parameters, the source of the data.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Array}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>attrs</b>
-												</td>
-												<td class="methodItemDesc">
-											    An array of strings, containing the names of parameters you wish to copy.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A new set of parameters based on the subset specified.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".decideFrame"> </a>
-									<div class="itemTitle icon">
-										help.decideFrame<span class="signature">(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Determines which frame of a given animation to display. Will loop an animation.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>cnt</b>
-												</td>
-												<td class="methodItemDesc">
-											    A global frame counter.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>anim</b>
-												</td>
-												<td class="methodItemDesc">
-											    An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													The particular animation frame to display during this step.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".decideFrameOnce"> </a>
-									<div class="itemTitle icon">
-										help.decideFrameOnce<span class="signature">(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Determines which frame of a given animation to display. Will remain on the last frame when the animation has played once.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>cnt</b>
-												</td>
-												<td class="methodItemDesc">
-											    A global frame counter.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>anim</b>
-												</td>
-												<td class="methodItemDesc">
-											    An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													The particular animation frame to display during this step.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".finalizeTilemap"> </a>
-									<div class="itemTitle icon">
-										help.finalizeTilemap<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Calculates and sets the width and height (map.h, map.w) and half-width and half-height (map.hh, map.hw) of a map object.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>map</b>
-												</td>
-												<td class="methodItemDesc">
-											    A map object, containing a map array and a tileset array.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A map object with map.w, map.h, map.hh, and map.hw set correctly.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".framestotime"> </a>
-									<div class="itemTitle icon">
-										help.framestotime<span class="signature">(<span title="(Integer) A quantity of frames.">frames</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Converts a quantity of frames into a timestamp formatted "mm:ss:cs" (minutes, seconds, centiseconds). Calculated using the current frames per second.
-										
-										
-									
-										
-										<pre class="prettyprint">// Assuming 25 frames per second, Akihabara's default.timestamp = help.framestotime(25);timestamp; // => '00:01:00';timestamp = help.framestotime(25 * 60);timestamp; // => '01:00:00';</pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>frames</b>
-												</td>
-												<td class="methodItemDesc">
-											    A quantity of frames.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A string containing a timestamp formatted "mm:ss:cs", representing the length of time it would take to render that many frames.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".getArrayCapped"> </a>
-									<div class="itemTitle icon">
-										help.getArrayCapped<span class="signature">(<span title="(Array) An array.">a</span>, <span title="(Integer) An index to the array.">id</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Returns the Nth element in an array. If the array is shorter than N, it returns the last element of the array.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Array}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>a</b>
-												</td>
-												<td class="methodItemDesc">
-											    An array.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>id</b>
-												</td>
-												<td class="methodItemDesc">
-											    An index to the array.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													If id > a.length, it returns a[a.length-1]. Otherwise returns a[id].
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".getArrayIndexed"> </a>
-									<div class="itemTitle icon">
-										help.getArrayIndexed<span class="signature">(<span>a</span>, <span>value</span>, <span>field</span>)</span>
+										toys.platformer.applyGravity<span class="signature">(<span>th</span>)</span>
 										
 									</div>
 									<div class="full-description">
@@ -1060,469 +330,12 @@
 											<tr>
 												<td class="methodItemType">
 												  
-												</td>
-												<td class="methodItemName">
-												  <b>a</b>
-												</td>
-												<td class="methodItemDesc">
-											    
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  
-												</td>
-												<td class="methodItemName">
-												  <b>value</b>
-												</td>
-												<td class="methodItemDesc">
-											    
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  
-												</td>
-												<td class="methodItemName">
-												  <b>field</b>
-												</td>
-												<td class="methodItemDesc">
-											    
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".getDeviceConfig"> </a>
-									<div class="itemTitle icon">
-										help.getDeviceConfig<span class="signature">()</span>
-										
-									</div>
-									<div class="full-description">
-										Automatically configures a bunch of settings depending on the web browser and device that is viewing the game. Mostly sets the maximum number of audio channels and touch settings.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-									
-									
-									
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".getTileInMap"> </a>
-									<div class="itemTitle icon">
-										help.getTileInMap<span class="signature">(<span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Object) The map object.">map</span>, <span title="(Object) An object or value to be returned if the x,y coordinate pair is outside the map.">ifout</span>, <span title="(String) The id for the map array within the map object. Default is 'map'.">mapid</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Given x,y coordinates and map information, this returns the tile at a given point.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>x</b>
-												</td>
-												<td class="methodItemDesc">
-											    An x-coordinate.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>y</b>
-												</td>
-												<td class="methodItemDesc">
-											    A y-coordinate.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>map</b>
-												</td>
-												<td class="methodItemDesc">
-											    The map object.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>ifout</b>
-												</td>
-												<td class="methodItemDesc">
-											    An object or value to be returned if the x,y coordinate pair is outside the map.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{String}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>mapid</b>
-												</td>
-												<td class="methodItemDesc">
-											    The id for the map array within the map object. Default is 'map'.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													An integer representing the value of the tile in the map array at that x,y coordinate. If there is no tile, null is returned.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".geturlparameter"> </a>
-									<div class="itemTitle icon">
-										help.geturlparameter<span class="signature">(<span title="(String) The name of the URL parameter.">name</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Reads the value of a query parameter from the URL of the web page.
-										
-										
-									
-										
-										<pre class="prettyprint">// If the URL is http://example.com/game.html?lives=3player.lives = help.geturlparameter("lives");player.lives; // => 3</pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{String}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>name</b>
-												</td>
-												<td class="methodItemDesc">
-											    The name of the URL parameter.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													The value of the URL parameter, as a string.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".goToZero"> </a>
-									<div class="itemTitle icon">
-										help.goToZero<span class="signature">(<span title="(Integer) A value.">v</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Subtracts or adds 1 to a value, always converging to zero. For example, passing -3 yields -2, 5 yields 4, etc. Works best with integers.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>v</b>
-												</td>
-												<td class="methodItemDesc">
-											    A value.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A value that is one closer to 0 on the number line than v.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".isDefined"> </a>
-									<div class="itemTitle icon">
-										help.isDefined<span class="signature">(<span title="(Object) reference to a parameter of an object.">A</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Tests whether an object contains a given parameter.
-										
-										
-									
-										
-										<pre class="prettyprint">foo = {a: 1, b: 2};help.isDefined(foo.a); // => truehelp.isDefined(foo.c); // => false</pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>A</b>
-												</td>
-												<td class="methodItemDesc">
-											    reference to a parameter of an object.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													True if the object contains that parameter, false if it does not.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".isLastFrameOnce"> </a>
-									<div class="itemTitle icon">
-										help.isLastFrameOnce<span class="signature">(<span title="(Integer) A global frame counter.">cnt</span>, <span title="(Object) An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).">anim</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Returns whether the animation was fully played at least once with decideFrame or fully with decideFrameOnce.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>cnt</b>
-												</td>
-												<td class="methodItemDesc">
-											    A global frame counter.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>anim</b>
-												</td>
-												<td class="methodItemDesc">
-											    An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A boolean, true if the animation has been played at least once.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".isSquished"> </a>
-									<div class="itemTitle icon">
-										help.isSquished<span class="signature">(<span title="(Object) The object that is (possibly) being jumped on.">th</span>, <span title="(Object) The object doing the jumping-on.">by</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Tests to see if an object is being "jumped on" by another object. Only works for platformers, since it assumes accy>0 means you're falling onto something else.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
 												</td>
 												<td class="methodItemName">
 												  <b>th</b>
 												</td>
 												<td class="methodItemDesc">
-											    The object that is (possibly) being jumped on.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>by</b>
-												</td>
-												<td class="methodItemDesc">
-											    The object doing the jumping-on.
+											    
 												</td>
 											</tr>
 										
@@ -1531,20 +344,6 @@
 									
 									
 									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													True if the two objects are overlapping enough and by.accy>0.
-												</td>
-											</tr>
-										
-										</tbody></table>
 									
 									
 									
@@ -1553,13 +352,13 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".limit"> </a>
+									<a name=".bounce"> </a>
 									<div class="itemTitle icon">
-										help.limit<span class="signature">(<span title="(Float) A value.">v</span>, <span title="(Float) The minimum limit.">min</span>, <span title="(Float) The maximum limit.">max</span>)</span>
+										toys.platformer.bounce<span class="signature">(<span>th</span>, <span>data</span>)</span>
 										
 									</div>
 									<div class="full-description">
-										Limits a number to a certain range. If the number is below the minimum, the minimum is returned. If the number is above the maximum, the maximum is returned.
+										
 										
 										
 									
@@ -1574,107 +373,25 @@
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Float}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>v</b>
+												  <b>th</b>
 												</td>
 												<td class="methodItemDesc">
-											    A value.
+											    
 												</td>
 											</tr>
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Float}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>min</b>
-												</td>
-												<td class="methodItemDesc">
-											    The minimum limit.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Float}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>max</b>
-												</td>
-												<td class="methodItemDesc">
-											    The maximum limit.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A value equal to v if min<v<max. Returns min if v<min, max if v>max.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".mergeWithModel"> </a>
-									<div class="itemTitle icon">
-										help.mergeWithModel<span class="signature">(<span title="(Object) An object containing a set of parameters, the destination of the merge.">data</span>, <span title="(Object) An object containing a set of parameters, the source of the merge.">model</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Merges two sets of parameters together without overwriting existing parameters. This merges from model to data, and if data and model share parameters, data's values remain intact.
-										
-										
-									
-										
-										<pre class="prettyprint">dst = {a: 1, b: 2, c: "three"};src = {c: "three", d: "four"};merged = help.mergeWithModel(dst,src);merged; // => {a: 1, b: 2, c: 3, d: "four"};</pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
+												  
 												</td>
 												<td class="methodItemName">
 												  <b>data</b>
 												</td>
 												<td class="methodItemDesc">
-											    An object containing a set of parameters, the destination of the merge.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>model</b>
-												</td>
-												<td class="methodItemDesc">
-											    An object containing a set of parameters, the source of the merge.
+											    
 												</td>
 											</tr>
 										
@@ -1683,20 +400,6 @@
 									
 									
 									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A merged model where the values of 'data' remain untouched: only new parameters and values from 'model' make it in.
-												</td>
-											</tr>
-										
-										</tbody></table>
 									
 									
 									
@@ -1705,13 +408,13 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".multiplier"> </a>
+									<a name=".canJump"> </a>
 									<div class="itemTitle icon">
-										help.multiplier<span class="signature">(<span title="(Float) First value.">v</span>, <span title="(Float) Second value.">mul</span>)</span>
+										toys.platformer.canJump<span class="signature">(<span title="This is the object being checked for jump ability at the time of calling.">th</span>)</span>
 										
 									</div>
 									<div class="full-description">
-										Multiplies two numbers together, returning the result, unless the first parameter is less than 2, in which case it returns 1.
+										Checks if the passed object is touching the floor and can therefore jump at present.
 										
 										
 									
@@ -1726,25 +429,13 @@
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Float}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>v</b>
+												  <b>th</b>
 												</td>
 												<td class="methodItemDesc">
-											    First value.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Float}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>mul</b>
-												</td>
-												<td class="methodItemDesc">
-											    Second value.
+											    This is the object being checked for jump ability at the time of calling.
 												</td>
 											</tr>
 										
@@ -1753,20 +444,6 @@
 									
 									
 									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													An integer, v*mul, unless v<2 in which case it returns 1.
-												</td>
-											</tr>
-										
-										</tbody></table>
 									
 									
 									
@@ -1775,13 +452,13 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".objToStr"> </a>
+									<a name=".getNextX"> </a>
 									<div class="itemTitle icon">
-										help.objToStr<span class="signature">(<span title="(Object) object.">Any</span>)</span>
+										toys.platformer.getNextX<span class="signature">(<span>th</span>)</span>
 										
 									</div>
 									<div class="full-description">
-										Writes the contents of an object to a string. Useful for debugging.
+										
 										
 										
 									
@@ -1796,13 +473,13 @@
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>Any</b>
+												  <b>th</b>
 												</td>
 												<td class="methodItemDesc">
-											    object.
+											    
 												</td>
 											</tr>
 										
@@ -1811,20 +488,6 @@
 									
 									
 									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A string containing all the contents of an object. If the object contains functions, the string will contain the code for those functions.
-												</td>
-											</tr>
-										
-										</tbody></table>
 									
 									
 									
@@ -1833,13 +496,13 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".postpad"> </a>
+									<a name=".getNextY"> </a>
 									<div class="itemTitle icon">
-										help.postpad<span class="signature">(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to postpend to str.">pad</span>)</span>
+										toys.platformer.getNextY<span class="signature">(<span>th</span>)</span>
 										
 									</div>
 									<div class="full-description">
-										Postpends a string with repeated instances of another string until it the result is greater than or equal to a desired length.
+										
 										
 										
 									
@@ -1854,37 +517,13 @@
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{String}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>str</b>
+												  <b>th</b>
 												</td>
 												<td class="methodItemDesc">
-											    The string you wish to modify.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>len</b>
-												</td>
-												<td class="methodItemDesc">
-											    The desired length of your resultant string.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{String}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>pad</b>
-												</td>
-												<td class="methodItemDesc">
-											    The string you wish to postpend to str.
+											    
 												</td>
 											</tr>
 										
@@ -1893,20 +532,6 @@
 									
 									
 									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A string whose length is no greater than len+pad.length, with pad postpending str repeatedly.
-												</td>
-											</tr>
-										
-										</tbody></table>
 									
 									
 									
@@ -1915,13 +540,13 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".prepad"> </a>
+									<a name=".handleAccellerations"> </a>
 									<div class="itemTitle icon">
-										help.prepad<span class="signature">(<span title="(String) The string you wish to modify.">str</span>, <span title="(Integer) The desired length of your resultant string.">len</span>, <span title="(String) The string you wish to prepend to str.">pad</span>)</span>
+										toys.platformer.handleAccellerations<span class="signature">(<span>th</span>)</span>
 										
 									</div>
 									<div class="full-description">
-										Prepends a string with repeated instances of another string until it the result is greater than or equal to a desired length.
+										
 										
 										
 									
@@ -1936,37 +561,13 @@
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{String}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>str</b>
+												  <b>th</b>
 												</td>
 												<td class="methodItemDesc">
-											    The string you wish to modify.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>len</b>
-												</td>
-												<td class="methodItemDesc">
-											    The desired length of your resultant string.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{String}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>pad</b>
-												</td>
-												<td class="methodItemDesc">
-											    The string you wish to prepend to str.
+											    
 												</td>
 											</tr>
 										
@@ -1975,20 +576,6 @@
 									
 									
 									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A string whose length is no greater than len+pad.length, with pad prepending str repeatedly.
-												</td>
-											</tr>
-										
-										</tbody></table>
 									
 									
 									
@@ -1997,13 +584,13 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".random"> </a>
+									<a name=".horizontalKeys"> </a>
 									<div class="itemTitle icon">
-										help.random<span class="signature">(<span title="(Integer) The minimum random value to be returned by the function.">min</span>, <span title="(Integer) The number of different values returned by the function.">range</span>)</span>
+										toys.platformer.horizontalKeys<span class="signature">(<span>th</span>, <span>keys</span>)</span>
 										
 									</div>
 									<div class="full-description">
-										Generates uniformly distributed random integers between min and min+range, non-inclusive. So help.random(0,2) will only return 0 and 1, etc.
+										
 										
 										
 									
@@ -2018,25 +605,25 @@
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>min</b>
+												  <b>th</b>
 												</td>
 												<td class="methodItemDesc">
-											    The minimum random value to be returned by the function.
+											    
 												</td>
 											</tr>
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>range</b>
+												  <b>keys</b>
 												</td>
 												<td class="methodItemDesc">
-											    The number of different values returned by the function.
+											    
 												</td>
 											</tr>
 										
@@ -2045,20 +632,6 @@
 									
 									
 									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													An integer between min (includive) and min+range (noninclusive).
-												</td>
-											</tr>
-										
-										</tbody></table>
 									
 									
 									
@@ -2067,13 +640,13 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".seq"> </a>
+									<a name=".horizontalTileCollision"> </a>
 									<div class="itemTitle icon">
-										help.seq<span class="signature">(<span title="(Integer) Starting number.">st</span>, <span title="(Integer) Ending number.">ed</span>, <span title="(Integer) Number to increment by.">skip</span>)</span>
+										toys.platformer.horizontalTileCollision<span class="signature">(<span>th</span>, <span>map</span>, <span>tilemap</span>)</span>
 										
 									</div>
 									<div class="full-description">
-										Generates numbers from st to ed, along with a skip value.
+										
 										
 										
 									
@@ -2088,155 +661,37 @@
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>st</b>
+												  <b>th</b>
 												</td>
 												<td class="methodItemDesc">
-											    Starting number.
+											    
 												</td>
 											</tr>
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>ed</b>
-												</td>
-												<td class="methodItemDesc">
-											    Ending number.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>skip</b>
-												</td>
-												<td class="methodItemDesc">
-											    Number to increment by.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													An array containing the set of numbers from st to ed, incrementing by skip.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".setTileInMap"> </a>
-									<div class="itemTitle icon">
-										help.setTileInMap<span class="signature">(<span title="(Object) The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")">ctx</span>, <span title="(Object) The game map object.">map</span>, <span title="(Integer) The index of the tile column within the map array -- so a 1 would mean the second column of tiles.">x</span>, <span title="(Integer) The index of the tile row within the map array -- so a 1 would mean the second row of tiles.">y</span>, <span title="(Integer) The integer representing the new tile you wish to draw. This is its index within the tileset; a null value will erase whatever tile is present.">tile</span>, <span title="(String) ID of the map. Defaults to 'map'.">The</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Sets a tile in the map and draws it. Does not return anything.
-										
-										
-									
-										
-										<pre class="prettyprint">// Remove the second tile to the right and down from the upper left corner of the tile map. Assumes our map canvas is called 'map_canvas'.help.setTileInMap(gbox.getCanvasContext("map_canvas"),map,1,1,null,"map");</pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>ctx</b>
-												</td>
-												<td class="methodItemDesc">
-											    The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
+												  
 												</td>
 												<td class="methodItemName">
 												  <b>map</b>
 												</td>
 												<td class="methodItemDesc">
-											    The game map object.
+											    
 												</td>
 											</tr>
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>x</b>
+												  <b>tilemap</b>
 												</td>
 												<td class="methodItemDesc">
-											    The index of the tile column within the map array -- so a 1 would mean the second column of tiles.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>y</b>
-												</td>
-												<td class="methodItemDesc">
-											    The index of the tile row within the map array -- so a 1 would mean the second row of tiles.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>tile</b>
-												</td>
-												<td class="methodItemDesc">
-											    The integer representing the new tile you wish to draw. This is its index within the tileset; a null value will erase whatever tile is present.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{String}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>The</b>
-												</td>
-												<td class="methodItemDesc">
-											    ID of the map. Defaults to 'map'.
+											    
 												</td>
 											</tr>
 										
@@ -2253,13 +708,13 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".upAndDown"> </a>
+									<a name=".initialize"> </a>
 									<div class="itemTitle icon">
-										help.upAndDown<span class="signature">(<span title="(Integer) A counter.">counter</span>, <span title="(Integer) This determines the period of the function -- assuming counter is incrementing by one, a complete back-and-forth will take 'max' steps.">max</span>)</span>
+										toys.platformer.initialize<span class="signature">(<span>th</span>, <span>data</span>)</span>
 										
 									</div>
 									<div class="full-description">
-										Given an incrementing value each step, this will return a value increasing from 0 until max/2, at which point it will decrement to 0, then go back up to max/2, in an endless cycle.
+										
 										
 										
 									
@@ -2274,25 +729,25 @@
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>counter</b>
+												  <b>th</b>
 												</td>
 												<td class="methodItemDesc">
-											    A counter.
+											    
 												</td>
 											</tr>
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>max</b>
+												  <b>data</b>
 												</td>
 												<td class="methodItemDesc">
-											    This determines the period of the function -- assuming counter is incrementing by one, a complete back-and-forth will take 'max' steps.
+											    
 												</td>
 											</tr>
 										
@@ -2301,20 +756,6 @@
 									
 									
 									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													An integer.
-												</td>
-											</tr>
-										
-										</tbody></table>
 									
 									
 									
@@ -2323,13 +764,13 @@
 							
 							
 								<div class='sectionItem classMethod '>
-									<a name=".xPixelToTile"> </a>
+									<a name=".jumpKeys"> </a>
 									<div class="itemTitle icon">
-										help.xPixelToTile<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) Number of pixels gap in tilemap. Default is 0.">gap</span>)</span>
+										toys.platformer.jumpKeys<span class="signature">(<span>th</span>, <span>key</span>)</span>
 										
 									</div>
 									<div class="full-description">
-										Converts an x-coordinate of a pixel to the x-coordinate of the tile column it's in. This effectively "snaps" an x coordinate to a tile edge.
+										
 										
 										
 									
@@ -2344,37 +785,237 @@
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>th</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>key</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".setFrame"> </a>
+									<div class="itemTitle icon">
+										toys.platformer.setFrame<span class="signature">(<span>th</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>th</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".setSide"> </a>
+									<div class="itemTitle icon">
+										toys.platformer.setSide<span class="signature">(<span>th</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>th</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".spawn"> </a>
+									<div class="itemTitle icon">
+										toys.platformer.spawn<span class="signature">(<span>th</span>, <span>data</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>th</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>data</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+										</tbody></table>
+									
+									
+									
+									
+									
+									
+									
+				
+								</div>
+							
+							
+								<div class='sectionItem classMethod '>
+									<a name=".verticalTileCollision"> </a>
+									<div class="itemTitle icon">
+										toys.platformer.verticalTileCollision<span class="signature">(<span>th</span>, <span>map</span>, <span>tilemap</span>)</span>
+										
+									</div>
+									<div class="full-description">
+										
+										
+										
+									
+										
+										<pre class="prettyprint"></pre>
+										
+									</div>
+									
+									
+										<div class="heading">Parameters:</div>
+										<table class="methodItem"><tbody>
+										
+											<tr>
+												<td class="methodItemType">
+												  
+												</td>
+												<td class="methodItemName">
+												  <b>th</b>
+												</td>
+												<td class="methodItemDesc">
+											    
+												</td>
+											</tr>
+										
+											<tr>
+												<td class="methodItemType">
+												  
 												</td>
 												<td class="methodItemName">
 												  <b>map</b>
 												</td>
 												<td class="methodItemDesc">
-											    A map object, containing a map array and a tileset array.
+											    
 												</td>
 											</tr>
 										
 											<tr>
 												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
+												  
 												</td>
 												<td class="methodItemName">
-												  <b>x</b>
+												  <b>tilemap</b>
 												</td>
 												<td class="methodItemDesc">
-											    An x-coordinate.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>gap</b>
-												</td>
-												<td class="methodItemDesc">
-											    Number of pixels gap in tilemap. Default is 0.
+											    
 												</td>
 											</tr>
 										
@@ -2383,266 +1024,6 @@
 									
 									
 									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													The x-coordinate in pixels of the tile column.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".xPixelToTileX"> </a>
-									<div class="itemTitle icon">
-										help.xPixelToTileX<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) An x-coordinate.">x</span>, <span title="(Integer) (Not used.)">gap</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Converts an x-coordinate of a pixel to its corresponding tile x-coordinate.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>map</b>
-												</td>
-												<td class="methodItemDesc">
-											    A map object, containing a map array and a tileset array.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>x</b>
-												</td>
-												<td class="methodItemDesc">
-											    An x-coordinate.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>gap</b>
-												</td>
-												<td class="methodItemDesc">
-											    (Not used.)
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A map object with map.w, map.h, map.hh, and map.hw set correctly.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".yPixelToTile"> </a>
-									<div class="itemTitle icon">
-										help.yPixelToTile<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) Number of pixels gap in tilemap. Default is 0.">gap</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Converts a y-coordinate of a pixel to the y-coordinate of the tile row it's in. This effectively "snaps" a y coordinate to a tile edge.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>map</b>
-												</td>
-												<td class="methodItemDesc">
-											    A map object, containing a map array and a tileset array.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>y</b>
-												</td>
-												<td class="methodItemDesc">
-											    A y-coordinate.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>gap</b>
-												</td>
-												<td class="methodItemDesc">
-											    Number of pixels gap in tilemap. Default is 0.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													The y-coordinate in pixels of the tile row.
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-				
-								</div>
-							
-							
-								<div class='sectionItem classMethod '>
-									<a name=".yPixelToTileY"> </a>
-									<div class="itemTitle icon">
-										help.yPixelToTileY<span class="signature">(<span title="(Object) A map object, containing a map array and a tileset array.">map</span>, <span title="(Integer) A y-coordinate.">y</span>, <span title="(Integer) (Not used.)">gap</span>)</span>
-										
-									</div>
-									<div class="full-description">
-										Converts a y-coordinate of a pixel to its corresponding tile y-coordinate.
-										
-										
-									
-										
-										<pre class="prettyprint"></pre>
-										
-									</div>
-									
-									
-										<div class="heading">Parameters:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Object}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>map</b>
-												</td>
-												<td class="methodItemDesc">
-											    A map object, containing a map array and a tileset array.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>y</b>
-												</td>
-												<td class="methodItemDesc">
-											    A y-coordinate.
-												</td>
-											</tr>
-										
-											<tr>
-												<td class="methodItemType">
-												  <span class="light">{Integer}</span> 
-												</td>
-												<td class="methodItemName">
-												  <b>gap</b>
-												</td>
-												<td class="methodItemDesc">
-											    (Not used.)
-												</td>
-											</tr>
-										
-										</tbody></table>
-									
-									
-									
-									
-									
-										<div class="heading">Returns:</div>
-										<table class="methodItem"><tbody>
-										
-											<tr>
-												<td class="methodItemType">
-													
-												</td>
-												<td class="methodItemDesc">
-													A map object with map.w, map.h, map.hh, and map.hw set correctly.
-												</td>
-											</tr>
-										
-										</tbody></table>
 									
 									
 									
