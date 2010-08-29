@@ -426,7 +426,9 @@ var help={
 	getDeviceConfig:function() {
 
 		var cap;
-		if (navigator.userAgent.match(/iPhone/i)||navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/Android/i))
+		if (navigator.userAgent.match(/nintendo wii/i))
+			cap={iswii:true,height:window.innerHeight,doublebuffering:true} // Simulated double buffering has been resumed. Canvas on Opera for Wii has a strange sprite blinking effect - usually browsers render frames once ended and this is an exception.
+		else if (navigator.userAgent.match(/iPhone/i)||navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/Android/i))
 			cap={touch:true,width:320};			
 		else if (navigator.userAgent.match(/iPad/i))
 			cap={touch:true,width:768,forcedidle:10}; // Forced idle time is needed for correct framerate calculation.
@@ -459,7 +461,6 @@ var help={
 				cap.audioisexperimental=true; // Audio is just experimental on all other devices.
 				
 		}
-
 		return cap;
 	},
 
@@ -480,19 +481,35 @@ var help={
 		}
 		var screenwidth=(data.width?data.width:(data.portrait?240:320));
 		var screenheight=(data.height?data.height:(data.portrait?320:240));
+		if (device.iswii) {
+			gbox._keymap={
+				left:175,
+				right:176,
+				up:177,
+				down:178,
+				a:173,
+				b:172,
+				c:13
+			};
+			document.onkeypress= function(e){ if (e.preventDefault) e.preventDefault(); return false};
+		}
 		if (!data.splash||(data.splash.minilogo==null)) gbox.setSplashSettings({minilogo:"logo"});
 		if (!data.splash||(data.splash.background==null)) gbox.setSplashSettings({background:"akihabara/splash.png"});
 		if (!data.splash||(data.splash.minimalTime==null)) gbox.setSplashSettings({minimalTime:3000});
 		if (!data.splash||(data.splash.footnotes==null)) gbox.setSplashSettings({footnotes:footnotes});
-		document.body.style.backgroundColor="#000000";
-		gbox.setScreenBorder(false);
+		if (!data||!data.hardwareonly) {
+			document.body.style.backgroundColor="#000000";
+			gbox.setScreenBorder(false);
+		}
 		if (help.geturlparameter("statusbar")) gbox.setStatusBar(1);
-		if (help.geturlparameter("db")) gbox.setDoubleBuffering(true);
+		if (help.geturlparameter("db")||device.doublebuffering) gbox.setDoubleBuffering(true);
 		if (help.geturlparameter("noautoskip")) gbox.setAutoskip(null);
 		if (help.geturlparameter("zoom")) gbox.setZoom(help.geturlparameter("zoom")); else
 	     	if (help.isDefined(data.zoom)) gbox.setZoom(data.zoom); else
 			if (help.isDefined(device.zoom)) gbox.setZoom(device.zoom); else
-			if (help.isDefined(device.width)) gbox.setZoom(device.width/screenwidth);
+			if (help.isDefined(device.width)) gbox.setZoom(device.width/screenwidth); else
+			if (help.isDefined(device.height)) gbox.setZoom(device.height/screenheight);
+			
 		if (help.geturlparameter("fps")) gbox.setFps(help.geturlparameter("fps")*1);
 			else gbox.setFps((data.fps?data.fps:25));
 		if (help.geturlparameter("fskip")) gbox.setFrameskip(help.geturlparameter("fskip"));
@@ -500,7 +517,7 @@ var help={
 			else if (help.isDefined(device.forcedidle)) gbox.setForcedIdle(device.forcedidle);
 		if (help.geturlparameter("canlog")) gbox.setCanLog(true);
 
-		gbox.initScreen(screenwidth,screenheight);
+		if (!data||!data.hardwareonly) gbox.initScreen(screenwidth,screenheight);
 
 		if (help.geturlparameter("showplayers")) gbox.setShowPlayers(help.geturlparameter("showplayers")=="yes");
 		if (help.geturlparameter("canaudio")) gbox.setCanAudio(help.geturlparameter("canaudio")=="yes"); else
@@ -519,21 +536,24 @@ var help={
 			if (help.isDefined(device.audiopositiondelay)) gbox.setAudioPositionDelay(device.audiopositiondelay);
 			
 			
-			
-		if (help.geturlparameter("touch")=="no");
-			else if ((help.geturlparameter("touch")=="yes")||device.touch)
-				switch (data.padmode) {
-					case "fretboard": {
-						iphofretboard.initialize({h:100,bg:"akihabara/fretboard.png"});		
-						break;
+		if (!data||!data.hardwareonly) {
+			if (help.geturlparameter("touch")=="no");
+				else if ((help.geturlparameter("touch")=="yes")||device.touch)
+					switch (data.padmode) {
+						case "fretboard": {
+							iphofretboard.initialize({h:100,bg:"akihabara/fretboard.png"});		
+							break;
+						}
+						case "none": {
+							break;
+						}
+						default: {
+							iphopad.initialize({h:100,dpad:"akihabara/dpad.png",buttons:"akihabara/buttons.png",bg:"akihabara/padbg.png"});		
+							break;
+						}
 					}
-					case "none": {
-						break;
-					}
-					default: {
-						iphopad.initialize({h:100,dpad:"akihabara/dpad.png",buttons:"akihabara/buttons.png",bg:"akihabara/padbg.png"});		
-						break;
-					}
-				}
+		}
+
+		return device;
 	}
 }

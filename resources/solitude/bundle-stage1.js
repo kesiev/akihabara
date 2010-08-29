@@ -36,7 +36,7 @@
 						{image:"sea"},
 						{image:"sea"},
 						{image:"seaside"}
-					],
+					]
 				},
 				
 				// What happens during this stage?

@@ -70,6 +70,4 @@ block.library["sim-gb"]=function(th) {
   	  th.config.gfx.tileset="brick-gb";
   	  th.config.gfx.clearlineanimation="blink";
 }
-		  
-			
 			

@@ -72,7 +72,7 @@ block.kicksets.srs={
 		"r32":[{x:-2,y:0},{x:+1,y:0},{x:-2,y:-1},{x:+1,y:+2,floorkick:true,kicks:-1}],
 		
 		"r30":[{x:+1,y:0},{x:-2,y:0},{x:+1,y:-2},{x:-2,y:+1,floorkick:true,kicks:-1}],
-		"r03":[{x:-1,y:0},{x:+2,y:0},{x:-1,y:+2,floorkick:true,kicks:-1},{x:+2,y:-1}],
+		"r03":[{x:-1,y:0},{x:+2,y:0},{x:-1,y:+2,floorkick:true,kicks:-1},{x:+2,y:-1}]
 
 	},
 	// O p6
@@ -95,7 +95,7 @@ block.kicksets.srs={
 		"r32":[{x:-1,y:0},{x:-1,y:-1},{x:0,y:+2,floorkick:true,kicks:-1},{x:-1,y:+2,floorkick:true,kicks:-1}],
 		
 		"r30":[{x:-1,y:0},{x:-1,y:-1},{x:0,y:+2,floorkick:true,kicks:-1},{x:-1,y:+2,floorkick:true,kicks:-1}],
-		"r03":[{x:+1,y:0},{x:+1,y:+1,floorkick:true,kicks:-1},{x:0,y:-2},{x:+1,y:-2}],
+		"r03":[{x:+1,y:0},{x:+1,y:+1,floorkick:true,kicks:-1},{x:0,y:-2},{x:+1,y:-2}]
 	}
 };
 
@@ -113,7 +113,7 @@ block.kicksets.arikasrs={
 		"r32":[{x:-2,y:0},{x:+1,y:0},{x:-2,y:+1,floorkick:true,kicks:-1},{x:+1,y:-2}],
 		
 		"r30":[{x:-1,y:0},{x:+2,y:0},{x:-1,y:+2,floorkick:true,kicks:-1},{x:+2,y:-1}],
-		"r03":[{x:+1,y:0},{x:-2,y:0},{x:+1,y:+2,floorkick:true,kicks:-1},{x:-2,y:-1}],
+		"r03":[{x:+1,y:0},{x:-2,y:0},{x:+1,y:+2,floorkick:true,kicks:-1},{x:-2,y:-1}]
 
 	},
 	// O p6
@@ -135,7 +135,7 @@ block.kicksets.arikasrs={
 		"r32":[{x:-1,y:0},{x:-1,y:-1},{x:0,y:+2,floorkick:true,kicks:-1},{x:-1,y:+2,floorkick:true,kicks:-1}],
 		
 		"r30":[{x:-1,y:0},{x:-1,y:-1},{x:0,y:+2,floorkick:true,kicks:-1},{x:-1,y:+2,floorkick:true,kicks:-1}],
-		"r03":[{x:+1,y:0},{x:+1,y:+1,floorkick:true,kicks:-1},{x:0,y:-2},{x:+1,y:-2}],
+		"r03":[{x:+1,y:0},{x:+1,y:+1,floorkick:true,kicks:-1},{x:0,y:-2},{x:+1,y:-2}]
 	}
 };
 

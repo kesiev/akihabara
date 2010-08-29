@@ -367,7 +367,7 @@ block.garbagerolls={
 	]
 };
 
-block.data={
+block["data"]={
 	tgm2plus:function(th,phase) {
 			if (th.data._tgm2roller==null) {
 				th.data._tgm2roller=0;

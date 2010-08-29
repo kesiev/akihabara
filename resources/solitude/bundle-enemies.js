@@ -8,7 +8,7 @@
 		  		script:[
 		  			{ forframes:10, everyframe:2, addaccy:-1 },
 		  			{ afterframes:30,  doit: { every:20, action:function(th) { gbox.hitAudio("foefire"); toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletsmall",spark:function(th){defaultSpark(th)},frames:{speed:3,frames:[0,1]},accx:0,accy:5}); } } },
-		  			{ forframes:17, everyframe:5, addaccy:-1, }
+		  			{ forframes:17, everyframe:5, addaccy:-1 }
 		  		]
 		  	}
 		},{
@@ -42,7 +42,7 @@
 		  		tileset:"enemy2",
 		  		frames:{
 		  			still:{speed:1,frames:[0,0,0,1,2,1]}, // glowing center
-		  			hit:{speed:1,frames:[0,3]},
+		  			hit:{speed:1,frames:[0,3]}
 		  		},
 		  		kill:function(by) {
 		  			gbox.hitAudio("megaexplosion");
@@ -56,7 +56,7 @@
 		  			{ afterframes:5,  doit: { every:20,action:function(th) {
 		  				gbox.hitAudio("foefire");
 		  				toys.shmup.fireBullet("foesbullets",null,{collidegroup:"player",from:th,upper:false,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[1]},accx:0,accy:5});
-		  			} } },
+		  			} } }
 		  		]
 		  	}
 		  },{
@@ -149,7 +149,7 @@
 		  			{ afterframes:50, setx:gbox.getScreenHW()-94,sety:-100,setaccx:0,setaccy:0}, // go back on the top of the screen and...
 		  			{ setaccy:1 }, // Restart going down... (without dialog)
 		  			{ afterframes:100, setaccy:0 }, // It cames from the top
-		  			{ goto:8  }, // Restart moving horizontally
+		  			{ "goto":8  }, // Restart moving horizontally
 		  			
 		  			// Line 23 : big explosion! (spaghetti code)
 		  			{ setaccx:0,setaccy:1,doit:{every:5,action:function(th,time){ // Slowly go down and do explosions and hit animations
@@ -187,7 +187,7 @@
 			tileset:"enemy1",
 			frames:{
 				still:{speed:1,frames:[0,1]},
-				hit:{speed:1,frames:[0,2]},
+				hit:{speed:1,frames:[0,2]}
 			},
 			handler:function(th) { if (!gbox.objectIsVisible(th)) gbox.trashObject(this); }, // If not visible, vanish
 			hitanimationset:"hit",

@@ -605,7 +605,7 @@ block.torikans.tgm2death={ // TGM2+ death mode torikan - http://www.tetrisconcep
 			main:{condition:[[null,"or","overall","time",">",null,strtime2secs("03:25:00")]],apply:[{setup:{fail:true,levelcap:500,setdata:["torikan",1]},condition:[[null,"or","global","level","<",null,500]]},{fail:true}]}
 		},
 		{ // The timed torikan is respected here. If triggered, the game is cleared @ 500 but without roll
-			main:{condition:[["onlock","or","global","level",">=",null,500]],apply:[{condition:[[null,"or","data","torikan","==",null,1]],fail:true,setup:{gotostagelabel:"roll"}},{fail:true}]},
+			main:{condition:[["onlock","or","global","level",">=",null,500]],apply:[{condition:[[null,"or","data","torikan","==",null,1]],fail:true,setup:{gotostagelabel:"roll"}},{fail:true}]}
 		}
 	]
 };
@@ -617,7 +617,7 @@ block.torikans.debugtgm2death={ // TGM2+ death mode torikan - http://www.tetrisc
 			main:{condition:[[null,"or","overall","time",">",null,strtime2secs("01:00:00")]],apply:[{fail:true,setup:{levelcap:30,setdata:["torikan",1]},condition:[[null,"or","global","level","<",null,30]]},{fail:true}]}
 		},
 		{ // The timed torikan is respected here. If triggered, the game is cleared @ 30 but without roll
-			main:{condition:[["onlock","or","global","level",">=",null,30]],apply:[{condition:[[null,"or","data","torikan","==",null,1]],fail:true,setup:{gotostagelabel:"roll"}},{fail:true}]},
+			main:{condition:[["onlock","or","global","level",">=",null,30]],apply:[{condition:[[null,"or","data","torikan","==",null,1]],fail:true,setup:{gotostagelabel:"roll"}},{fail:true}]}
 		}
 	]
 };

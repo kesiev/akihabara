@@ -297,11 +297,9 @@ var gamecycle={
 								toys.resetToy(this,"fadein");
 								this.level=null;
 								this._nextlevel=null;
-								this.hud=toys.ui.hud("maingamehud");
-								
+								this.hud=toys.ui.hud("maingamehud");								
 								this.initializeGame();
 								this.gameIntroAnimation(true);
-								
 								break;
 							}
 							case 300: {

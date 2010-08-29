@@ -597,7 +597,6 @@ var block={
 	
 	
 	game:function(th) { 
-			
 	  	var levelphase="onmain";
 	  	var done;
 	  	
@@ -613,7 +612,7 @@ var block={
 			}
 			
 		}
-			
+
 		// PROCESS LINE REMOVAL (usually during are)
 		if (th.timing.linecleardelay>-1) {
 		  if (th.timing.linecleardelay==0) {
@@ -624,7 +623,7 @@ var block={
 		  th.timing.firstremovelines=false;
 		  th.timing.linecleardelay--;
 		}
-		
+
 		if (this.isgameactive(th)) {
 			
 			// PROCESS KEY HOLDING AND NEXT
@@ -679,7 +678,7 @@ var block={
 						} 
 					}
 			}
-			
+
 			// PROCESS GRAVITY
 			if (th.timing.are>-1) th.timing.are--; else {
 			if (th.timing.droptime>0) th.timing.droptime--;
@@ -761,7 +760,7 @@ var block={
 			} else th.falling.activetime++;
 		  }
 	  }
-	  
+
 	  // CHECKS
 	  if (th.config.score.sectionmarks) this.checknextsection(th,levelphase);
 	  if (th.config.score.internalgrade) this.setinternalgrade(th,levelphase,done);
@@ -771,7 +770,7 @@ var block={
 	  if (th.config.field.vanishspeed) this.fullfieldeffect(th);
  	  if (th.config.field.extraactions) this.extraactions[th.config.field.extraactions](th,levelphase,done);
 	  this.checknextlevel(th,levelphase);
-	  
+
 	  if (levelphase=="onlock") {  // Reset the falling piece after calling the extraactions, so stats can be done.
 		  th.falling.piece=-1;
 		  th.firstpiece=false;
@@ -781,7 +780,7 @@ var block={
 		  // CALCULATE TIMER
 		  this.ticktimer(th);
 		 }
-	
+
 	  // QUIT GAME COUNTERS
 	  if (!th.running&&!th.paused) {
 		if (th.endinganimationstep!==null)
@@ -790,7 +789,6 @@ var block={
 		  	if (th.beforequitting) th.beforequitting--; else
 		  		if (gbox.keyIsHit("a")) return true;
 	  } else return false;
-	
 	},
 
 	setinternalgrade:function(th,phase,linesdata) { // TGM2 style grading - http://www.tetrisconcept.net/wiki/Tetris_The_Absolute_The_Grand_Master_2_PLUS

@@ -183,9 +183,9 @@ var cachelist={
 
 /**
  * @namespace
- * Gamebox module allows multiple grouped objects to move simultaneously, it helps with collisions, 
+ * Gamebox module allows multiple grouped objects to move simultaneously, it helps with collisions, #
  * rendering and moving objects. It also provides monospaced pixel-font rendering, keyboard handling,  
- * audio, double buffering and eventually FSEs. Gamebox can also store and load data from cookies! 
+ * audio, double buffering and FSEs. Gamebox can also store and load data from cookies! 
  */
 var gbox={
 	// CONSTANTS
@@ -196,6 +196,12 @@ var gbox={
 	COLOR_BLACK:'rgb(0,0,0)',
 	COLOR_WHITE:'rgb(255,255,255)',
 	ZINDEX_LAYER:-1,
+	PALETTES:{ // I think that some retrogamers will find these useful and/or inspiring
+		c64:{ // C64 palette, picked from http://pepto.de/projects/colorvic/
+			order:["black","white","red","cyan","purple","green","blue","yellow","orange","brown","lightred","darkgray","gray","lightgreen","lightblue","lightgray"],
+			colors:{ black:"#000000", white:"#FFFFFF", red:"#68372B", cyan:"#70A4B2", purple:"#6F3D86", green:"#588D43", blue:"#352879", yellow:"#B8C76F", orange:"#6F4F25", brown:"#433900", lightred:"#9A6759", darkgray:"#444444", gray:"#6C6C6C", lightgreen:"#9AD284", lightblue:"#6C5EB5", lightgray:"#959595"}
+		}
+	},
 	
 	// VARS
 	_autoid:0,
@@ -210,10 +216,19 @@ var gbox={
 		b:88,
 		c:67
 	},
+	_flagstype:{
+		experimental:"check",
+		noaudio:"check",
+		loadscreen:"list",
+		fse:"list"
+	},
 	_flags:{
 		experimental:false,
-		noaudio:false
+		noaudio:false,
+		loadscreen:"normal",
+		fse:"none"
 	},
+	_localflags:{},
 	_fonts:{},
 	_tiles:{},
 	_images:{},
@@ -276,10 +291,12 @@ var gbox={
 		try { if ((sh>0)&&(sw>0)&&(sx<img.width)&&(sy<img.height)) tox.drawImage(img, sx,sy,sw,sh,dx,dy,dw,dh); } catch(e){}
 	},
 	_keydown:function(e){
+		if (e.preventDefault) e.preventDefault();
 		var key=(e.fake||window.event?e.keyCode:e.which);
 		if (!gbox._keyboard[key]) gbox._keyboard[key]=1;
 	},
 	_keyup:function(e){
+		if (e.preventDefault) e.preventDefault();
 		var key=(e.fake||window.event?e.keyCode:e.which);
 		gbox._keyboard[key]=-1;
 	},
@@ -411,6 +428,26 @@ var gbox={
 		
 		gbox._loadsettings(); // Load default configuration
 		gbox.setCanAudio(true); // Tries to enable audio by default
+		
+		switch (gbox._flags.fse) { // Initialize FSEs
+			case "scanlines": {
+				gbox.createCanvas("-gbox-fse",{w:w,h:h});
+				gbox.getCanvasContext("-gbox-fse").save();
+				gbox.getCanvasContext("-gbox-fse").globalAlpha=0.2;
+				gbox.getCanvasContext("-gbox-fse").fillStyle = gbox.COLOR_BLACK;
+				for (var j=0;j<h;j+=2)
+					gbox.getCanvasContext("-gbox-fse").fillRect(0,j,w,1);
+				gbox.getCanvasContext("-gbox-fse").restore();
+				gbox._localflags.fse=true;
+				break;
+			}
+			case "lcd":{
+				gbox.createCanvas("-gbox-fse-old",{w:w,h:h});
+				gbox.createCanvas("-gbox-fse-new",{w:w,h:h});
+				gbox._localflags.fse=true;
+				break;
+			}
+		}
 	},
 
   /**
@@ -494,7 +531,29 @@ var gbox={
 		if (gbox._statbar) gbox.debugGetstats();
 		this._gametimer=setTimeout(gbox.go,(gbox._framestart<=0?1:gbox._framestart));		
 	},
-
+	/**
+  * Apply FSEs to the screen. Is called each frame. 
+  */
+  _applyfse:function(){
+	  switch (gbox._flags.fse) {
+		case "scanlines": {
+			gbox.getBufferContext().drawImage(gbox.getCanvas("-gbox-fse"),0,0);
+			break;
+		}
+		case "lcd":{
+			if (gbox._localflags.fselcdget&&gbox.getBuffer())
+				gbox.getCanvasContext("-gbox-fse-new").drawImage(gbox.getBuffer(),0,0);
+			gbox.getBufferContext().save();
+			gbox.getBufferContext().globalAlpha=0.5;
+			gbox.getBufferContext().drawImage(gbox.getCanvas("-gbox-fse-old"),0,0);
+			gbox.getBufferContext().restore();
+			if (gbox._localflags.fselcdget)
+				gbox.swapCanvas("-gbox-fse-new","-gbox-fse-old");
+			gbox._localflags.fselcdget=!gbox._localflags.fselcdget;	
+			break;
+		}
+	}
+  },
   /**
   * This function is called once per frame. This is where the basic rendering and processing of groups occurs.
   */
@@ -538,6 +597,7 @@ var gbox={
 							for (var obj in gbox._objects[gbox._renderorder[g]])
 								gbox._playobject(gbox._renderorder[g],obj,gbox._actionqueue[i]);
 			if (gbox._fskid>=gbox._frameskip) {
+				if (gbox._localflags.fse) gbox._applyfse();
 				if (gbox._db) gbox.blitImageToScreen(gbox.getBuffer());
 				gbox._fskid=0;
 			} else gbox._fskid++;
@@ -638,7 +698,12 @@ var gbox={
 	_savesettings:function() {
 		var saved="";
 		for (var k in this._keymap) saved+="keymap-"+k+":"+this._keymap[k]+"~";
-		for (var f in this._flags) saved+="flag-"+f+":"+(this._flags[f]?1:0)+"~";
+		for (var f in this._flags) {
+			switch (this._flagstype[f]) {
+				case "check": { saved+="flag-"+f+":"+(this._flags[f]?1:0)+"~"; break; }
+				case "list": { saved+="flag-"+f+":"+this._flags[f]+"~"; break; }
+			}
+		}
 		this.dataSave("sys",saved);
 	},
 	_loadsettings:function() {
@@ -652,7 +717,13 @@ var gbox={
 				mk=kv[0].split("-");
 				switch (mk[0]) {
 					case "keymap": { this._keymap[mk[1]]=kv[1]*1; break }
-					case "flag": { this._flags[mk[1]]=kv[1]*1; break }
+					case "flag": {
+						switch (this._flagstype[mk[1]]) {
+							case "check": { this._flags[mk[1]]=kv[1]*1; break }
+							case "list": { this._flags[mk[1]]=kv[1]; break }
+						}
+						break
+					}
 				}
 			}
 		}
@@ -883,12 +954,12 @@ var gbox={
 	},
   
   /**
-  * Clears the record held in gbox._garbage of what has been deleted.
-  * @param {Object} obj The object you wish to delete.
+  * Clears the record held in gbox._garbage of what has been deleted. The "onpurge" method is called on the object before being deleted (for canvas deallocation etc.)
   */    
 	purgeGarbage:function() {
 		for (var group in this._garbage)
 			for (var id in this._garbage[group]) {
+				if (this._objects[group][id]["onpurge"]) this._objects[group][id].onpurge();
 				if (this._objects[group][id].__zt!=null)
 					this._zindex.remove(this._objects[group][id].__zt)
 				delete this._objects[group][id];
@@ -970,11 +1041,29 @@ var gbox={
   */    
 	createCanvas:function(id,data) {
 		this.deleteCanvas(id);
+		var w=(data&&data.w?data.w:this._screenw);
+		var h=(data&&data.h?data.h:this._screenh);
 		this._canvas[id]=document.createElement("canvas");
-		this._canvas[id].setAttribute('height',(data&&data.h?data.h:this._screenh));
-		this._canvas[id].setAttribute('width',(data&&data.w?data.w:this._screenw));
+		this._canvas[id].setAttribute('height',h);
+		this._canvas[id].setAttribute('width',w);
+		this._canvas[id].getContext("2d").save();
+		this._canvas[id].getContext("2d").globalAlpha=0;
+		this._canvas[id].getContext("2d").fillStyle = gbox.COLOR_BLACK;
+		this._canvas[id].getContext("2d").fillRect(0,0,w,h);
+		this._canvas[id].getContext("2d").restore();
 	},
-  
+  /**
+  * Swap two canvas using their ID.
+  * @param {String} id The id of the first canvas.
+  * @param {String} id The id of the second canvas.
+  * @example
+  * gbox.swapCanvas('canvas1','canvas2');
+  */    
+  swapCanvas:function(a,b) {
+  	var swp=this._canvas[a];
+  	this._canvas[a]=this._canvas[b];
+  	this._canvas[b]=swp;
+  },
   /**
   * Deletes a given canvas.
   * @param {String} id The id of the canvas to be deleted.
@@ -1004,7 +1093,7 @@ var gbox={
   * Gets the buffer canvas (automatically created by gbox.initScreen).
   * @returns {Object} A DOM Canvas element, including the width and height of the canvas.
   */
-	getBuffer:function(){return this.getCanvas("_buffer")},
+	getBuffer:function(){return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvas("_buffer"):this._screen):null)},
 
   /**
   * Gets the buffer canvas context.
@@ -1802,36 +1891,59 @@ var gbox={
 				setTimeout(gbox._minimaltimeexpired,gbox._splash.minimalTime);
 			}
 			if (gbox._splash.loading) gbox._splash.loading(tox,gbox._loaderqueue.getDone(),gbox._loaderqueue.getTotal());
-			if (gbox._splash.background&&gbox.imageIsLoaded("_splash"))
-				gbox.blit(tox,gbox.getImage("_splash"),{w:gbox.getImage("_splash").width,h:gbox.getImage("_splash").height,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
-			if (gbox._splash.minilogo&&gbox.imageIsLoaded("logo")) {
-				var dw=gbox.getScreenW()/4;
-				var dh=(gbox.getImage("logo").height*dw)/gbox.getImage("logo").width
-				gbox.blit(tox,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:gbox.getScreenW()-dw-5,dy:gbox.getScreenH()-dh-5,dw:dw,dh:dh});
-			}
-			if (gbox._splash.footnotes&&gbox.imageIsLoaded("_dbf")) {
-				if (!gbox.getCanvas("_footnotes")) {
-					var fd=gbox.getFont("_dbf");
-					gbox.createCanvas("_footnotes",{w:gbox.getScreenW()-5,h:(gbox._splash.footnotes.length)*(fd.tileh+gbox._splash.footnotesSpacing)});
-					for (var i=0;i<gbox._splash.footnotes.length;i++)
-						gbox.blitText(gbox.getCanvasContext("_footnotes"),{
-										font:"_dbf",
-										dx:0,
-										dy:i*(fd.tileh+gbox._splash.footnotesSpacing),
-										text:gbox._splash.footnotes[i]
-									});
+			switch (gbox._flags.loadscreen) {
+				case "c64": {
+					var p=0;
+					var l=0;
+					while (p!=gbox.getScreenH()) {
+						l=10+Math.floor(Math.random()*gbox.getScreenH()/4);
+						if (p+l>gbox.getScreenH()) l=gbox.getScreenH()-p;
+						tox.fillStyle = gbox.PALETTES.c64.colors[gbox.PALETTES.c64.order[Math.floor(Math.random()*gbox.PALETTES.c64.order.length)]];
+						tox.fillRect(0,p,gbox.getScreenW(),l);
+						p+=l;
+					}
+					tox.fillStyle = gbox.PALETTES.c64.colors.lightblue;
+					tox.fillRect(Math.floor(gbox.getScreenW()/10),Math.floor(gbox.getScreenH()/10),gbox.getScreenW()-Math.floor(gbox.getScreenW()/5),gbox.getScreenH()-Math.floor(gbox.getScreenH()/5));
+					if (gbox._splash.minilogo&&gbox.imageIsLoaded("logo")) {
+						var dw=gbox.getScreenW()/4;
+						var dh=(gbox.getImage("logo").height*dw)/gbox.getImage("logo").width;
+						gbox.blit(tox,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:(gbox.getScreenW()-dw)/2,dy:(gbox.getScreenH()-dh)/2,dw:dw,dh:dh});
+					}					
+					break;
 				}
-				gbox.blitAll(tox,gbox.getCanvas("_footnotes"),{dx:5,dy:gbox.getScreenH()-gbox.getCanvas("_footnotes").height-5});
-			}
-			if (gbox._loaderqueue.isBusy()) {
-				var bw=Math.floor(((gbox.getScreenW()-4)*gbox._loaderqueue.getDone())/gbox._loaderqueue.getTotal());
-				tox.globalAlpha=1;
-				tox.fillStyle = gbox._splash.gaugeBorderColor;
-				tox.fillRect(0,Math.floor((gbox.getScreenH()-gbox._splash.gaugeHeight)/2),gbox.getScreenW(),gbox._splash.gaugeHeight);
-				tox.fillStyle = gbox._splash.gaugeBackColor;
-				tox.fillRect(1,Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2)+1),gbox.getScreenW()-4,gbox._splash.gaugeHeight-2);
-				tox.fillStyle = gbox._splash.gaugeColor;
-				tox.fillRect(1,Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2)+1),(bw>0?bw:0),gbox._splash.gaugeHeight-2);
+				default:{
+					if (gbox._splash.background&&gbox.imageIsLoaded("_splash"))
+						gbox.blit(tox,gbox.getImage("_splash"),{w:gbox.getImage("_splash").width,h:gbox.getImage("_splash").height,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
+					if (gbox._splash.minilogo&&gbox.imageIsLoaded("logo")) {
+						var dw=gbox.getScreenW()/4;
+						var dh=(gbox.getImage("logo").height*dw)/gbox.getImage("logo").width;
+						gbox.blit(tox,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:gbox.getScreenW()-dw-5,dy:gbox.getScreenH()-dh-5,dw:dw,dh:dh});
+					}
+					if (gbox._splash.footnotes&&gbox.imageIsLoaded("_dbf")) {
+						if (!gbox.getCanvas("_footnotes")) {
+							var fd=gbox.getFont("_dbf");
+							gbox.createCanvas("_footnotes",{w:gbox.getScreenW()-5,h:(gbox._splash.footnotes.length)*(fd.tileh+gbox._splash.footnotesSpacing)});
+							for (var i=0;i<gbox._splash.footnotes.length;i++)
+								gbox.blitText(gbox.getCanvasContext("_footnotes"),{
+												font:"_dbf",
+												dx:0,
+												dy:i*(fd.tileh+gbox._splash.footnotesSpacing),
+												text:gbox._splash.footnotes[i]
+											});
+						}
+						gbox.blitAll(tox,gbox.getCanvas("_footnotes"),{dx:5,dy:gbox.getScreenH()-gbox.getCanvas("_footnotes").height-5});
+					}
+					if (gbox._loaderqueue.isBusy()) {
+						var bw=Math.floor(((gbox.getScreenW()-4)*gbox._loaderqueue.getDone())/gbox._loaderqueue.getTotal());
+						tox.globalAlpha=1;
+						tox.fillStyle = gbox._splash.gaugeBorderColor;
+						tox.fillRect(0,Math.floor((gbox.getScreenH()-gbox._splash.gaugeHeight)/2),gbox.getScreenW(),gbox._splash.gaugeHeight);
+						tox.fillStyle = gbox._splash.gaugeBackColor;
+						tox.fillRect(1,Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2)+1),gbox.getScreenW()-4,gbox._splash.gaugeHeight-2);
+						tox.fillStyle = gbox._splash.gaugeColor;
+						tox.fillRect(1,Math.floor(((gbox.getScreenH()-gbox._splash.gaugeHeight)/2)+1),(bw>0?bw:0),gbox._splash.gaugeHeight-2);
+					}
+				}
 			}
 			tox.restore();		
 			gbox.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");

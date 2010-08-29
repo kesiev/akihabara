@@ -103,7 +103,7 @@ block.palettes={};
 // Disables keys for games without some features
 block.deadkeys={
 	//      left right  up down rotright rotleft  hold
-	none:[  true,true,true,true,    true,   true, true], // All keys available
+	none:[  true,true,true,true,    true,   true, true] // All keys available
 };
 
 // Pieces set and rotations
@@ -113,7 +113,7 @@ block.pieces={};
 block.garbagerolls={};
 
 // Data slots for special game modes that needs more JS code
-block.data={};
+block["data"]={};
 
 // Extra actions repository (pure js code)
 block.extraactions={};
@@ -326,7 +326,7 @@ block.library["default"]=function(th) { // Default parameters - A plain tetris w
 			acgold:{tileset:"medal",tile:7}, stgold:{tileset:"medal",tile:8}, skgold:{tileset:"medal",tile:9}, regold:{tileset:"medal",tile:10}, rogold:{tileset:"medal",tile:11}, cogold:{tileset:"medal",tile:12}, tsgold:{tileset:"medal",tile:13},
 			acsilver:{tileset:"medal",tile:14}, stsilver:{tileset:"medal",tile:15}, sksilver:{tileset:"medal",tile:16}, resilver:{tileset:"medal",tile:17}, rosilver:{tileset:"medal",tile:18}, cosilver:{tileset:"medal",tile:19}, tssilver:{tileset:"medal",tile:20},
 			acbronze:{tileset:"medal",tile:21}, stbronze:{tileset:"medal",tile:22}, skbronze:{tileset:"medal",tile:23}, rebronze:{tileset:"medal",tile:24}, robronze:{tileset:"medal",tile:25}, cobronze:{tileset:"medal",tile:26}, tsbronze:{tileset:"medal",tile:27},
-			acnone:{tileset:"medal",tile:28}, stnone:{tileset:"medal",tile:29}, sknone:{tileset:"medal",tile:30}, renone:{tileset:"medal",tile:31}, ronone:{tileset:"medal",tile:32}, conone:{tileset:"medal",tile:33}, tsnone:{tileset:"medal",tile:34},
+			acnone:{tileset:"medal",tile:28}, stnone:{tileset:"medal",tile:29}, sknone:{tileset:"medal",tile:30}, renone:{tileset:"medal",tile:31}, ronone:{tileset:"medal",tile:32}, conone:{tileset:"medal",tile:33}, tsnone:{tileset:"medal",tile:34}
 		}},
 
 		{ifcondition:"stagetimer",type:"blit",dx:90,dy:145,tileset:"small-lbl",tile:8},
@@ -386,4 +386,3 @@ block.library["gfx-none"]=function(th) { // Any gfx effect
 	th.config.gfx.lockanimation=null;
 	th.config.gfx.darkenlight=0;
 }
-

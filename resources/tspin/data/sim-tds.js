@@ -313,8 +313,5 @@ block.library["sim-tds-zelda"]=function(th) {
 	// TO BE CONFIRMED
 	block.loadlibrary(th,"sim-tds");
 	th.config.field.extraactions="zeldamode";
-}
-		 	  
-		
-		 
+}	 
 

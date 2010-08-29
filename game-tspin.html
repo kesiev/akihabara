@@ -29,6 +29,7 @@
 		  	maingame.selectedoptions=[]; // Cache the previous selected options
 		  	
 		  	mainmenu={labels:[],id:[],submenu:[]};
+
 		  	for (var i in block.gamemodes) {
 		  		mainmenu.labels.push(saveme(block.gamemodes[i].year+" "+block.gamemodes[i].label+(block.gamemodes[i].notes?" ("+block.gamemodes[i].notes.length+")":"")));
 		  		mainmenu.id.push(i);
@@ -300,7 +301,7 @@
 		gbox.addScript({file:"resources/tspin/data/sim-tgm2.js"});
 		gbox.addScript({file:"resources/tspin/data/sim-tgm3.js"});		
 		gbox.addScript({file:"resources/tspin/data/sim-tds.js"});
-		
+
 		gbox.loadAll(go);
 	}, false);
 

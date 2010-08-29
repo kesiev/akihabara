@@ -1015,7 +1015,7 @@ var toys={
 								this.health-=by.power;
 								if (this.health<=0) this.kill(this,by); else this.hitAnimation();
 							}
-						},
+						}
 					}
 				)
 			);
@@ -1033,7 +1033,7 @@ var toys={
 						if (this.script[this.scriptline]==null)
 							this.ended=true;
 						else {
-							if (this.script[this.scriptline].goto!=null) this.scriptline=this.script[this.scriptline].goto;
+							if (this.script[this.scriptline]["goto"]!=null) this.scriptline=this.script[this.scriptline]["goto"];
 							this.line=this.script[this.scriptline];
 							if (this.line.afterframes!=null)
 								this.waitframes=this.line.afterframes;
@@ -1468,7 +1468,7 @@ var toys={
 			},
 			horizontalBounce:function(th) {
 				if (th.touchedleftwall||th.touchedrightwall) th.side=!th.side;
-			},
+			}
 		}
 	},
 	
@@ -2313,12 +2313,22 @@ var toys={
 							vaccy:-data.jump,
 							font:"small",
 							keep:0,
-							text:data.text,
+							text:data.text+"",
 							cnt:0,
 							camera:th.camera
 						}
 					)
 				);
+				
+				obj.initialize=function() {
+					var fd=gbox.getFont(this.font);
+					gbox.createCanvas("poptext-"+this.id,{w:this.text.length*fd.tilew,h:fd.tileh});							
+					gbox.blitText(gbox.getCanvasContext("poptext-"+this.id),{font:this.font,text:this.text,dx:0,dy:0});
+				}
+				
+				obj.onpurge=function() {
+					gbox.deleteCanvas("poptext-"+this.id);
+				}
 				
 				obj[(data.logicon==null?"first":data.logicon)]=function() {
 					if (gbox.objectIsVisible(this)) {
@@ -2332,7 +2342,7 @@ var toys={
 				}
 				
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
-					gbox.blitText(gbox.getBufferContext(),{font:this.font,text:this.text,dx:this.x,dy:this.y,camera:this.camera});
+					gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas("poptext-"+this.id),{dx:this.x,dy:this.y,camera:this.camera});
 				}
 				
 				return obj;

@@ -16,7 +16,7 @@
 						{image:"beach"},
 						{image:"beach"},
 						{image:"beach"},
-					],
+					]
 				},
 				
 				// What happens during this stage?

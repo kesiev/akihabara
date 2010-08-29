@@ -12,7 +12,8 @@
 		 .settingsbox P * { font-size:15px }
 		 .settingsbox UL { list-style-type: none; padding: 5px;margin: 0; }
 		 .settingsbox LI { line-height:40px; font-size:15px }
-		 .settingsbox .keymap { position:absolute;left:150px; width:180px;border:0px; padding:5px }
+		 .settingsbox .keymap { background-color:white;position:absolute;left:250px; width:300px;padding-left:5px }
+		 .settingsbox .selector { position:absolute;left:250px; width:300px;padding:5px;margin:5px 0px 0px 0px; }
 		 
 		 .gameboxkeyboard { background-color:#debebe }
 		 .gameboxaudio { background-color:#debebe }
@@ -23,20 +24,21 @@
 	</style>
 	<title>Akihabara setup</title>
 </head>
-<body onkeyup="keycustomized(event)" onload="loaddata()">
+<body onkeydown="return keycustomized(event)" onkeypress="return false" onkeyup="return false" onload="loaddata()">
 	<h1>Akihabara setup</h1>
 	<div class="settingsbox gameboxkeyboard">
-		<h2>Gamebox keyboard setup</h2>
+		<h2>Gamebox buttons setup</h2>
 		<p>These settings will be used by any Gamebox game hosted by this domain. Click a box and press a key to customize.</p>
 		<ul>
-			<li> Up <input class="keymap" id="keyup" READONLY onclick="customizekey({key:'up',input:'keyup'})"></li>
-			<li> Down <input class="keymap" id="keydown" READONLY onclick="customizekey({key:'down',input:'keydown'})"></li>
-			<li> Left <input class="keymap" id="keyleft" READONLY onclick="customizekey({key:'left',input:'keyleft'})"></li>
-			<li> Right <input class="keymap" id="keyright" READONLY onclick="customizekey({key:'right',input:'keyright'})"></li>
-			<li> A Button <input class="keymap" id="keya" READONLY onclick="customizekey({key:'a',input:'keya'})"></li>
-			<li> B Button <input class="keymap" id="keyb" READONLY onclick="customizekey({key:'b',input:'keyb'})"></li>
-			<li> C Button <input class="keymap" id="keyc" READONLY onclick="customizekey({key:'c',input:'keyc'})"></li>
+			<li> Up <span class="keymap" id="keyup" READONLY onclick="customizekey({key:'up',input:'keyup'})"></span></li>
+			<li> Down <span class="keymap" id="keydown" READONLY onclick="customizekey({key:'down',input:'keydown'})"></span></li>
+			<li> Left <span class="keymap" id="keyleft" READONLY onclick="customizekey({key:'left',input:'keyleft'})"></span></li>
+			<li> Right <span class="keymap" id="keyright" READONLY onclick="customizekey({key:'right',input:'keyright'})"></span></li>
+			<li> A Button <span class="keymap" id="keya" READONLY onclick="customizekey({key:'a',input:'keya'})"></span></li>
+			<li> B Button <span class="keymap" id="keyb" READONLY onclick="customizekey({key:'b',input:'keyb'})"></span></li>
+			<li> C Button <span class="keymap" id="keyc" READONLY onclick="customizekey({key:'c',input:'keyc'})"></span></li>
 		</ul>
+		<span id="extra">
 	</div>
 	<div class="settingsbox gameboxaudio">
 		<h2>Gamebox audio setup</h2>
@@ -45,6 +47,21 @@
 			<li><input type="checkbox" id="noaudio" onclick="checkflag(this)"> Disable audio</li>
 		</ul>
 	</div>
+	<div class="settingsbox gameboxaudio">
+		<h2>Gamebox screen setup</h2>
+		<p>These settings will be used by any Gamebox game hosted by this domain.</p>
+		<ul>
+			<li>Loading screen <select class="selector" id="loadscreen" onchange="changedselect(this)">
+				<option value="normal">Classic</option>
+				<option value="c64">Joseph64</option>				
+			</select></li>
+			<li>Full screen effects <select class="selector" id="fse" onchange="changedselect(this)">
+				<option value="none">None</option>
+				<option value="scanlines">Scanlines</option>				
+				<option value="lcd">LCD</option>				
+			</select></li>
+		</ul>
+	</div>	
 	<div class="settingsbox gameboxexperimental">
 		<h2>Gamebox experimental</h2>
 		<p>This checkbox enables misc experimental features <b>that are really unstable</b>. Use at yout own risk!</p>
@@ -61,11 +78,11 @@
 <script>
 
 	var defaults={
-		keymap:help.cloneObject(gbox._keymap),
 		flags:help.cloneObject(gbox._flags)
 	};
 		
 	var customizing=null;
+	var device;
 
 	function pjq(id) { return document.getElementById(id) };
 	
@@ -80,21 +97,47 @@
 				if (((id>64)&&(id<133))||((id>47)&&(id<58))) strkey=String.fromCharCode(id);
 			}
 		}
+		if (device.iswii) {
+			switch (id) {
+				case 175: { strkey="Wiimote D-Pad left"; break; }
+				case 176: { strkey="Wiimote D-Pad right"; break; }
+				case 177: { strkey="Wiimote D-Pad up"; break; }
+				case 178: { strkey="Wiimote D-Pad down"; break; }
+				case 173: { strkey="Wiimote 2 button"; break; }
+				case 174: { strkey="Wiimote + button"; break; }
+				case 170: { strkey="Wiimote - button"; break; }
+				case 172: { strkey="Wiimote 1 button"; break; }
+				case 13: { strkey="Wiimote A button"; break; }
+			}
+		}
 		return "key "+id+(strkey?" ("+strkey+")":"");
 
 	}
 
 	function updatescreen() {
-		pjq("keyup").value=keyidtostring(gbox._keymap["up"]);
-		pjq("keydown").value=keyidtostring(gbox._keymap["down"]);
-		pjq("keyleft").value=keyidtostring(gbox._keymap["left"]);
-		pjq("keyright").value=keyidtostring(gbox._keymap["right"]);
-		pjq("keya").value=keyidtostring(gbox._keymap["a"]);
-		pjq("keyb").value=keyidtostring(gbox._keymap["b"]);
-		pjq("keyc").value=keyidtostring(gbox._keymap["c"]);
-		
-		for (var i in gbox._flags)
-			pjq(i).checked=gbox._flags[i];
+		pjq("keyup").innerHTML=keyidtostring(gbox._keymap["up"]);
+		pjq("keydown").innerHTML=keyidtostring(gbox._keymap["down"]);
+		pjq("keyleft").innerHTML=keyidtostring(gbox._keymap["left"]);
+		pjq("keyright").innerHTML=keyidtostring(gbox._keymap["right"]);
+		pjq("keya").innerHTML=keyidtostring(gbox._keymap["a"]);
+		pjq("keyb").innerHTML=keyidtostring(gbox._keymap["b"]);
+		pjq("keyc").innerHTML=keyidtostring(gbox._keymap["c"]);
+		for (var i in gbox._flags) {
+			switch (gbox._flagstype[i]) {
+				case "check": {
+					pjq(i).checked=gbox._flags[i];
+					break;
+				}
+				case "list":{
+					for (var j=0;j<pjq(i).options.length;j++)
+						if (pjq(i).options[j].value==gbox._flags[i]) {
+							pjq(i).selectedIndex=j;
+							break;
+						}
+					break;
+				}
+			}
+		}
 	}
 	
 	function checkflag(t) {
@@ -102,10 +145,18 @@
 	}
 
 	function loaddata() {
+		defaults.keyboardkeymap=help.cloneObject(gbox._keymap);
+		device=help.akihabaraInit({hardwareonly:true});
+		defaults.defaultkeymap=help.cloneObject(gbox._keymap);
 		gbox._loadsettings();
+		if (device.iswii)
+			pjq("extra").innerHTML="<div style='margin-top:10px'><input type=button value='Set USB keyboard default' onclick='setusbkeyboarddefault()'><\/div>";
 		updatescreen();
 	}
 	
+	function changedselect(t) {
+		gbox._flags[t.id]=t.options[t.selectedIndex].value;
+	}
 	
 	function customizekey(p) {
 		cancelcustomize();
@@ -125,12 +176,13 @@
 		if (customizing) {
 			gbox._keymap[customizing.key]=(e.fake||window.event?e.keyCode:e.which);
 			cancelcustomize();
+			return false;
 		}
 	}
 	
 	function resetdefaults() {
 		if (confirm("Revert to default configuration?")) {
-			gbox._keymap=help.cloneObject(defaults.keymap);
+			gbox._keymap=help.cloneObject(defaults.defaultkeymap);
 			gbox._flags=help.cloneObject(defaults.flags);
 			updatescreen();
 		}
@@ -139,6 +191,13 @@
 	function savesettings() {
 		gbox._savesettings();
 		alert("Settings saved succesfully.");
+	}
+	
+	function setusbkeyboarddefault() {
+		if (confirm("Set the USB keyboard default input settings?")) {
+			gbox._keymap=help.cloneObject(defaults.keyboardkeymap);
+			updatescreen();
+		}
 	}
 	
 </script>

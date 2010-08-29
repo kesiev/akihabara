@@ -83,7 +83,7 @@
 		
 			help.akihabaraInit({ // Akihabara is initialized with title and all the default settings.
 				title:"Capman", // ... Just changing the game title...
-				splash:{footnotes:["Music 'Only Heroes Win at Skee Ball' by Greenleo","Contact him: greenleo.bandcamp.com"]}, // And adding some credits to Greenleo on the loading screen, which made the main theme. Great work! Trivia: is also the Akiba Hero 2nd song :)
+				splash:{footnotes:["Music 'Only Heroes Win at Skee Ball' by Greenleo","Contact him: greenleo.bandcamp.com"]} // And adding some credits to Greenleo on the loading screen, which made the main theme. Great work! Trivia: is also the Akiba Hero 2nd song :)
 			}); 
 
 			gbox.addImage("logo","resources/capman/logo.png"); // Images are loaded setting an alias and a file name. Can be full images, like the logo (load this ASAP, so will be shown during the loading screen)
@@ -275,7 +275,7 @@
 				blit:function() { // Then, the most important action: the "blit", where object are drawn on the screen.
 					gbox.blitFade(gbox.getBufferContext(),{alpha:1}); // First let's clear the whole screen. Blitfade draws a filled rectangle over the given context (in this case, the screen)
 					gbox.blit(gbox.getBufferContext(),gbox.getCanvas("mazecanvas"),{dx:0,dy:0,dw:gbox.getCanvas("mazecanvas").width,dh:gbox.getCanvas("mazecanvas").height,sourcecamera:true}); // Simply draw the maze on the screen.
-				},
+				}
 			  });
 			  
 			  

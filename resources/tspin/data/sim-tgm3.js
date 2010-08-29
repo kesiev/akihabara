@@ -232,7 +232,7 @@ block.torikans.tgm3easy={ // TGM3 easy mode torikan (200 -> staffroll) - http://
 		},
 		{ 
 			// The timed torikan is respected here. The player will be kicked to the roll
-			main:{condition:[["onlock","or","global","level",">=",null,200]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]},
+			main:{condition:[["onlock","or","global","level",">=",null,200]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]}
 		}
 	]
 };
@@ -246,7 +246,7 @@ block.torikans.debugtgm3easy={ // TGM3 easy mode torikan (20 -> staffroll) - htt
 		},
 		{ 
 			// The timed torikan is respected here. The player will be kicked to the roll
-			main:{condition:[["onlock","or","global","level",">=",null,20]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]},
+			main:{condition:[["onlock","or","global","level",">=",null,20]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]}
 		}
 	]
 };
@@ -289,13 +289,12 @@ block.torikans.tgm3shirase={ // TGM3 master mode torikan - http://www.tetrisconc
 	torikans:[
 		{ // The time limit torikan. If triggered, the cap is set to 500.
 			fivetorikan:{condition:[[null,"or","overall","time",">",null,strtime2secs("02:28:00")]],apply:[{fail:true,setup:{levelcap:500,setdata:["torikan",1]},condition:[[null,"or","global","level","<",null,500]]},{totorikan:"tentorikan"}]},
-			tentorikan:{condition:[[null,"or","overall","time",">",null,strtime2secs("04:56:00")]],apply:[{fail:true,setup:{levelcap:1000,setdata:["torikan",2]},condition:[[null,"or","global","level","<",null,1000]]},{fail:true}]},
-			
+			tentorikan:{condition:[[null,"or","overall","time",">",null,strtime2secs("04:56:00")]],apply:[{fail:true,setup:{levelcap:1000,setdata:["torikan",2]},condition:[[null,"or","global","level","<",null,1000]]},{fail:true}]}
 		},
 		{ 
 			fivetorikan:{condition:[["onlock","or","global","level",">=",null,500]],apply:[{condition:[[null,"or","data","torikan","==",null,1]],fail:true,setup:{gameclear:true}},{totorikan:"tentorikan"}]},
 			tentorikan:{condition:[["onlock","or","global","level",">=",null,1000]],apply:[{condition:[[null,"or","data","torikan","==",null,2]],fail:true,setup:{gameclear:true}},{totorikan:"ending"}]},
-			ending:{condition:[["onlock","or","global","level",">=",null,1300]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]},
+			ending:{condition:[["onlock","or","global","level",">=",null,1300]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]}
 		}
 	]
 };
@@ -305,13 +304,12 @@ block.torikans.tgm3shiraseworld={ // TGM3 master mode torikan for world SRS mode
 	torikans:[
 		{ // The time limit torikan. If triggered, the cap is set to 500.
 			fivetorikan:{condition:[[null,"or","overall","time",">",null,strtime2secs("03:03:00")]],apply:[{fail:true,setup:{levelcap:500,setdata:["torikan",1]},condition:[[null,"or","global","level","<",null,500]]},{totorikan:"tentorikan"}]},
-			tentorikan:{condition:[[null,"or","overall","time",">",null,strtime2secs("06:06:00")]],apply:[{fail:true,setup:{levelcap:1000,setdata:["torikan",2]},condition:[[null,"or","global","level","<",null,1000]]},{fail:true}]},
-			
+			tentorikan:{condition:[[null,"or","overall","time",">",null,strtime2secs("06:06:00")]],apply:[{fail:true,setup:{levelcap:1000,setdata:["torikan",2]},condition:[[null,"or","global","level","<",null,1000]]},{fail:true}]}
 		},
 		{ 
 			fivetorikan:{condition:[["onlock","or","global","level",">=",null,500]],apply:[{condition:[[null,"or","data","torikan","==",null,1]],fail:true,setup:{gameclear:true}},{totorikan:"tentorikan"}]},
 			tentorikan:{condition:[["onlock","or","global","level",">=",null,1000]],apply:[{condition:[[null,"or","data","torikan","==",null,2]],fail:true,setup:{gameclear:true}},{totorikan:"ending"}]},
-			ending:{condition:[["onlock","or","global","level",">=",null,1300]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]},
+			ending:{condition:[["onlock","or","global","level",">=",null,1300]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]}
 		}
 	]
 };
@@ -322,13 +320,12 @@ block.torikans.debugtgm3shirase={ // TGM3 master mode torikan - http://www.tetri
 	torikans:[
 		{ // The time limit torikan. If triggered, the cap is set to 500.
 			fivetorikan:{condition:[[null,"or","overall","time",">",null,strtime2secs("01:00:00")]],apply:[{fail:true,setup:{levelcap:10,setdata:["torikan",1]},condition:[[null,"or","global","level","<",null,10]]},{totorikan:"tentorikan"}]},
-			tentorikan:{condition:[[null,"or","overall","time",">",null,strtime2secs("02:00:00")]],apply:[{fail:true,setup:{levelcap:20,setdata:["torikan",2]},condition:[[null,"or","global","level","<",null,20]]},{fail:true}]},
-			
+			tentorikan:{condition:[[null,"or","overall","time",">",null,strtime2secs("02:00:00")]],apply:[{fail:true,setup:{levelcap:20,setdata:["torikan",2]},condition:[[null,"or","global","level","<",null,20]]},{fail:true}]}			
 		},
 		{ 
 			fivetorikan:{condition:[["onlock","or","global","level",">=",null,10]],apply:[{condition:[[null,"or","data","torikan","==",null,1]],fail:true,setup:{gameclear:true}},{totorikan:"tentorikan"}]},
 			tentorikan:{condition:[["onlock","or","global","level",">=",null,20]],apply:[{condition:[[null,"or","data","torikan","==",null,2]],fail:true,setup:{gameclear:true}},{totorikan:"ending"}]},
-			ending:{condition:[["onlock","or","global","level",">=",null,46]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]},
+			ending:{condition:[["onlock","or","global","level",">=",null,46]],apply:[{fail:true,setup:{gotostagelabel:"roll"}}]}
 		}
 	]
 };
@@ -502,8 +499,7 @@ block.grades.tgm3master={ // TGM3 grading. Can move up and down, regarding the c
 			grMV:{label:"MV",promote:[{tograde:"grMO",condition:[["onlock","or","calc",__tgm3mastergradeforumla,">",null,29]]},{tograde:"grMK",condition:[["onlock","or","calc",__tgm3mastergradeforumla,"<",null,29]]}]},
 			grMO:{label:"MO",promote:[{tograde:"grMMM",condition:[["onlock","or","calc",__tgm3mastergradeforumla,">",null,30]]},{tograde:"grMV",condition:[["onlock","or","calc",__tgm3mastergradeforumla,"<",null,30]]}]},
 			grMMM:{label:"MMM",promote:[{tograde:"grGm",condition:[["onlock","or","calc",__tgm3mastergradeforumla,">",null,31]]},{tograde:"grMO",condition:[["onlock","or","calc",__tgm3mastergradeforumla,"<",null,31]]}]},
-			grGm:{label:"Gm",promote:[{tograde:"grMMM",condition:[["onlock","or","calc",__tgm3mastergradeforumla,"<",null,32]]}]},
-			
+			grGm:{label:"Gm",promote:[{tograde:"grMMM",condition:[["onlock","or","calc",__tgm3mastergradeforumla,"<",null,32]]}]}			
 		}
 	]
 };
@@ -676,4 +672,3 @@ block.library["sim-tgm3-world-shirase"]=function(th) {
 	th.config.gfx.tileset="brick-world";
 	th.config.score.torikan="tgm3shiraseworld";
 }
-
