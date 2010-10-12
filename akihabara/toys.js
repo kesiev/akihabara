@@ -1346,7 +1346,7 @@ var toys={
 		/**
 		* 
 		*/
-		horizontalTileCollision:function(th,map,tilemap) {
+		horizontalTileCollision:function(th,map,tilemap,precision) {
 			var left=0;
 			var right=0;
 			var t=0;
@@ -1368,7 +1368,7 @@ var toys={
 					th.x=help.xPixelToTile(map,th.x+th.w)-th.w;
 					th.touchedrightwall=true;
 				}
-				t+=gbox.getTiles(map.tileset).tileh;
+				t+=gbox.getTiles(map.tileset).tileh/(precision?precision:1);
 			}
 		},
 		

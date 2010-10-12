@@ -46,7 +46,7 @@ var tool={
 		for (var r=0;r<data.rows.length;r++) {
 			for (var i=0;i<data.rows[r].length;i++) {
 				this._images[id]=new Image();
-				this._images[id].addEventListener('load', function(){tool._loaded(this.id)},false);
+				gbox.addEventListener(this._images[id],'load', function(){tool._loaded(this.id)});
 				this._images[id].setAttribute("id",id);
 				this._images[id].src=data.rows[r][i].img;
 				this._count++;

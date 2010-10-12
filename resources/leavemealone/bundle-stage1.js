@@ -1,34 +1,42 @@
 {
+	_template:"leavemealone",
 	setObject:[
+		{
+			object:"mapmeta",
+			property:"stage1",
+			value:{nextLevel:"stage2"}
+		},
+		{
+			object:"mapobjects",
+			property:"stage1",
+			value:{
+				items:[
+					{objecttype:"player", x:40, y:180, side:1},
+					{objecttype:"squid", x:80, y:40, side:1},
+					{objecttype:"squid", x:140, y:40, side:1},
+					{objecttype:"squid", x:220, y:40, side:1}
+				]
+			}
+		},
 		{
 			object:"tilemaps",
 			property:"stage1",
 			value:help.finalizeTilemap({
 				tileset:"tiles",
 				map:[
-				  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000],
-				  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-				  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-				  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-				  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-				  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-				  	[0000,null,null,null,null,null,null,0000,0000,null,null,null,null,null,null,0000],
-				  	[0000,null,null,0000,0000,0000,null,null,null,null,0000,0000,0000,null,null,0000],
-				  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-				  	[0000,0000,null,null,null,null,null,null,null,null,null,null,null,null,0000,0000],
-				  	[0000,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0000],
-				  	[0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000]
-				  ],
-				 playerSpawnX:40,
-				 playerSpawnY:180,
-				 addObjects:function() {
-				 	maingame.addEnemy("goo",{x:20*4,y:20*2,side:true});
-				 	maingame.addEnemy("goo",{x:20*11,y:20*2,side:true});
-				 	maingame.addEnemy("goo",{x:20*7,y:20*2,side:true});
-				 },
-				tileIsSolidCeil:function(obj,t){ return (obj.group=="foes"?false:t==0) }, // false for Bubble bobble style platforming
-				tileIsSolidFloor:function(obj,t){ return t==0 },
-				nextLevel:"stage2"
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+					[0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0],
+					[0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0],
+					[0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0],
+					[0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0],
+					[0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0],
+					[0,null,null,null,null,null,null,0,0,null,null,null,null,null,null,0],
+					[0,null,null,0,0,0,null,null,null,null,0,0,0,null,null,0],
+					[0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0],
+					[0,0,null,null,null,null,null,null,null,null,null,null,null,null,0,0],
+					[0,null,null,null,null,null,null,null,null,null,null,null,null,null,null,0],
+					[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+				]
 			})
 		}
 	]

@@ -9,6 +9,20 @@
 var help={
 
  /**
+ * Searches an object in an array filtering for one of their properties.
+ * @param {Array} a The array.
+ * @param {String} field The searched field.
+ * @param {String} value The searched value.
+ * @returns The found object, otherwise null.
+ */
+ searchObject:function(a,field,value) {
+ 	if (!a) return null; else
+ 	for (var i=0;i<a.length;a++) if (a[i][field]==value) return a[i];
+ 	return null;
+ },
+
+
+ /**
  * Generates numbers from st to ed, along with a skip value.
  * @param {Integer} st Starting number.
  * @param {Integer} ed Ending number.
@@ -339,6 +353,22 @@ var help={
 			gbox.blitTile(ctx,{tileset:tilemap.tileset,tile:tile,dx:x*ts.tilew,dy:y*ts.tilew});
 	},
 	
+  /**
+  * Sets a tile in the map and draws it using pixels as coords. Does not return anything.
+  * @param {Object} ctx The canvas context for the map. Accessed via gbox.getCanvasContext("canvasname")
+  * @param {Object} map The game map object.
+  * @param {Integer} x The index of the pixel column within the map array -- so a 1 would mean the second column of tiles. 
+  * @param {Integer} y The index of the pixel row within the map array -- so a 1 would mean the second row of tiles. 
+  * @param {Integer} tile The integer representing the new tile you wish to draw. This is its index within the tileset; a null value will erase whatever tile is present.
+  * @param {String} The ID of the map. Defaults to 'map'.
+  */	  
+	setTileInMapAtPixel:function(ctx,tilemap,x,y,tile,map) {
+		var ts=gbox.getTiles(tilemap.tileset);
+		x=Math.floor(x/ts.tilew);
+		y=Math.floor(y/ts.tileh);
+		help.setTileInMap(ctx,tilemap,x,y,tile,map);
+	},
+	
 
   /**
   * Returns the Nth element in an array. If the array is shorter than N, it returns the last element of the array.
@@ -350,7 +380,13 @@ var help={
 		if (id>=a.length) return a[a.length-1]; else return a[id];
 	},
 	
-	// Get an item of an array of object, using a field as index. is returned the first entry if the field is not valued.
+  /**
+  * Returns the element of a sorted array that have the highest value of one of the properties.
+  * @param {Array} a An array.
+  * @param {Integer} value The target value.
+  * @param {String} field The property used to filter the array.
+  * @returns The object with the highest target value, otherwise the first element of the array.
+  */	
 	getArrayIndexed:function(a,value,field) {
 		if (a[0][field]==null) return a[0];
 		var i=0;
@@ -424,7 +460,6 @@ var help={
   * Automatically configures a bunch of settings depending on the web browser and device that is viewing the game. Mostly sets the maximum number of audio channels and touch settings.
   */	
 	getDeviceConfig:function() {
-
 		var cap;
 		if (navigator.userAgent.match(/nintendo wii/i))
 			cap={iswii:true,height:window.innerHeight,doublebuffering:true} // Simulated double buffering has been resumed. Canvas on Opera for Wii has a strange sprite blinking effect - usually browsers render frames once ended and this is an exception.
@@ -436,12 +471,12 @@ var help={
 			cap={zoom:2};
 		
 		cap.canaudio=!!(document.createElement('audio').canPlayType);
-
 		if (cap.canaudio) {
 			if (navigator.userAgent.match(/iPad/i)||navigator.userAgent.match(/iPhone/i)||navigator.userAgent.match(/iPod/i)) {
-				cap.audiocompatmode=2; // Single audio per time, so compatibility mode is needed. Plays only the "bgmusic" channel.
+				cap.audiocompatmode=2; // Audio loading mode.
 				cap.audioteam=1; // Only a member is required in the audioteam.
 				cap.audioisexperimental=true; // Audio is experimental, since limited.
+				cap.audioissinglechannel=true; // Single channeled.  Plays only the "bgmusic" channel.
 			} else if (navigator.userAgent.match(/Chrome/i)) {
 				cap.audioteam=3; // Quite low performance on playback responsiveness.
 			} else if (navigator.userAgent.match(/Firefox/i)) {
@@ -452,14 +487,24 @@ var help={
 				cap.audioteam=1; // Testing smaller audioteam
 				cap.audiocreatemode=1; // Firefox is stalling while downloading lot of things
 				// Minefield has fixed the 0.3 delay!
+			} else if (navigator.userAgent.match(/khtml/i)&&navigator.userAgent.match(/konqueror/i)) {
+				// Note that audio is not supported in applewebkit mode :(
+				cap.audioteam=1;
+				cap.audioissinglechannel=true; // Single channeled.  Plays only the "bgmusic" channel.
+				cap.audiocompatmode=2; // Sorry. iPad single channel mode. Audio events are not triggered properly and audio properties are missing so many audio feautres are not available. :(
+				cap.forcedmimeaudio="audio/ogg"; // Usually OGG audio playback is supported by default in KDE env.
+				cap.audioisexperimental=true; // Audio is experimental, since limited.
 			} else if (navigator.userAgent.match(/Safari/i)) {
 				cap.audioteam=1; // Testing smaller audioteam						
 			} else if (navigator.userAgent.match(/Opera/i)) {
 				cap.audioteam=1; // Testing smaller audioteam			
 				cap.audiocreatemode=1; // Do not like audio object cloning very much
+			} else if (navigator.userAgent.match(/MSIE 9.0/i)||navigator.userAgent.match(/MSIE 7.0/i)) {
+				cap.audioteam=2;		
+				cap.audiocompatmode=1; // Audio loading mode.
+				cap.audioisexperimental=navigator.userAgent.match(/MSIE 7.0/i); // Audio is experimental, on IE7 (for compat mode)
 			} else
 				cap.audioisexperimental=true; // Audio is just experimental on all other devices.
-				
 		}
 		return cap;
 	},
@@ -534,6 +579,10 @@ var help={
 			if (help.isDefined(device.audiodequeuetime)) gbox.setAudioDequeueTime(device.audiodequeuetime);
 		if (help.geturlparameter("audiopositiondelay")) gbox.setAudioPositionDelay(help.geturlparameter("audiopositiondelay")*1); else
 			if (help.isDefined(device.audiopositiondelay)) gbox.setAudioPositionDelay(device.audiopositiondelay);
+		if (help.geturlparameter("forcedmimeaudio")) gbox.setForcedMimeAudio(help.geturlparameter("forcedmimeaudio")); else
+			if (help.isDefined(device.forcedmimeaudio)) gbox.setForcedMimeAudio(device.forcedmimeaudio);
+		if (help.geturlparameter("audioissinglechannel")) gbox.setAudioIsSingleChannel(help.geturlparameter("audioissinglechannel")=="yes"); else
+			if (help.isDefined(device.audioissinglechannel)) gbox.setAudioIsSingleChannel(device.audioissinglechannel);
 			
 			
 		if (!data||!data.hardwareonly) {

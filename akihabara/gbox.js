@@ -371,6 +371,11 @@ var gbox={
   */	
 	initScreen:function(w,h) {
 		document.body.style.textAlign="center";
+		document.body.style.height="100%";
+		document.body.style.margin="0px";
+		document.body.style.padding="0px";			
+		document.getElementsByTagName("html")[0].style.height="100%";
+		
 		var container=document.createElement("div");
 		container.style.width="100%";
 		container.style.height="100%";
@@ -400,8 +405,8 @@ var gbox={
 		document.body.appendChild(container);
 
 		this.createCanvas("_buffer");
-		window.addEventListener('keydown', this._keydown,false);
-		window.addEventListener('keyup', this._keyup,false);
+		gbox.addEventListener(window,'keydown', this._keydown);
+		gbox.addEventListener(window,'keyup', this._keyup);
 		if (this._statbar) {
 			this._statbar=document.createElement("div");
 			if (this._border) this._statbar.style.border="1px solid black";
@@ -553,6 +558,12 @@ var gbox={
 			break;
 		}
 	}
+  },
+  /**
+  * Register the code that have to be executed once the page is loaded. Usually contains game initialization, resources loading etc.
+  */
+  onLoad:function(code) {
+  	this.addEventListener(window,'load',code);
   },
   /**
   * This function is called once per frame. This is where the basic rendering and processing of groups occurs.
@@ -1445,6 +1456,8 @@ var gbox={
 	_singlechannelname:"bgmusic",
 	_positiondelay:0,
 	_playerforcer:0,
+	_forcedmimeaudio:null,
+	_singlechannelaudio:false,
 	_audiomutevolume:0.0001, // Zero is still not accepted by everyone :(
 	_rawstopaudio:function(su) {
 		if (gbox._audiocompatmode==1) {
@@ -1471,10 +1484,10 @@ var gbox={
 	_finalizeaudio:function(ob,who,donext){
 	
 		var cur=(who?who:this);
-		cur.removeEventListener('ended', gbox._finalizeaudio,false);
-		cur.removeEventListener('timeupdate', gbox._checkprogress,false);
+		gbox.removeEventListener(cur,'ended', gbox._finalizeaudio);
+		gbox.removeEventListener(cur,'timeupdate', gbox._checkprogress);
 		
-		cur.addEventListener('ended', gbox._playbackended,false);
+		gbox.addEventListener(cur,'ended', gbox._playbackended);
 		if (donext) gbox._loaderloaded();
 	},
 	_audiodoload:function() {
@@ -1533,9 +1546,16 @@ var gbox={
 		ael.setAttribute('controls',gbox._showplayers);
 		ael.setAttribute('aki_id',cau.id);
 		ael.setAttribute('aki_cnt',cau.team);
-		ael.addEventListener('loadedmetadata', gbox._pushaudio,false); // Push locked audio in safari
+		gbox.addEventListener(ael,'loadedmetadata', gbox._pushaudio); // Push locked audio in safari
 		if (((gbox._createmode==0)&&(cau.team==0))||(gbox._createmode==1)) {
-			if (ael.canPlayType) {
+			if (gbox._forcedmimeaudio) {
+				for (var i=0;i<cau.filename.length;i++) {
+					if (gbox._audiofiletomime(cau.filename[i]).indexOf(gbox._forcedmimeaudio)!=-1) {
+						ael.src=gbox._breakcacheurl(cau.filename[i]);
+						break;
+					}
+				}
+			} else if (ael.canPlayType) {
 				var cmime;
 				for (var i=0;i<cau.filename.length;i++) {
 					cmime=gbox._audiofiletomime(cau.filename[i]);
@@ -1551,11 +1571,11 @@ var gbox={
 					ael.appendChild(src);
 				}
 			}
-			ael.addEventListener('ended',this._finalizeaudio,false);
+			gbox.addEventListener(ael,'ended',this._finalizeaudio);
 			if (gbox._audiocompatmode==1)
 				setTimeout(gbox._fakecheckprogress,gbox._fakecheckprogressspeed);
 			else
-				ael.addEventListener('timeupdate',this._checkprogress,false);
+				gbox.addEventListener(ael,'timeupdate',this._checkprogress);
 			ael.setAttribute('buffering',"auto");
 			ael.volume=0;
 			this._audio.aud[cau.id].push(ael);
@@ -1627,7 +1647,8 @@ var gbox={
 			} else gbox._audio.qtimer=false;
 	
 	},
-	getAudioIsSingleChannel:function() { return this._audiocompatmode==2; },
+	getAudioIsSingleChannel:function() { return this._singlechannelaudio; },
+	setAudioIsSingleChannel:function(m) { gbox._singlechannelaudio=m },
 	setAudioPositionDelay:function(m) { gbox._positiondelay=m },
 	setAudioDequeueTime:function(m) { gbox._audiodequeuetime=m },
 	setShowPlayers:function(m) { gbox._showplayers=m},
@@ -1640,7 +1661,7 @@ var gbox={
 					return;
 				else
 					gbox.deleteAudio(id);
-			if ((gbox._audiocompatmode!=2)||(def.channel==gbox._singlechannelname)) {
+			if (!gbox._singlechannelaudio||(def.channel==gbox._singlechannelname)) {
 				var grsize=(def.channel==gbox._singlechannelname?gbox._loweraudioteam:(def.background?gbox._loweraudioteam:gbox._audioteam));
 				for (var i=0;i<grsize;i++)
 					gbox._addtoloader({type:"audio",data:{id:id,filename:filename,def:(i==0?def:null),team:i}});
@@ -1733,6 +1754,7 @@ var gbox={
 
 	changeAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) { if (this._audio.ast[a].volume+vol>1) this._audio.ast[a].volume=1; else  if (this._audio.ast[a].volume+vol<0) this._audio.ast[a].volume=0; else this._audio.ast[a].volume+=vol; this._updateaudio(a); } },
 	setCanAudio:function(a) { this._canaudio=!this._flags.noaudio&&a;},
+	setForcedMimeAudio:function(a){ this._forcedmimeaudio=a;},
 	setAudioChannels:function(a){
 		this._audiochannels=a;
 		for (var ch in a) {
@@ -1798,11 +1820,14 @@ var gbox={
 	},
 	// Callback for loaded bundle
 	_loaderhmlhttploading:function(){
-		if(this.readyState == 4 && (this.status == 0||this.status == 200)) {
-			if (this.responseText) {
+		var rs=(typeof this.readyState != "undefined" ?this.readyState:gbox._xmlhttp.readyState);
+		var st=(typeof this.status != "undefined" ?this.status:gbox._xmlhttp.status);
+		var rt=(typeof this.responseText != "undefined" ?this.responseText:gbox._xmlhttp.responseText);
+		if(rs == 4 && (!st ||st == 200)) {
+			if (rt) {
 				if (!gbox._loaderqueue.getCurrent().call.skipCacheSave)
-					gbox._loadercache.add(gbox._loaderqueue.getCurrent().call.file,this.responseText);
-				var pack=eval("("+this.responseText+")");
+					gbox._loadercache.add(gbox._loaderqueue.getCurrent().call.file,rt);
+				var pack=eval("("+rt+")");
 				gbox.readBundleData(pack,gbox._loaderqueue.getCurrent().call);
 				// Keep loading the other resources.
 				gbox._loaderloaded();
@@ -1829,7 +1854,7 @@ var gbox={
 			switch (gbox._loaderqueue.getCurrent().type) {
 				case "image":{
 					gbox._images[current.id]=new Image();
-					gbox._images[current.id].addEventListener('load', gbox._loaderimageloaded,false);
+					gbox.addEventListener(gbox._images[current.id],'load', gbox._loaderimageloaded);
 					gbox._images[current.id].src=gbox._breakcacheurl(current.filename);
 					gbox._images[current.id].setAttribute('src_org',current.filename);
 					gbox._images[current.id].setAttribute('id',current.id);
@@ -1849,7 +1874,7 @@ var gbox={
 						}
 					}
 					if (!done) {
-						gbox._xmlhttp=new XMLHttpRequest();
+						gbox._xmlhttp=gbox.createXmlHttpRequest();
 						gbox._xmlhttp.open((current.call.data?"POST":"GET"), gbox._breakcacheurl(current.call.file),true);
 						gbox._xmlhttp.onreadystatechange = gbox._loaderhmlhttploading;
 						if (current.call.data) {
@@ -1954,7 +1979,49 @@ var gbox={
 			gbox._cb();
 		}
 	},
-	clearCache:function() { this._loadercache.clear(); }
+	clearCache:function() { this._loadercache.clear(); },
+	
+	// --- 
+	// --- 
+	// ---  BROWSER QUIRKS
+	// --- 
+	// --- 
+	
+	checkCanvasSupport:function() {
+	  return !!document.createElement('canvas').getContext;
+	},
+	addEventListener:function(to,event,code) {
+		if (to.addEventListener) to.addEventListener(event,code,false);
+		else to.attachEvent('on'+event,code);
+	},
+	removeEventListener:function(to,event,code) {
+		if (to.removeEventListener) to.removeEventListener(event,code,false);
+		else to.detachEvent('on'+event,code);
+	},
+	XMLHttpFactories:[
+		function () {return new XMLHttpRequest()},
+		function () {return new ActiveXObject("Msxml2.XMLHTTP")},
+		function () {return new ActiveXObject("Msxml3.XMLHTTP")},
+		function () {return new ActiveXObject("Microsoft.XMLHTTP")}
+	],
+	createXmlHttpRequest:function() {
+		var xmlhttp=false;
+	   /* running locally on IE5.5, IE6, IE7 */                                              ; /*@cc_on
+		 if(location.protocol=="file:"){
+		  if(!xmlhttp)try{ xmlhttp=new ActiveXObject("MSXML2.XMLHTTP"); }catch(e){xmlhttp=false;}
+		  if(!xmlhttp)try{ xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }catch(e){xmlhttp=false;}
+		 }                                                                                ; @cc_off @*/
+	   /* IE7, Firefox, Safari, Opera...  */
+		 if(!xmlhttp)try{ xmlhttp=new XMLHttpRequest(); }catch(e){xmlhttp=false;}
+	   /* IE6 */
+		 if(typeof ActiveXObject != "undefined"){
+		  if(!xmlhttp)try{ xmlhttp=new ActiveXObject("MSXML2.XMLHTTP"); }catch(e){xmlhttp=false;}
+		  if(!xmlhttp)try{ xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }catch(e){xmlhttp=false;}
+		 }
+	   /* IceBrowser */
+		 if(!xmlhttp)try{ xmlhttp=createRequest(); }catch(e){xmlhttp=false;}
+		return xmlhttp;
+	}
 
 };
 
