@@ -155,26 +155,20 @@ var help={
  /**
  * Takes an ascii-art-style array of characters and converts it to an Akihabara-compatible map format.
  * @param {Array} map An array of characters representing a map.
- * @param {Array} tra A translation array. This is an array of arrays, formatted like [ [null, char1], [0, char2], [1, char3] ]. There must at least be a null entry, followed by one numerical entry for each tile type you want to render, corresponding to the unique characters in the map array. The null entry maps a character to empty space.
+ * @param {Array} tra A translation array. This is an array of arrays, formatted like [ [null, char1], [0, char2], [1, char3] ] or an object, formatted like { "char1":null, "char2":0, "char3":1 }. There must at least be a null entry, followed by one numerical entry for each tile type you want to render, corresponding to the unique characters in the map array. The null entry maps a character to empty space.
  * @returns A map array formatted such that it can be attached to a map object.
  */
-	asciiArtToMap:function(map,tra) {
-		var sz=tra[0][1].length;
-		var ret=[];
-		var xpos;
-		var pie;
+	asciiArtToMap: function(map,tra) {
+		if (tra instanceof Array){ //backwards compatibility
+			var otra = {};
+			for (var i in tra) otra[tra[i][1]] = tra[i][0];
+			tra = otra;
+		}
+		var sz, ret=[];
+		for (var key in tra){sz=key.length;break;}
 		for (var y=0;y<map.length;y++) {
-			var row=[];
-			xpos=0;
-			while (xpos<map[y].length) {
-				pie=map[y].substr(xpos,sz);
-				for (var t=0;t<tra.length;t++)
-					if (pie==tra[t][1]) {
-						if (t==0) row.push(null); else row.push(tra[t][0]);
-						break;
-					}
-				xpos+=sz;
-			}
+			var row=[],mapy=map[y];
+			for (var c=0;c<mapy.length;c+=sz) row.push(tra[mapy.substr(c,sz)]);
 			ret.push(row);
 		}
 		return ret;
