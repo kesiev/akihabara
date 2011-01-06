@@ -11,13 +11,19 @@ mkdir $OUTD
 echo Copying main root...
 for a in $(ls -1 ..|grep -v resources|grep -v akihabara-core-xxx); do
 	echo copying $a
-	cp -rf ../$a $OUTD
+	cp -rf "../$a" $OUTD
 done
 echo Deleting other games except Capman and Hall Of Fame
 for a in $(ls -1 $OUTD/game-*|grep -v capman); do
 	echo Removing $a;
 	rm $a
 done
+echo Removing unstable stuff...
+echo "  Removing AkibaKa..."
+rm -rf $OUTD/extras/AkibaKa
+echo Removing project stuff...
+echo "  Removing this script..."
+rm $OUTD/extras/makecore.sh
 echo Creating resources
 mkdir $OUTD/resources
 echo Copying capman resources
