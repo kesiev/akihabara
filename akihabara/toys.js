@@ -4,8 +4,8 @@
 
 /**
  * @namespace
- * Toys module provides lots of common routines during the game developing: 
- * from effects for screen titles to HUD handling to platform/SHMUP/RPG oriented routines, 
+ * Toys module provides lots of common routines during the game developing:
+ * from effects for screen titles to HUD handling to platform/SHMUP/RPG oriented routines,
  * like jumping characters, Z-Indexed objects, bullets, sparks, staff rolls, bonus screens, dialogues etc.
  */
 var toys={
@@ -17,23 +17,23 @@ var toys={
 	PUSH_RIGHT:2,
 	PUSH_UP:3,
 	PUSH_DOWN:4,
-	
+
 	FACES:["up","right","down","left"],
 	FACES_ANGLE:[trigo.ANGLE_UP,trigo.ANGLE_RIGHT,trigo.ANGLE_DOWN,trigo.ANGLE_LEFT],
 	FACE_UP:0,
 	FACE_RIGHT:1,
 	FACE_DOWN:2,
 	FACE_LEFT:3,
-	
-	/** 
+
+	/**
 	* @namespace
-  * Top-view RPG specific libraries.
+	* Top-view RPG specific libraries.
 	*/
 	topview:{
-	
+
 		/**
 		* Checks if an object checks that both objects are on the same Z plane and if so it calls gbox.collides.
-		* @param {Object} fr The object which collision is being checked for. 
+		* @param {Object} fr The object which collision is being checked for.
 		* <ul>
 		* <li>x{Integer}: (required)Objects x position</li>
 		* <li>y{Integer}: (required)Objects y position</li>
@@ -58,7 +58,7 @@ var toys={
 		collides:function(fr,to,t) { // Special collision. Counts also the Z
 			if (Math.abs(fr.z,to.z)<5) return gbox.collides({x:fr.x+fr.colx,y:fr.y+fr.coly,h:fr.colh,w:fr.colw},{x:to.x+to.colx,y:to.y+to.coly,h:to.colh,w:to.colw},t); else return false;
 		},
-		
+
 		/**
 		* Checks for pixel collisions with an offset to the X and Y of the colidable using colx and coly.
 		* @param {Object} fr The object which collision is being tested for.
@@ -68,7 +68,7 @@ var toys={
 		pixelcollides:function(fr,to,t) { // Special collision. Counts also the Z
 			return gbox.pixelcollides(fr,{x:to.x+to.colx,y:to.y+to.coly,h:to.colh,w:to.colw},t);
 		},
-		
+
 		/**
 		* Initializes the game with the variables needed for topview and whatever else you feed in through data.
 		* @param {Object} th Passes in the object being initialized.
@@ -139,10 +139,10 @@ var toys={
 			if (th.coly==null) th.coly=gbox.getTiles(th.tileset).tileh-th.colh;
 			th.colhh=Math.floor(th.colh/2);
 			th.colhw=Math.floor(th.colw/2);
-			
+
 			toys.topview.spawn(th);
 		},
-		
+
 		/**
 		* Spawns a new object in the topview namespace. This also merges parameters in data into paramaters in th using help.copyModel.
     * This initializes some basic basic variables for the object and sets the Z index.
@@ -159,13 +159,13 @@ var toys={
 			th.zpushing=toys.PUSH_NONE; // user is moving side
 			th.counter=0; // self counter
 			th.hittimer=0;
-			th.killed=false;				
+			th.killed=false;
 			help.copyModel(th,data);
 			gbox.setZindex(th,th.y+th.h); // these object follows the z-index and uses ZINDEX_LAYER
 		},
-		
+
 		/**
-		* This sets and runs the control keys for the game. 
+		* This sets and runs the control keys for the game.
 		* @param {Object} th This is the object that is being controlled by the keys (assumed to be the player)
 		* <ul>
 		* <li>accx: the object's currect acceleration in the x direction</li>
@@ -186,7 +186,7 @@ var toys={
 			var cancely=false;
 			var idlex=false;
 			var idley=false;
-			
+
 			if (gbox.keyIsPressed(keys.left)||keys.pressleft) {
 				th.xpushing=toys.PUSH_LEFT;
 				th.facing=toys.FACE_LEFT;
@@ -200,7 +200,7 @@ var toys={
 				if (th.staticspeed) th.accx=th.staticspeed; else th.accx=help.limit(th.accx+1,-th.controlmaxacc,th.controlmaxacc);
 				if (th.nodiagonals) { cancely=true; idley=true }
 			} else idlex=true;
-			
+
 			if (!cancely&&(gbox.keyIsPressed(keys.up)||keys.pressup)) {
 				th.ypushing=toys.PUSH_UP;
 				th.facing=toys.FACE_UP;
@@ -214,19 +214,19 @@ var toys={
 				if (th.staticspeed) th.accy=th.staticspeed; else th.accy=help.limit(th.accy+1,-th.controlmaxacc,th.controlmaxacc);
 				if (th.nodiagonals) { cancelx=true; idlex=true; }
 			} else idley=true;
-			
-			
-			
+
+
+
 			 if (idlex) {
 				if (cancelx) th.accx=0;
 				if (cancelx||!th.noreset) th.xpushing=toys.PUSH_NONE;
 			}
 			if (idley) {
-				if (cancely) th.accy=0;				
+				if (cancely) th.accy=0;
 				if (cancely||!th.noreset) th.ypushing=toys.PUSH_NONE;
 			}
 		},
-		
+
 		/**
 		* Gets the next X position the object is going to move to.
 		* @param {Object} th The object being checked.
@@ -237,7 +237,7 @@ var toys={
 		* </ul>
 		*/
 		getNextX:function(th) { return th.x+help.limit(th.accx,-th.maxacc,th.maxacc); },
-		
+
 		/**
 		* Gets the next Y position the object is going to move to.
 		* @param {Object} th The object being checked.
@@ -248,7 +248,7 @@ var toys={
 		* </ul>
 		*/
 		getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxacc,th.maxacc); },
-		
+
 		/**
 		* Gets the next Z position the object is going to move to.
 		* @param {Object} th The object being checked.
@@ -259,7 +259,7 @@ var toys={
 		* </ul>
 		*/
 		getNextZ:function(th) { return th.z+help.limit(th.accz,-th.maxacc,th.maxacc); },
-		
+
 		/**
 		* Sets the objects current location to its next location using the getNextX and getNextY methods.
 		* @param {Object} th The object being modified.
@@ -275,7 +275,7 @@ var toys={
 			th.x=toys.topview.getNextX(th);
 			th.y=toys.topview.getNextY(th);
 		},
-		
+
 		/**
 		* This applies acceleration in the Z direction (not nessesarily gravity but whatever the next accerlation on the Z axis is)
 		* @param {Object} th The object being modified.
@@ -288,7 +288,7 @@ var toys={
 		applyGravity:function(th) {
 			th.z=toys.topview.getNextZ(th);
 		},
-		
+
 		/**
 		* Degrades all accelerations on an object by one toward zero.
 		* @param {Object} th The object being modified.
@@ -302,9 +302,9 @@ var toys={
 		handleAccellerations:function(th) {
 			if (!th.xpushing) th.accx=help.goToZero(th.accx);
 			if (!th.ypushing) th.accy=help.goToZero(th.accy);
-			
+
 		},
-		
+
 		/**
 		* Increases the Z acceleration on the object by one.
 		* @param {Object} th The object being modified.
@@ -315,7 +315,7 @@ var toys={
 		handleGravity:function(th) {
 			th.accz++;
 		},
-		
+
 		/**
 		* This sets which frame the object is going to display based on an agregate word that describes predefined states.
 		* @param {Object} th The object whose frame is being set.
@@ -338,15 +338,15 @@ var toys={
 		*/
 		setFrame:function(th) {
 			var pref="stand";
-			if (th.xpushing||th.ypushing) 
+			if (th.xpushing||th.ypushing)
 				if (th.haspushing&&(th.toucheddown||th.touchedup||th.touchedleft||th.touchedright)) pref="pushing"; else pref="moving";
 			if (th.flipside)
 				th.fliph=(th.facing==toys.FACE_RIGHT);
 			th.frame=help.decideFrame(th.counter,th.frames[pref+toys.FACES[th.facing]]);
 		},
-		
+
 		/**
-		* Checks if the specified object is colliding with tiles in the map in an area defined by the object's colw and colh variables as well as the tolerance and approximation variables that are passed in through data. Only tiles in the map marked as solid are checked against. The alogrithm checks the 
+		* Checks if the specified object is colliding with tiles in the map in an area defined by the object's colw and colh variables as well as the tolerance and approximation variables that are passed in through data. Only tiles in the map marked as solid are checked against. The alogrithm checks the
 		* @param {Object} th The object that is being checked against the tilemap.
 		* @param {Object} map This is the asci map that the tile map is generated from.
 		* @param {Object} tilemap This is the array of tile objects that it itterated over checking for collisions.
@@ -358,12 +358,12 @@ var toys={
 		* </ul>
 		*/
 		tileCollision:function(th,map,tilemap,defaulttile,data) {
-			
+
 			th.touchedup=false;
 			th.toucheddown=false;
 			th.touchedleft=false;
 			th.touchedright=false;
-			
+
 			var tolerance=(data&&(data.tolerance!=null)?data.tolerance:6);
 			var approximation=(data&&(data.approximation!=null)?data.approximation:10);
 			var t=tolerance-approximation;
@@ -373,9 +373,9 @@ var toys={
 				var bottom=help.getTileInMap(th.x+th.colx+t,th.y+th.coly+th.colh-1,map,defaulttile,tilemap);
 				var top=help.getTileInMap(th.x+th.colx+t,th.y+th.coly,map,defaulttile,tilemap);
 				if (map.tileIsSolid(th,top)) th.touchedup=true;
-				if (map.tileIsSolid(th,bottom)) th.toucheddown=true;	
+				if (map.tileIsSolid(th,bottom)) th.toucheddown=true;
 			} while (t!=th.colw-tolerance-1);
-			
+
 			t=tolerance-approximation;
 			do {
 				t+=approximation;
@@ -385,26 +385,26 @@ var toys={
 				if (map.tileIsSolid(th,left)) th.touchedleft=true;
 				if (map.tileIsSolid(th,right)) th.touchedright=true;
 			} while (t!=th.colh-tolerance-1);
-			
+
 			if (th.touchedup) {
 				th.accy=0;
-				th.y=help.yPixelToTile(map,th.y+th.coly,1)-th.coly;				
+				th.y=help.yPixelToTile(map,th.y+th.coly,1)-th.coly;
 			}
 			if (th.toucheddown) {
 				th.accy=0;
-				th.y=help.yPixelToTile(map,th.y+th.coly+th.colh-1)-th.coly-th.colh;				
+				th.y=help.yPixelToTile(map,th.y+th.coly+th.colh-1)-th.coly-th.colh;
 			}
 			if (th.touchedleft) {
 				th.accx=0;
-				th.x=help.xPixelToTile(map,th.x+th.colx,1)-th.colx;				
+				th.x=help.xPixelToTile(map,th.x+th.colx,1)-th.colx;
 			}
 			if (th.touchedright) {
 				th.accx=0;
-				th.x=help.xPixelToTile(map,th.x+th.colx+th.colw-1)-th.colx-th.colw;				
+				th.x=help.xPixelToTile(map,th.x+th.colx+th.colw-1)-th.colx-th.colw;
 			}
-			
+
 		},
-		
+
 		/**
 		* @param {Object} th The object being checked for collisions.
 		* <ul>
@@ -446,9 +446,9 @@ var toys={
 						th.y=wl.y+wl.coly+wl.colh-th.coly;
 					}
 				}
-						
+
 		},
-		
+
 		/**
 		* This checks if the object's z index is 0 which means it has hit the floor. If this has occured it also plays an impact or bounce noise if one is passed in. Note: The area above the floor is in the negative z index space so a value of 1 for z will return that the object has collided with the floor and z will then be set to zero.
 		* @param {Object} th The object being checked for collision.
@@ -470,18 +470,18 @@ var toys={
 				if (data&&data.audiobounce&&th.accz) gbox.hitAudio(data.audiobounce);
 				th.z=0;
 				th.touchedfloor=true;
-			}			
+			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		adjustZindex:function(th) {
 			gbox.setZindex(th,th.y+th.h);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		// Helper: returns the ahead pixel (i.e. destination use action)
 		getAheadPixel:function(th,data) {
@@ -504,9 +504,9 @@ var toys={
 				}
 			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		// Helper: trigger a method in colliding objects (i.e. "use action")
 		callInColliding:function(th,data) {
@@ -518,9 +518,9 @@ var toys={
 					}
 			return false;
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		// Enemy methods
 		wander:function(th,map,tilemap,defaulttile,data) {
@@ -560,19 +560,19 @@ var toys={
 					th.accy=data.speed;
 					th.accx=0;
 					break;
-				}					
+				}
 			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		// generators (firebullet specific for topdown - more complex than SHMUP one)
 		fireBullet:function(gr,id,data) {
 
 			var ts=gbox.getTiles(data.tileset);
-			
-						
+
+
 			var obj=gbox.addObject(
 				help.mergeWithModel(
 					data,{
@@ -619,15 +619,15 @@ var toys={
 					}
 				)
 			);
-			
+
 			obj.initialize=function() {
 				toys.topview.initialize(this);
 			};
-			
+
 			obj[(data.logicon==null?"first":data.logicon)]=function() {
 				this.cnt=(this.cnt+1)%10;
-				
-				if (this.applyzgravity) toys.topview.handleGravity(this); // z-gravity					
+
+				if (this.applyzgravity) toys.topview.handleGravity(this); // z-gravity
 				toys.topview.applyForces(this); // Apply forces
 				if (this.applyzgravity) toys.topview.applyGravity(this); // z-gravity
 				if (this.map!=null) toys.topview.tileCollision(this,this.map,this.mapindex,this.defaulttile); // tile collisions
@@ -650,26 +650,26 @@ var toys={
 								}
 						}
 			}
-			
+
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				if (!gbox.objectIsTrash(this))
 					gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
 			}
-			
+
 			gbox.setZindex(obj,obj.y+obj.h);
-			
+
 			return obj;
-		
+
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		makedoor:function(gr,id,map,data) {
 
 			var mts=gbox.getTiles(map.tileset);
 			var ts=gbox.getTiles(data.tileset);
-						
+
 			var obj=gbox.addObject(
 				help.mergeWithModel(
 					data,{
@@ -705,20 +705,20 @@ var toys={
 						whenOpened:toys.NOOP,
 						whileMoving:toys.NOOP,
 						hitByBullet:function(by) {
-						
+
 						}
 					}
 				)
 			);
-			
+
 			// Closing animation
 			if (obj.closing) obj.opencounter=obj.doorheight;
-			
+
 			obj.initialize=function() {
 				this.ismoving=false;
 				toys.topview.initialize(this);
 			};
-			
+
 			obj[(data.logicon==null?"first":data.logicon)]=function() {
 				if (this.closing) {
 					if (!this.ismoving) {
@@ -749,14 +749,14 @@ var toys={
 					}
 				}
 			}
-			
+
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				if (!gbox.objectIsTrash(this))
 					gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y+this.z+this.opencounter,h:this.h-this.opencounter,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
 			}
-			
+
 			gbox.setZindex(obj,obj.y+obj.h);
-			
+
 			return obj;
 		},
 		// Set the object speed making sure that the X and Y coords are multiple of the speed. Useful on maze-based games.
@@ -766,16 +766,16 @@ var toys={
 			th.y=Math.round(th.y/speed)*speed;
 		}
 	},
-	
-	
+
+
 	/**
 	* @namespace shmup The libraries for a 2D top-down Shmup game.
 	*/
 	// Shoot'em up specifics
 	shmup:{
-		
+
 		/**
-		* 
+		*
 		*/
 		initialize:function(th,data) {
 			help.mergeWithModel(
@@ -800,9 +800,9 @@ var toys={
 			);
 			toys.shmup.spawn(th);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		spawn:function(th,data) {
 			th.xpushing=toys.PUSH_NONE; // user is moving side
@@ -812,22 +812,22 @@ var toys={
 			th.killed=false;
 			help.copyModel(th,data);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		getNextX:function(th) { return th.x+help.limit(th.accx,-th.maxacc,th.maxacc); },
-		
+
 		/**
-		* 
+		*
 		*/
 		getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxacc,th.maxacc); },
-		
+
 		/**
-		* 
+		*
 		*/
 		controlKeys:function(th,keys) {
-			
+
 			if (gbox.keyIsPressed(keys.left)) {
 				th.xpushing=toys.PUSH_LEFT;
 				if (th.accx>th.responsive) th.accx=th.responsive;
@@ -847,25 +847,25 @@ var toys={
 				th.accy=help.limit(th.accy+1,-th.controlmaxacc,th.controlmaxacc);
 			} else th.ypushing=toys.PUSH_NONE;
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		applyForces:function(th) {
 			th.x=toys.shmup.getNextX(th);
 			th.y=toys.shmup.getNextY(th);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		handleAccellerations:function(th) {
 			if (!th.xpushing) th.accx=help.goToZero(th.accx);
 			if (!th.ypushing) th.accy=help.goToZero(th.accy);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		keepInBounds:function(th) {
 			if (th.x<th.bounds.x) {
@@ -873,32 +873,32 @@ var toys={
 				th.accx=0;
 			} else if (th.x+th.w>th.bounds.x+th.bounds.w) {
 				th.x=th.bounds.x+th.bounds.w-th.w;
-				th.accx=0;				
+				th.accx=0;
 			}
 			if (th.y<th.bounds.y) {
 				th.y=th.bounds.y;
 				th.accy=0;
 			} else if (th.y+th.h>th.bounds.y+th.bounds.h) {
 				th.y=th.bounds.y+th.bounds.h-th.h;
-				th.accy=0;				
+				th.accy=0;
 			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		setFrame:function(th) {
 			if (th.hittimer) th.hittimer--;
 			th.frame=help.decideFrame(th.counter,(th.hittimer?th.frames.hit:th.frames.still));
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		fireBullet:function(gr,id,data) {
-		
+
 			var ts=gbox.getTiles(data.tileset);
-			
+
 			var obj=gbox.addObject(
 				help.mergeWithModel(
 					data,{
@@ -922,7 +922,7 @@ var toys={
 					}
 				)
 			);
-			
+
 			obj[(data.logicon==null?"first":data.logicon)]=function() {
 				this.x+=this.accx;
 				this.y+=this.accy;
@@ -938,17 +938,17 @@ var toys={
 								}
 						}
 			}
-			
+
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
 			}
-			
+
 			return obj;
-		
+
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		hitByBullet:function(th,by) {
 			if (by.power) {
@@ -956,9 +956,9 @@ var toys={
 				if (th.health<=0) th.kill(by); else  th.hittimer=th.hittime;
 			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		generateEnemy:function(gr,id,data,model) {
 			help.mergeWithModel(data,model);
@@ -1019,8 +1019,8 @@ var toys={
 					}
 				)
 			);
-			
-			
+
+
 			obj[(data.logicon==null?"first":data.logicon)]=function() {
 				if (this.initialize!=null)  {
 					this.initialize(this);
@@ -1053,7 +1053,7 @@ var toys={
 									render:(this.line.doit.render=="keep"?this.dohandler.render:this.line.doit.render)
 								}
 							}
-								
+
 						}
 					}
 					if (!this.waitframes&&this.doframes&&!this.ended) {
@@ -1077,7 +1077,7 @@ var toys={
 							this.accx=Math.floor(trigo.translateX(0,this.angle,this.acc));
 							this.accy=Math.floor(trigo.translateY(0,this.angle,this.acc));
 						}
-						
+
 						if (this.line.setangle!=null) {
 							this.angle=this.line.setangle;
 							this.accx=Math.floor(trigo.translateX(0,this.angle,this.acc));
@@ -1089,7 +1089,7 @@ var toys={
 							this.accy=Math.floor(trigo.translateY(0,this.angle,this.acc));
 						}
 						if (this.line.everyframe) this.waitframes=this.line.everyframe;
-							
+
 					}
 					if (this.waitframes>0) this.waitframes--;
 				}
@@ -1101,29 +1101,29 @@ var toys={
 					} else if (!this.dohandler.once) this.dohandler.timer++;
 				}
 				if (this.handler!=null) this.handler(this);
-				
+
 				if (this.hittimer) {
 					this.hittimer--;
 					if (!this.hittimer) this.animationset=this.defaultanimationset;
 				}
-				
+
 				this.x+=this.accx;
 				this.y+=this.accy;
 				this.cnt=(this.cnt+1)%10;
-				
+
 			}
 
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames[this.animationset]),dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
 				if (this.dohandler&&(this.dohandler.render!=null)) this.dohandler.render(this);
 			}
-			
+
 			return obj;
 
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		generateScroller:function(gr,id,data) {
 			var obj=gbox.addObject(
@@ -1144,47 +1144,47 @@ var toys={
 						maxwidth:0,
 						loopstart:null, loopend:null, looprounds:0,
 						panspeed:1, panstimer:0, destspeed:0,
-						
+
 						setLoop:function(st,en) {
 							this.loopstart=st;
 							this.loopend=en;
 							this.lget=1;
 							this.looprounds=1;
 						},
-						
+
 						quitLoop:function() {
 							this.setLoop(null,null);
 							this.looprounds=0;
 						},
-					
+
 						setSpeed:function(s) {
 							this.speed=s;
 							this.destspeed=s;
 						},
-						
+
 						panToSpeed:function(s,pans) {
 							this.destspeed=s;
 							this.panspeed=pans;
 						},
-						
+
 						quitStop:function() {
 							this.stop=null;
 						},
-						
+
 						setStop:function(s) {
 							this.stop=s;
 						},
-						
+
 						setX:function(x) {
 							if (x<0) this.x=0; else
 							if (x+gbox.getScreenW()>this.maxwidth) this.x=this.maxwidth-gbox.getScreenW();
 							else this.x=x;
 						}
-						
+
 					}
 				)
 			);
-			
+
 			obj[(data.logicon==null?"first":data.logicon)]=function() {
 				if ((this.stop==null)||(this.y<this.stop)) {
 					if (this.speed!=this.destspeed) {
@@ -1209,30 +1209,30 @@ var toys={
 							this.block=this.lblock;
 							this.bly=this.lbly;
 						}
-						
+
 					}
 				}
-						
+
 				// Cerca il blocco da mostrare
 				this.trb=this.block;
 				this.tbly=this.bly;
 				do {
 					this.trb++;
-					this.tbly+=gbox.getImage(this.stage[this.trb].image).height;	
+					this.tbly+=gbox.getImage(this.stage[this.trb].image).height;
 				} while (this.tbly<this.y);
-				
+
 				this.block=this.trb-1;
 				this.bly=this.tbly-gbox.getImage(this.stage[this.trb].image).height;
-				
-						
+
+
 				if (this.lget==2) {
 					this.lblock=this.block;
 					this.lbly=this.bly;
 					this.lget=3;
 				}
-				
+
 			}
-				
+
 			obj[(data.bliton==null?"blit":data.bliton)]=function() {
 				var dy=this.tbly-this.y;
 				var done=false;
@@ -1243,18 +1243,18 @@ var toys={
 					dy+=gbox.getImage(this.stage[this.trb].image).height;
 				} while (!done);
 			}
-			
+
 			return obj;
 		}
 	},
-		
+
 	/**
 	* @namespace platformer The libraries for generating a 2D platformer game.
 	*/
 	platformer:{
-		
+
 		/**
-		* 
+		*
 		*/
 		initialize:function(th,data) {
 			help.mergeWithModel(
@@ -1275,9 +1275,9 @@ var toys={
 			);
 			toys.platformer.spawn(th);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		spawn:function(th,data) {
 			th.curjsize=0; // current jump size
@@ -1290,27 +1290,27 @@ var toys={
 			th.killed=false;
 			help.copyModel(th,data);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		getNextX:function(th) { return th.x+th.accx; },
-		
+
 		/**
-		* 
+		*
 		*/
 		getNextY:function(th) { return th.y+help.limit(th.accy,-th.maxaccy,th.maxaccy); },
-		
+
 		/**
-		* 
+		*
 		*/
 		applyGravity:function(th) {
 			th.x=toys.platformer.getNextX(th);
 			th.y=toys.platformer.getNextY(th);
-		},	
-		
+		},
+
 		/**
-		* 
+		*
 		*/
 		horizontalKeys:function(th,keys) {
 			if (gbox.keyIsPressed(keys.left)) {
@@ -1321,16 +1321,16 @@ var toys={
 				th.accx=help.limit(th.accx+1,-th.maxaccx,th.maxaccx);
 			} else th.pushing=toys.PUSH_NONE;
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		verticalTileCollision:function(th,map,tilemap) {
 			var bottom=help.getTileInMap(th.x+(th.w/2),th.y+th.h,map,0,tilemap);
 			var top=help.getTileInMap(th.x+(th.w/2),th.y,map,0,tilemap);
 			th.touchedfloor=false;
 			th.touchedceil=false;
-	
+
 			if (map.tileIsSolidCeil(th,top)) {
 				th.accy=0;
 				th.y=help.yPixelToTile(map,th.y,1);
@@ -1342,27 +1342,27 @@ var toys={
 				th.touchedfloor=true;
 			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		horizontalTileCollision:function(th,map,tilemap,precision) {
 			var left=0;
 			var right=0;
 			var t=0;
-			
+
 			th.touchedleftwall=false;
 			th.touchedrightwall=false;
-			
+
 			while (t<th.h) {
 				left=help.getTileInMap(th.x,th.y+t,map,0,tilemap);
 				right=help.getTileInMap(th.x+th.w-1,th.y+t,map,0,tilemap);
-					
+
 				if ((th.accx<0)&&map.tileIsSolidFloor(th,left)) {
 					th.accx=0;
 					th.x=help.xPixelToTile(map,th.x-1,1);
 					th.touchedleftwall=true;
-				} 
+				}
 				if ((th.accx>0)&&map.tileIsSolidFloor(th,right)) {
 					th.accx=0;
 					th.x=help.xPixelToTile(map,th.x+th.w)-th.w;
@@ -1371,7 +1371,7 @@ var toys={
 				t+=gbox.getTiles(map.tileset).tileh/(precision?precision:1);
 			}
 		},
-		
+
 		/**
 		* Checks if the passed object is touching the floor and can therefore jump at present.
 		* @param th This is the object being checked for jump ability at the time of calling.
@@ -1379,9 +1379,9 @@ var toys={
 		canJump:function(th) {
 			return th.touchedfloor;
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		jumpKeys:function(th,key) {
 			if ((toys.platformer.canJump(th)||(key.doublejump&&(th.accy>=0)))&&gbox.keyIsHit(key.jump)&&(th.curjsize==0)) {
@@ -1396,17 +1396,17 @@ var toys={
 				th.curjsize=0;
 			return false;
 		},
-		
+
 		/**
-		* 
-		*/	
+		*
+		*/
 		bounce:function(th,data) {
 			th.curjsize=0;
 			th.accy=-data.jumpsize;
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		handleAccellerations:function(th) {
 			// Gravity
@@ -1414,16 +1414,16 @@ var toys={
 			// Attrito
 			if (th.pushing==toys.PUSH_NONE) if (th.accx) th.accx=help.goToZero(th.accx);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		setSide:function(th) {
 			if (th.accx) th.side=th.accx>0;
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		setFrame:function(th) {
 			if (th.touchedfloor)
@@ -1436,9 +1436,9 @@ var toys={
 			else
 				th.frame=help.decideFrame(th.counter,th.frames.jumping);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		auto:{
 			// Moves on a platform. It tries to do not fall down, if specified.
@@ -1458,7 +1458,7 @@ var toys={
 			dontFall:function(th,map,tilemap) {
 				if (th.accx&&th.touchedfloor) {
 					var til;
-					if (th.accx>0) til=help.getTileInMap(toys.platformer.getNextX(th)+th.w-1+th.accx,th.y+th.h,map,0,tilemap);				
+					if (th.accx>0) til=help.getTileInMap(toys.platformer.getNextX(th)+th.w-1+th.accx,th.y+th.h,map,0,tilemap);
 					else til=help.getTileInMap(toys.platformer.getNextX(th),th.y+th.h,map,0,tilemap);
 					if (!map.tileIsSolidFloor(th,til)) {
 						th.side=!th.side;
@@ -1471,55 +1471,55 @@ var toys={
 			}
 		}
 	},
-	
+
 	// State-based toys
 	// CONSTANTS
 	TOY_BUSY:0,
 	TOY_DONE:1,
 	TOY_IDLE:2,
-	
+
 	// PRIVATE
 
 	// Generical toys method
-		
+
 	/**
-	* 
+	*
 	*/
 	resetToy:function(th,id) { if (th.toys) delete th.toys[id] },
-	
+
 	/**
-	* 
+	*
 	*/
 	getToyValue:function(th,id,v,def) { return ((th.toys==null)||(th.toys[id]==null)?def:th.toys[id][v]) },
-	
+
 	/**
-	* 
+	*
 	*/
 	getToyStatus:function(th,id) { return ((th.toys==null)||(th.toys[id]==null)?toys.TOY_BUSY:th.toys[id].__status) },
-	
+
 	/**
-	* 
+	*
 	*/
 	_toydone:function(th,id) {
 		if (th.toys[id].__status<toys.TOY_IDLE) th.toys[id].__status++;
 		return th.toys[id].__status;
 	},
-	
+
 	/**
-	* 
+	*
 	*/
 	_toybusy:function(th,id) {
 		th.toys[id].__status=toys.TOY_BUSY;
 		return th.toys[id].__status;
 	},
-	
+
 	/**
-	* 
+	*
 	*/
 	_toyfrombool:function(th,id,b) { return (b?toys._toydone(th,id):toys._toybusy(th,id)) },
-	
+
 	/**
-	* 
+	*
 	*/
 	_maketoy:function(th,id){
 		if (!th.toys) th.toys={};
@@ -1528,15 +1528,15 @@ var toys={
 			return true;
 		} else return false;
 	},
-	
+
 	/**
 	* @namespace timer Timer functionality based methods
 	*/
 	// Pure timers
 	timer:{
-		
+
 		/**
-		* 
+		*
 		*/
 		randomly:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
@@ -1548,11 +1548,11 @@ var toys={
 			} else {
 				th.toys[id].time=help.random(data.base,data.range);
 				return toys._toydone(th,id);
-			}	
+			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		real:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
@@ -1568,7 +1568,7 @@ var toys={
 				th.toys[id].subtimer=gbox.getFps();
 				if (data.countdown) {
 					if (th.toys[id].time) {
-						th.toys[id].time--; 
+						th.toys[id].time--;
 						if (data.audiocritical&&(th.toys[id].time<=data.critical))
 							gbox.hitAudio(data.audiocritical);
 					} else th.toys[id].done=true;
@@ -1578,9 +1578,9 @@ var toys={
 			return toys._toyfrombool(th,id,th.toys[id].done);
 
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		every:function(th,id,frames){
 			if (toys._maketoy(th,id)) th.toys[id].timer=0;
@@ -1590,9 +1590,9 @@ var toys={
 				return toys._toydone(th,id);
 			} else return toys._toybusy(th,id)
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		after:function(th,id,frames) {
 			if (toys._maketoy(th,id)) th.toys[id].timer=0;
@@ -1602,15 +1602,15 @@ var toys={
 			}
 		}
 	},
-	
+
 	/**
-	* 
+	*
 	*/
 	// Logical helpers
 	logic: {
-		
+
 		/**
-		* 
+		*
 		*/
 		once:function(th,id,cond){
 			if (toys._maketoy(th,id)) th.toys[id].done=false;
@@ -1618,15 +1618,15 @@ var toys={
 			return cond;
 		}
 	},
-	
+
 	/**
-	* 
+	*
 	*/
 	// UI
 	ui:{
-		
+
 		/**
-		* 
+		*
 		*/
 		menu:function(th,id,opt) {
 			if (toys._maketoy(th,id)||opt.resetmenu) {
@@ -1668,9 +1668,9 @@ var toys={
 				else return toys._toydone(th,id); // selected == -1
 			} else return toys._toybusy(th,id);
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		// Returns a full customizable object for optimized huds
 		hud:function(id) {
@@ -1678,9 +1678,9 @@ var toys={
 			return {
 				w:{},
 				surfaceid:id,
-				
+
 				/**
-				* 
+				*
 				*/
 				updateWidget:function(i){
 					if (!this.w[i].__hidden) {
@@ -1699,7 +1699,7 @@ var toys={
 									gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:this.w[i].tiles[(cnt>this.w[i].tiles.length?this.w[i].tiles.length-1:cnt-1)],dx:this.w[i].dx+(x*this.w[i].gapx),dy:this.w[i].dy+(x*this.w[i].gapy),fliph:this.w[i].fliph,flipv:this.w[i].flipv});
 								} else
 									if (this.w[i].emptytile!=null)
-										gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:this.w[i].emptytile,dx:this.w[i].dx+(x*this.w[i].gapx),dy:this.w[i].dy+(x*this.w[i].gapy),fliph:this.w[i].fliph,flipv:this.w[i].flipv});	
+										gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:this.w[i].emptytile,dx:this.w[i].dx+(x*this.w[i].gapx),dy:this.w[i].dy+(x*this.w[i].gapy),fliph:this.w[i].fliph,flipv:this.w[i].flipv});
 								cnt-=this.w[i].tiles.length;
 							}
 
@@ -1732,106 +1732,106 @@ var toys={
 						}
 						if (this.w[i].widget=="gauge") {
 							var ts=gbox.getTiles(this.w[i].tileset);
-							gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:0,dx:this.w[i].dx,dy:this.w[i].dy});						
+							gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:0,dx:this.w[i].dx,dy:this.w[i].dy});
 							gbox.blitTile(gbox.getCanvasContext(this.surfaceid),{tileset:this.w[i].tileset,tile:1,dx:this.w[i].dx,dy:this.w[i].dy,w:(this.w[i].value*ts.tilew)/this.w[i].maxvalue});
 						}
 					}
 				},
-				
+
 				/**
-				* 
+				*
 				*/
 				hideWidgets:function(l) {
 					for (var i=0;i<l.length;i++) this.w[l[i]].__hidden=true;
 					this.redraw();
 				},
-				
+
 				/**
-				* 
+				*
 				*/
 				showWidgets:function(l) {
 					for (var i=0;i<l.length;i++) this.w[l[i]].__hidden=false;
 					this.redraw();
 				},
-				
+
 				/**
-				* 
+				*
 				*/
 				getValue:function(w,k) {
 					return this.w[w][k];
 				},
-				
+
 				/**
-				* 
+				*
 				*/
 				getNumberValue:function(w,k) {
 					return this.w[w][k]*1;
 				},
 
 				/**
-				* 
+				*
 				*/
 				setValue:function(w,k,v) {
 					if (this.w[w][k]!=v) {
 						if (k=="value") {
 							if ((this.w[w].maxvalue!=null)&&(v>this.w[w].maxvalue)) v=this.w[w].maxvalue;
-							if ((this.w[w].minvalue!=null)&&(v<this.w[w].minvalue)) v=this.w[w].minvalue;	
+							if ((this.w[w].minvalue!=null)&&(v<this.w[w].minvalue)) v=this.w[w].minvalue;
 							if (this.w[w].widget=="radio") v=(v%this.w[w].frames.length);
 						}
-						this.w[w][k]=v;							
+						this.w[w][k]=v;
 						this.updateWidget(w);
 					}
 				},
-				
+
 				/**
-				* 
+				*
 				*/
 				pushValue:function(w,k,v) {
 					this.w[w][k].push(v);
 					this.updateWidget(w);
 				},
-				
+
 				/**
-				* 
+				*
 				*/
 				addValue:function(w,k,v) {
 					if (v) this.setValue(w,k,this.w[w][k]+v);
 				},
-				
+
 				/**
-				* 
+				*
 				*/
 				setWidget:function(id,w) {
 					this.w[id]=w;
 					this.updateWidget(id);
 				},
-				
+
 				/**
-				* 
+				*
 				*/
 				redraw:function() {
 					gbox.blitClear(gbox.getCanvasContext(this.surfaceid));
 					for (var i in this.w) this.updateWidget(i);
 				},
-				
+
 				/**
-				* 
+				*
 				*/
 				blit:function() {
 					gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas(this.surfaceid),{dx:0,dy:0});
 				}
-			
+
 			}
 		}
 	},
-	
+
 	/**
-	* 
+	*
 	*/
 	fullscreen:{
-	
+
 		/**
-		* 
+		*
 		*/
 		fadeout:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)||data.resetfade) {
@@ -1844,16 +1844,16 @@ var toys={
 			data.alpha=th.toys[id].fade;
 			gbox.blitFade(tox,data);
 			if (data.audiofade) gbox.setAudioVolume(data.audiofade,th.toys[id].stv*(1-data.alpha));
-			if (data.audiochannelfade) 
+			if (data.audiochannelfade)
 				if (data.alpha==1)
 					gbox.stopChannel(data.audiochannelfade);
 				else
 					gbox.setChannelVolume(data.audiochannelfade,th.toys[id].chv*(1-data.alpha));
 			return toys._toyfrombool(th,id,th.toys[id].fade==1)
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		fadein:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)||data.resetfade) {
@@ -1872,14 +1872,14 @@ var toys={
 			return toys._toyfrombool(th,id,th.toys[id].fade==0);
 		}
 	},
-	
+
 	/**
-	* 
+	*
 	*/
 	text:{
-		
+
 		/**
-		* 
+		*
 		*/
 		blink:function(th,id,tox,data) {
 			if (toys._maketoy(th,id)) {
@@ -1889,16 +1889,16 @@ var toys={
 			}
 			if (th.toys[id].texttimer>=data.blinkspeed) {
 				th.toys[id].texttimer=0;
-				th.toys[id].visible=!th.toys[id].visible;		
+				th.toys[id].visible=!th.toys[id].visible;
 				if (data.times) th.toys[id].times++;
 			} else th.toys[id].texttimer++;
 			if (th.toys[id].visible)
 				gbox.blitText(tox,data);
 			return toys._toyfrombool(th,id,(data.times?data.times<th.toys[id].times:false));
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		fixed:function(th,id,tox,data) {
 			if (toys._maketoy(th,id))
@@ -1909,14 +1909,14 @@ var toys={
 			return toys._toyfrombool(th,id,data.time<th.toys[id].texttimer);
 		}
 	},
-	
+
 	/**
-	* 
+	*
 	*/
 	logos:{
-		
+
 		/**
-		* 
+		*
 		*/
 		linear:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
@@ -1946,14 +1946,14 @@ var toys={
 					text:data.text
 				});
 			else if (data.tileset)
-				gbox.blitTile(gbox.getBufferContext(),{tileset:data.tileset,tile:data.tile,dx:th.toys[id].x,dy:th.toys[id].y,camera:data.camera,fliph:data.fliph,flipv:data.flipv,alpha:data.alpha});			
+				gbox.blitTile(gbox.getBufferContext(),{tileset:data.tileset,tile:data.tile,dx:th.toys[id].x,dy:th.toys[id].y,camera:data.camera,fliph:data.fliph,flipv:data.flipv,alpha:data.alpha});
 			else
 				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:th.toys[id].x,dy:th.toys[id].y,alpha:data.alpha});
 			return toys._toyfrombool(th,id,(data.x==th.toys[id].x)&&(data.y==th.toys[id].y));
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		crossed:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
@@ -1970,15 +1970,15 @@ var toys={
 			} else {
 				if (!th.toys[id].done) {
 					th.toys[id].done=true;
-					if (data.audioreach) gbox.hitAudio(data.audioreach);					
+					if (data.audioreach) gbox.hitAudio(data.audioreach);
 				}
 				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:data.x,dy:data.y});
 				return toys._toydone(th,id);
 			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		zoomout:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
@@ -1999,9 +1999,9 @@ var toys={
 				return toys._toydone(th,id);
 			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		rising:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
@@ -2016,18 +2016,18 @@ var toys={
 				gbox.blit(gbox.getBufferContext(),gbox.getImage(data.image),{dh:th.toys[id].cnt,dw:th.toys[id].lw,dx:data.x,dy:data.y+th.toys[id].lh-th.toys[id].cnt,alpha:data.alpha});
 				if (data.reflex) gbox.blit(gbox.getBufferContext(),gbox.getImage(data.image),{dh:th.toys[id].cnt,dw:th.toys[id].lw,dx:data.x,dy:data.y+th.toys[id].lh,alpha:data.reflex,flipv:true});
 				if (th.toys[id].cnt>=th.toys[id].lh)
-					if (data.audioreach) gbox.hitAudio(data.audioreach);					
+					if (data.audioreach) gbox.hitAudio(data.audioreach);
 				return toys._toybusy(th,id);
 			} else {
 				gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:data.x,dy:data.y});
 				if (data.reflex) gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:data.x,dy:data.y+th.toys[id].lh,alpha:data.reflex,flipv:true});
-				
+
 				return toys._toydone(th,id);
 			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		bounce:function(th,id,data) {
 			if (toys._maketoy(th,id)) {
@@ -2046,18 +2046,18 @@ var toys={
 				th.toys[id].y-=th.toys[id].accy;
 			}
 			gbox.blitAll(gbox.getBufferContext(),gbox.getImage(data.image),{dx:data.x,dy:th.toys[id].y});
-					
+
 			return toys._toyfrombool(th,id,th.toys[id].done);
 		}
 	},
-	
+
 	/**
-	* 
+	*
 	*/
 	dialogue: {
-		
+
 		/**
-		* 
+		*
 		*/
 		render:function(th,id,data){
 			if (toys._maketoy(th,id)) {
@@ -2086,7 +2086,7 @@ var toys={
 						th.toys[id].sceneX=(th.toys[id].scene.dx?th.toys[id].scene.dx:0);
 						th.toys[id].sceneY=(th.toys[id].scene.dy?th.toys[id].scene.dy:0);
 						gbox.blitClear(gbox.getCanvasContext("dialogue-"+id));
-						if (th.toys[id].scene.slide) {							
+						if (th.toys[id].scene.slide) {
 							gbox.blitAll(gbox.getCanvasContext("dialogue-"+id),gbox.getImage(th.toys[id].scene.slide.image),{dx:th.toys[id].scene.slide.x,dy:th.toys[id].scene.slide.y});
 						}
 						if (th.toys[id].scene.scroller) {
@@ -2112,18 +2112,18 @@ var toys={
 						if (gbox.keyIsHit(data.esckey)) th.toys[id].ended=true; else
 						if (gbox.keyIsHit(data.skipkey)) th.toys[id].newscene=true;
 					} else {
-									
+
 						// SKIP KEYS
-						
+
 						if (gbox.keyIsHit(data.esckey)) th.toys[id].ended=true; else
 						if (gbox.keyIsHold(data.skipkey)) th.toys[id].counter=th.toys[id].scene.speed;
 						else th.toys[id].counter++;
-						
+
 						// MOVING
-						
+
 						if (th.toys[id].scene.talk) { // DIALOGUES
-						
-						
+
+
 							if (th.toys[id].counter==th.toys[id].scene.speed) {
 								th.toys[id].letter++;
 								th.toys[id].counter=0;
@@ -2148,16 +2148,16 @@ var toys={
 								} else
 									th.toys[id].wait=true;
 							}
-						
+
 						} else if (th.toys[id].scene.scroller) { // SCROLLER (i.e. credits)
-						
+
 							if (th.toys[id].counter==th.toys[id].scene.speed) {
 								th.toys[id].letter++;
 								th.toys[id].counter=0;
 								if (th.toys[id].letter==(gbox.getCanvas("scroller-"+id).height+th.toys[id].scene.push))
 									th.toys[id].wait=true;
 							}
-							
+
 						} else if (th.toys[id].scene.bonus) { // BONUS (classic bonus award screen)
 							for (var row=0;row<=th.toys[id].letter;row++) {
 								if (th.toys[id].scene.bonus[row].text)
@@ -2179,7 +2179,7 @@ var toys={
 									});
 								}
 							}
-							
+
 							if (!th.toys[id].wait) {
 								var next=false;
 								if (th.toys[id].scene.bonus[th.toys[id].letter].mul&&!th.toys[id].scene.bonus[th.toys[id].letter].text) {
@@ -2194,7 +2194,7 @@ var toys={
 												th.toys[id].scene.bonus[th.toys[id].letter].callback(th.toys[id].scene.bonus[th.toys[id].letter],th.toys[id].scene.bonus[th.toys[id].letter].arg);
 										}
 									}
-									
+
 								} else if (th.toys[id].counter>=th.toys[id].scene.speed) next=true;
 								if (next) {
 									if (th.toys[id].letter==th.toys[id].scene.bonus.length-1)
@@ -2211,14 +2211,14 @@ var toys={
 								}
 							}
 						}
-							
+
 					}
-				
+
 				}
-				
+
 				// RENDERING
-				
-				
+
+
 				if (th.toys[id].scene.talk) { // DIALOGUES
 					if (data.who[th.toys[id].scene.who].box)
 							gbox.blitRect(gbox.getBufferContext(),data.who[th.toys[id].scene.who].box);
@@ -2231,21 +2231,21 @@ var toys={
 					gbox.blit(gbox.getBufferContext(),gbox.getCanvas("scroller-"+id),{dx:th.toys[id].sceneX,dy:th.toys[id].sceneY+(th.toys[id].letter<th.toys[id].sceneH?th.toys[id].sceneH-th.toys[id].letter:0),dw:th.toys[id].sceneW,y:(th.toys[id].letter<th.toys[id].sceneH?0:th.toys[id].letter-th.toys[id].sceneH),dh:(th.toys[id].letter<th.toys[id].sceneH?th.toys[id].letter:th.toys[id].sceneH)});
 				else if (th.toys[id].scene.bonus) // BONUS (i.e. credits)
 					gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas("bonus-"+id),{dx:th.toys[id].sceneX,dy:th.toys[id].sceneY});
-			}		
+			}
 			return toys._toyfrombool(th,id,th.toys[id].ended);
 		}
 	},
-	
+
 	// GENERATORS
-	
-		
+
+
 	/**
-	* 
+	*
 	*/
 	generate: {
-		
+
 		/**
-		* 
+		*
 		*/
 		sparks:{
 			simple:function(th,group,id,data) {
@@ -2287,22 +2287,22 @@ var toys={
 						if ((this.timer==this.toptimer)||(this.trashoffscreen&&(!gbox.objectIsVisible(this)))) gbox.trashObject(this);
 					}
 				}
-				
+
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
 					if ((this.timer>=0)&&(!this.blinkspeed||(Math.floor(this.timer/this.blinkspeed)%2)))
-						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.timer,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.fliph,flipv:this.flipv,alpha:this.alpha});					
+						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.timer,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.fliph,flipv:this.flipv,alpha:this.alpha});
 				}
-				
+
 				return obj;
 			},
-		
+
 			/**
-			* 
+			*
 			*/
 			popupText:function(th,group,id,data) {
 				data.text+="";
 				var fd=gbox.getFont(data.font);
-				
+
 				var obj=gbox.addObject(
 					help.mergeWithModel(
 						data,{
@@ -2319,17 +2319,17 @@ var toys={
 						}
 					)
 				);
-				
+
 				obj.initialize=function() {
 					var fd=gbox.getFont(this.font);
-					gbox.createCanvas("poptext-"+this.id,{w:this.text.length*fd.tilew,h:fd.tileh});							
+					gbox.createCanvas("poptext-"+this.id,{w:this.text.length*fd.tilew,h:fd.tileh});
 					gbox.blitText(gbox.getCanvasContext("poptext-"+this.id),{font:this.font,text:this.text,dx:0,dy:0});
 				}
-				
+
 				obj.onpurge=function() {
 					gbox.deleteCanvas("poptext-"+this.id);
 				}
-				
+
 				obj[(data.logicon==null?"first":data.logicon)]=function() {
 					if (gbox.objectIsVisible(this)) {
 						if (this.vaccy)
@@ -2340,16 +2340,16 @@ var toys={
 						if (this.cnt>=this.keep) gbox.trashObject(this);
 					} else gbox.trashObject(this);
 				}
-				
+
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
 					gbox.blitAll(gbox.getBufferContext(),gbox.getCanvas("poptext-"+this.id),{dx:this.x,dy:this.y,camera:this.camera});
 				}
-				
+
 				return obj;
 			},
-		
+
 			/**
-			* 
+			*
 			*/
 			bounceDie:function(th,group,id,data){
 				var obj=gbox.addObject(
@@ -2372,32 +2372,32 @@ var toys={
 						}
 					)
 				);
-				
+
 				obj[(data.logicon==null?"first":data.logicon)]=function() {
 					if (gbox.objectIsVisible(this)) {
 						this.vaccy++;
 						this.y+=this.vaccy;
 						this.x+=this.accx;
 						this.cnt++;
-					} else gbox.trashObject(this);	
+					} else gbox.trashObject(this);
 				}
-				
+
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
 					if (!this.blinkspeed||(Math.floor(this.cnt/this.blinkspeed)%2))
-						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});					
+						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:help.decideFrame(this.cnt,this.frames),dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
 				}
-				
+
 				return obj;
 			}
 		},
-		
+
 		/**
-		* 
+		*
 		*/
 		audio:{
-		
+
 			/**
-			* 
+			*
 			*/
 			fadeOut:function(th,group,id,data){
 				var obj=gbox.addObject(
@@ -2422,7 +2422,7 @@ var toys={
 							if (this.fadespeed>0) this.destination=gbox.getChannelDefaultVolume(this.channel); else this.destination=0;
 					if (this.fadespeed>0) gbox.playAudio(this.audio);
 				}
-				
+
 				obj[(data.bliton==null?"blit":data.bliton)]=function() {
 					if (this.audio) gbox.changeAudioVolume(this.audio,this.fadespeed);
 					if (this.channel) gbox.changeChannelVolume(this.channel,this.fadespeed);
@@ -2442,10 +2442,9 @@ var toys={
 					}
 				}
 			}
-		
-		}
-		
-	}
-	
 
+		}
+
+	}
 }
+
