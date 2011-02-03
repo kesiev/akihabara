@@ -4,14 +4,14 @@
 
 /**
  * @namespace
- * Gamecycle contains your basic game loop: intro, menus, 
- * crossfading between stages/lifes, gameover and ending. 
+ * Gamecycle contains your basic game loop: intro, menus,
+ * crossfading between stages/lifes, gameover and ending.
  */
 var gamecycle={
 
 	/**
 	 * Gamecycle constructor - initializes a new game object
-	 * 
+	 *
 	 * @param	id		unique id of object
 	 * @param	group		name of group to store the object in
 	 */
@@ -21,22 +21,22 @@ var gamecycle={
 		group:group,
 		counter:0,
 		difficulty:0,
-		
+
 		// state transition
-		state:50,  
-		stateFirstIteration:true, 
-		
+		state:50,
+		stateFirstIteration:true,
+
 		hud:{},
-		
+
 		/**
 		 * This method is called whenever you load a new map. It's meant to be
 		 * overridden when you create your game.
 		 */
 		changeLevel:function() { },
-		
+
 		/**
-		 * This method is called every time a player is "reborn". This method is 
-		 * meant to be overridden since you have to do garbage collection. 
+		 * This method is called every time a player is "reborn". This method is
+		 * meant to be overridden since you have to do garbage collection.
 		 */
 		newLife:function() { },
 
@@ -44,7 +44,7 @@ var gamecycle={
 		gameDisclaimerAnimation:function(reset) {
 			return true;
 		 },
-		
+
 		// game intro animation
 		gameIntroAnimation:function(reset) {
 			if (reset) {
@@ -55,7 +55,7 @@ var gamecycle={
 				return toys.text.blink(this,"default-blinker",gbox.getBufferContext(),{font:"small",text:"LETS BEGIN!",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),blinkspeed:5,times:6});
 			}
 		 },
-		 
+
 		// level intro animation
 		levelIntroAnimation:function(reset) {
 			if (reset) {
@@ -66,7 +66,7 @@ var gamecycle={
 				return toys.text.blink(this,"default-blinker",gbox.getBufferContext(),{font:"small",text:"GET READY!",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),blinkspeed:5,times:6});
 			}
 		 },
-	  
+
 		 // Life intro animation
 		 newlifeIntroAnimation:function(reset) {
 			 if (reset) {
@@ -77,7 +77,7 @@ var gamecycle={
 				return toys.text.fixed(this,"default-blinker",gbox.getBufferContext(),{font:"small",text:"GET READY!",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),time:30});
 			}
 		},
-		
+
 		// gameover animation
 		gameoverIntroAnimation:function(reset) {
 			 if (reset) {
@@ -88,7 +88,7 @@ var gamecycle={
 				return toys.text.fixed(this,"default-blinker",gbox.getBufferContext(),{font:"small",text:"GAME OVER",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),time:50});
 			}
 		},
-		
+
 		// game title animation
 		gameTitleIntroAnimation:function(reset) {
 			if (reset)
@@ -98,7 +98,7 @@ var gamecycle={
 				gbox.blitText(gbox.getBufferContext(),{font:"small",text:"GAME TITLE",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()-100});
 			}
 		},
-		
+
 		// End level animation
 		endlevelIntroAnimation:function(reset) {
 			 if (reset) {
@@ -107,7 +107,7 @@ var gamecycle={
 				return toys.text.blink(this,"default-blinker",gbox.getBufferContext(),{font:"small",text:"WELL DONE!",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),blinkspeed:5,times:10});
 			}
 		},
-		
+
 		// Game ending
 		gameEndingIntroAnimation:function(reset) {
 			if (reset) {
@@ -115,9 +115,9 @@ var gamecycle={
 			} else {
 				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
 				return toys.text.blink(this,"default-blinker",gbox.getBufferContext(),{font:"small",text:"CONGRATULATIONS!",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),blinkspeed:5,times:10});
-			}		  	
+			}
 		},
-		
+
 		// PRESS START
 		pressStartIntroAnimation:function(reset) {
 			if (reset) {
@@ -127,19 +127,19 @@ var gamecycle={
 				return gbox.keyIsHit("a");
 			}
 		},
-		
+
 		/**
 		 * This method is called when the player dies.
 		 */
 		gameIsOver:function() { return true; },
-		
-		/** 
+
+		/**
 		 * Actions done during the game (i.e. stage is clear or other ending conditions)
 		 */
 		gameEvents:function() {
-		
+
 		},
-		
+
 		gameMenu:function(reset) {
 			if (reset) {
 				toys.resetToy(this,"difficulty");
@@ -155,53 +155,53 @@ var gamecycle={
 				return false;
 			}
 		},
-	  
+
 		// CHECK
-		
+
 		gameIsHold:function() { // Use this clause to check collision and kill player: if true the level is changing
 			return (this.state==400)||(this.state==401);
 		},
-		
+
 		isCompleted:function() {
 			return (this.state==800);
 		},
-		
+
 		// GAME CYCLE
-		
+
 		getNextLevel:function() {
 			return this._nextlevel;
 		},
-		
+
 		gotoLevel:function(level) {
 			this._nextlevel=level;
 			this.setState(400);
 		},
-		
+
 		playerDied:function(data) {
 			this._loselife=data;
 			this.setState(500);
 		},
-		
+
 		gameIsCompleted:function() {
 			this.setState(800);
 		},
-		
+
 		// private methods
-		
+
 		/**
 		 * Changes the current game state
-		 * 
+		 *
 		 * @param	st	state number
 		 */
 		setState:function(st) {
 			this.state=st;
 			this.stateFirstIteration=true;
 		},
-	
+
 		/*
-		 * Removes all objects in each group except the game 
+		 * Removes all objects in each group except the game
 		 * cycle group. Used for garbage collection when resetting the game.
-		 */	
+		 */
 		_resetGroups:function() {
 			var g=gbox.getGroups();
 			for (var i=0;i<g.length;i++)
@@ -221,12 +221,12 @@ var gamecycle={
 						this.gameDisclaimerAnimation(true);
 						this.stateIsReady();
 					}
-					if (this.gameDisclaimerAnimation(false)) 
+					if (this.gameDisclaimerAnimation(false))
 						this.setState(100);
 					break;
 				}
 				// main menu
-				case 100: 
+				case 100:
 				case 101:
 				case 102: { // Press Start / Menu
 					if (this.stateFirstIteration && (this.state == 100)) {
@@ -250,7 +250,7 @@ var gamecycle={
 								this.gameMenu(true);
 								this.stateIsReady();
 							}
-							
+
 							var menu=this.gameMenu(false);
 							if (menu)
 								if (menu == -1) this.setState(100); else this.setState(102);
@@ -271,20 +271,20 @@ var gamecycle={
 					break;
 				}
 				case 200:// Game intro animation
-				
+
 				case 300:// Start game
 				case 301:// Game is going
-				
+
 				case 400:// Fade out to change level
 				case 401:// Level animation (levelIntroAnimation)
 				case 402:// Fade in to next level
-				
+
 				case 500:// Wait after dead
 				case 501:// Dead fadeout
-				
+
 				case 600:// Next life intro
 				case 601:// New life fadein
-				
+
 				case 700:// Gameover animation
 
 				case 800:// Fade out game ending
@@ -297,7 +297,7 @@ var gamecycle={
 								toys.resetToy(this,"fadein");
 								this.level=null;
 								this._nextlevel=null;
-								this.hud=toys.ui.hud("maingamehud");								
+								this.hud=toys.ui.hud("maingamehud");
 								this.initializeGame();
 								this.gameIntroAnimation(true);
 								break;
@@ -360,7 +360,7 @@ var gamecycle={
 						}
 						this.stateIsReady();
 					}
-					
+
 					switch (this.state) {
 						case 200: { // Game intro
 							if (this.gameIntroAnimation(false)) this.setState(300);
@@ -387,7 +387,7 @@ var gamecycle={
 							break;
 						}
 						case 501: { // Fade out after dead
-							if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05,audiochannelfade:"bgmusic"})) 
+							if (toys.fullscreen.fadeout(this,"fadeout",gbox.getBufferContext(),{fadespeed:0.05,audiochannelfade:"bgmusic"}))
 								if (this.gameIsOver())
 									this.setState(700); // GAME OVER
 								else
@@ -427,3 +427,4 @@ var gamecycle={
 	});
 	}
 }
+
