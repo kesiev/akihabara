@@ -13,7 +13,7 @@ var gamecycle={
 	 * Gamecycle constructor - initializes a new game object
 	 *
 	 * @param	id		unique id of object
-	 * @param	group		name of group to store the object in
+	 * @param	group	name of group to store the object in
 	 */
 	createMaingame:function(id,group) {
 	return gbox.addObject({
