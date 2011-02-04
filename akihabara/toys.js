@@ -145,7 +145,7 @@ var toys={
 
 		/**
 		* Spawns a new object in the topview namespace. This also merges parameters in data into paramaters in th using help.copyModel.
-    * This initializes some basic basic variables for the object and sets the Z index.
+		* This initializes some basic basic variables for the object and sets the Z index.
 		* @param {Object} th References 'this' which is the object that called the method (generally).
 		* <ul>
 		* <li>y {Integer}: (required) The object's y position.</li>
@@ -342,7 +342,15 @@ var toys={
 				if (th.haspushing&&(th.toucheddown||th.touchedup||th.touchedleft||th.touchedright)) pref="pushing"; else pref="moving";
 			if (th.flipside)
 				th.fliph=(th.facing==toys.FACE_RIGHT);
-			th.frame=help.decideFrame(th.counter,th.frames[pref+toys.FACES[th.facing]]);
+			th.frame=help.decideFrame(this.defineCounter(th),th.frames[pref+toys.FACES[th.facing]]);
+		},
+
+		/**
+		* Sets a default counter if the object don't have one
+		* @param {Object} th The object whose counter is being defined.
+		*/
+		defineCounter:function(th) {
+			return th.counter = (th.counter ? (th.counter+1)%60 : 1);
 		},
 
 		/**

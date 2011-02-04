@@ -31,16 +31,16 @@ var dynalist={
 						if (this.data[i].__prio>prio) break; else i=this.data[i].__next;
 					if (i==null) { // if last, chain in queue
 						obj.__next=null;
-						obj.__first=this.last;								
+						obj.__first=this.last;
 						this.data[this.last].__next=nid;
-						this.last=nid;								
+						this.last=nid;
 					} else { // else reconnect objects
 						obj.__first=this.data[i].__first;
 						obj.__next=i;
 						this.data[i].__first=nid;
 						if (obj.__first!=null) this.data[obj.__first].__next=nid; else this.first=nid;
 					}
-					
+
 				}
 				obj.__prio=prio;
 				obj.__id=nid;
@@ -184,8 +184,8 @@ var cachelist={
 /**
  * @namespace
  * Gamebox module allows multiple grouped objects to move simultaneously, it helps with collisions, #
- * rendering and moving objects. It also provides monospaced pixel-font rendering, keyboard handling,  
- * audio, double buffering and FSEs. Gamebox can also store and load data from cookies! 
+ * rendering and moving objects. It also provides monospaced pixel-font rendering, keyboard handling,
+ * audio, double buffering and FSEs. Gamebox can also store and load data from cookies!
  */
 var gbox={
 	// CONSTANTS
@@ -202,7 +202,7 @@ var gbox={
 			colors:{ black:"#000000", white:"#FFFFFF", red:"#68372B", cyan:"#70A4B2", purple:"#6F3D86", green:"#588D43", blue:"#352879", yellow:"#B8C76F", orange:"#6F4F25", brown:"#433900", lightred:"#9A6759", darkgray:"#444444", gray:"#6C6C6C", lightgreen:"#9AD284", lightblue:"#6C5EB5", lightgray:"#959595"}
 		}
 	},
-	
+
 	// VARS
 	_autoid:0,
 	_cb:null, // callback for loadAll()
@@ -320,7 +320,7 @@ var gbox={
 		this._keyboardpicker.style.textAlign="center";
 		this._keyboardpicker.style.backgroundColor="#000000";
 		this._keyboardpicker.style.color="#fefefe";
-		this._keyboardpicker.style.cursor="pointer";			
+		this._keyboardpicker.style.cursor="pointer";
 		this._keyboardpicker.value="";
 		this._keyboardpicker.style.left="0px";
 		this._keyboardpicker.style.top="0px";
@@ -341,41 +341,41 @@ var gbox={
 		}
 		return sizes;
 	},
-  
+
   /**
   * Sets the gbox._forcedidle property.
   * @param {Boolean} f The value to write to gbox._forcedidle.
-  */	  
+  */
 	setForcedIdle:function(f) { this._forcedidle=f},
-  
+
   /**
   * Returns a gbox flag at index f.
   * @param {Object} f The index of the flag you want returned.
-  */	  
+  */
 	getFlag:function(f) { return this._flags[f] },
-  
+
   /**
   * Sets the gbox._statbar property. Only useful if called before gbox.initScreen. Debugging funtionality.
   * Much easier to access if you add '?statusbar=1' to your URL.
   * @param {Boolean} f The value to write to gbox._statbar.
-  */	
+  */
   setStatusBar:function(a) { this._statbar=a },
 	setScreenBorder:function(a) { this._border=a},
-  
+
   /**
-  * Initializes the screen to a certain width and height, applies zoom attributes, populates the 
+  * Initializes the screen to a certain width and height, applies zoom attributes, populates the
   * body of the HTML document including the canvas element, sets an initial camera, creates a '_buffer'
   * canvas, sets keyboard event listeners, and many other initialization functions.
   * @param {Integer} w The width of the main canvas.
   * @param {Integer} h The height of the main canvas.
-  */	
+  */
 	initScreen:function(w,h) {
 		document.body.style.textAlign="center";
 		document.body.style.height="100%";
 		document.body.style.margin="0px";
-		document.body.style.padding="0px";			
+		document.body.style.padding="0px";
 		document.getElementsByTagName("html")[0].style.height="100%";
-		
+
 		var container=document.createElement("div");
 		container.style.width="100%";
 		container.style.height="100%";
@@ -385,7 +385,7 @@ var gbox={
 		this._box.style.width="100%";
 		this._box.style.textAlign="center";
 		this._box.style.verticalAlign="middle";
-		
+
 		this._screen=document.createElement("canvas");
 		if (this._border) this._screen.style.border="1px solid black";
 		this._screen.setAttribute('height',h);
@@ -421,19 +421,19 @@ var gbox={
 		this._keyboardpicker=document.createElement("input");
 		this._keyboardpicker.onclick=function(evt) { gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
 		this._hidekeyboardpicker(this._keyboardpicker);
-		
+
 		gbox._box.appendChild(this._keyboardpicker);
 		gbox._screen.ontouchstart=function(evt) { gbox._screenposition=gbox._domgetabsposition(gbox._screen);if (evt.touches[0].pageY-gbox._screenposition.y<30) gbox._showkeyboardpicker();else gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
 		gbox._screen.ontouchend=function(evt) {evt.preventDefault();evt.stopPropagation();};
 		gbox._screen.ontouchmove=function(evt) { evt.preventDefault();evt.stopPropagation();};
 		gbox._screen.onmousedown=function(evt) {gbox._screenposition=gbox._domgetabsposition(gbox._screen);if (evt.pageY-gbox._screenposition.y<30)  gbox._showkeyboardpicker(); else gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
-		
+
 		var d=new Date();
 		gbox._sessioncache=d.getDate()+"-"+d.getMonth()+"-"+d.getFullYear()+"-"+d.getHours()+"-"+d.getMinutes()+"-"+d.getSeconds();
-		
+
 		gbox._loadsettings(); // Load default configuration
 		gbox.setCanAudio(true); // Tries to enable audio by default
-		
+
 		switch (gbox._flags.fse) { // Initialize FSEs
 			case "scanlines": {
 				gbox.createCanvas("-gbox-fse",{w:w,h:h});
@@ -458,24 +458,24 @@ var gbox={
   /**
   * Sets the gbox._db property. Turns on an off double buffering.
   * @param {Boolean} db The value to write to gbox._db. True enables double buffering, false disables.
-  */	  
+  */
 	setDoubleBuffering:function(db){this._db=db},
-  
+
   /**
   * Writes text to the status bar, but only if the status bar is enabled.
   * @param {String} txt The text to write to the status bar.
-  */	  
+  */
 	setStatBar:function(txt){ if (gbox._statbar) this._statbar.innerHTML=(txt?txt:"&nbsp")},
 
   /**
   * Set the frames per second rate.
   * @param {Integer} f Total frames per second for the game to run at.
-  */	  
+  */
 	setFps:function(f){
 		this._fps=f;
 		this._mspf=Math.floor(1000/f)
 	},
-  
+
   /**
   * Get the frames per second rate (default is 25).
   * @returns {Integer} Returns the frames per second.
@@ -483,7 +483,7 @@ var gbox={
 	getFps:function() { return this._fps },
 	setAutoskip:function(f){this._autoskip=f},
 	setFrameskip:function(f){this._frameskip=f},
-  
+
   /**
   * Get the screen height.
   * @returns {Integer} Screen height in pixels.
@@ -495,7 +495,7 @@ var gbox={
   * @returns {Integer} Screen width in pixels.
   */
 	getScreenW:function(){return this._screenw},
-  
+
   /**
   * Get the screen half-height.
   * @returns {Integer} Screen half-height in pixels.
@@ -507,7 +507,7 @@ var gbox={
   * @returns {Integer} Screen half-width in pixels.
   */
 	getScreenHW:function(){return this._screenhw},
-  
+
   /**
   * Sets the gbox._zoom parameter, only works before gbox.initScreen is called.
   * @param {Integer} z Zoom factor.
@@ -534,10 +534,10 @@ var gbox={
 			if ((gbox._framestart<gbox._autoskip.lowidle)&&(gbox._frameskip<gbox._autoskip.max)) gbox.setFrameskip(gbox._frameskip+1); else
 			if ((gbox._framestart>gbox._autoskip.hiidle)&&(gbox._frameskip>gbox._autoskip.min)) gbox.setFrameskip(gbox._frameskip-1);
 		if (gbox._statbar) gbox.debugGetstats();
-		this._gametimer=setTimeout(gbox.go,(gbox._framestart<=0?1:gbox._framestart));		
+		this._gametimer=setTimeout(gbox.go,(gbox._framestart<=0?1:gbox._framestart));
 	},
 	/**
-  * Apply FSEs to the screen. Is called each frame. 
+  * Apply FSEs to the screen. Is called each frame.
   */
   _applyfse:function(){
 	  switch (gbox._flags.fse) {
@@ -554,7 +554,7 @@ var gbox={
 			gbox.getBufferContext().restore();
 			if (gbox._localflags.fselcdget)
 				gbox.swapCanvas("-gbox-fse-new","-gbox-fse-old");
-			gbox._localflags.fselcdget=!gbox._localflags.fselcdget;	
+			gbox._localflags.fselcdget=!gbox._localflags.fselcdget;
 			break;
 		}
 	}
@@ -612,11 +612,11 @@ var gbox={
 				if (gbox._db) gbox.blitImageToScreen(gbox.getBuffer());
 				gbox._fskid=0;
 			} else gbox._fskid++;
-			
+
 			gbox.purgeGarbage();
-	
+
 			if (gbox._zindexch.length) {
-				
+
 				for (var i=0;i<gbox._zindexch.length;i++) {
 					if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o])
 						if (gbox._objects[gbox._zindexch[i].o.g][gbox._zindexch[i].o.o].__zt==null)
@@ -626,8 +626,8 @@ var gbox={
 				}
 				gbox._zindexch=[];
 			}
-			
-			
+
+
 			// Handle holding
 			for (var key in gbox._keymap)
 				if (gbox._keyboard[gbox._keymap[key]]==-1) gbox._keyboard[gbox._keymap[key]]=0; else
@@ -638,7 +638,7 @@ var gbox={
 				gbox._nextframe();
 		}
 	},
-  
+
   /**
   * Displays basic audio, object, and performance statistics in the status bar. Automatically called each frame if the status bar is enabled.
   */
@@ -653,7 +653,7 @@ var gbox={
 			}
 		var cnt=0;
 		var ply=0;
-		for (var g in gbox._audio.aud) 
+		for (var g in gbox._audio.aud)
 			for (var x=0;x<gbox._audio.aud[g].length;x++) {
 				cnt++;
 				if (!gbox._audio.aud[g][x].paused&&!gbox._audio.aud[g][x].ended) ply++;
@@ -669,7 +669,7 @@ var gbox={
 			*/
 		gbox.setStatBar(statline);
 	},
-  
+
 	setZindex:function(th,z) {
 		if ((th.__zt==null)||(th.zindex!=z)) {
 			th.zindex=z;
@@ -683,12 +683,12 @@ var gbox={
   * @returns {Boolean} True if the given key is transitioning from unpressed to pressed in this frame.
   */
 	keyIsHit:function(id) { return this._keyboard[this._keymap[id]]==1},
-  
+
   /**
   * Returns true if a given key in this._keymap is being held down. Returns true as long as the key is held down.
   * @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
   * @returns {Boolean} True if the given key is held down.
-  */  
+  */
 	keyIsPressed:function(id) { return this._keyboard[this._keymap[id]]>0},
 
   /**
@@ -696,16 +696,16 @@ var gbox={
   * is quickly tapped, only once it has been held down for a frame.
   * @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
   * @returns {Boolean} True if the given key has been held down for at least one frame.
-  */  
+  */
 	keyIsHold:function(id) { return this._keyboard[this._keymap[id]]>1},
-  
+
   /**
   * Returns true if a given key in this._keymap is released. Only returns true on the transition from pressed to unpressed.
   * @param {String} id A key in the keymap. By default, one of: "up" "down" "left" "right" "a" "b" "c"
   * @returns {Boolean} True if the given key is transitioning from pressed to unpressed in this frame.
   */
 	keyIsReleased:function(id) { return this._keyboard[this._keymap[id]]==-1},
-  
+
 	_savesettings:function() {
 		var saved="";
 		for (var k in this._keymap) saved+="keymap-"+k+":"+this._keymap[k]+"~";
@@ -741,7 +741,7 @@ var gbox={
 	},
 
   /**
-  * Saves data to a browser cookie as a key-value pair, which can be restored later using gbox.dataLoad. Only 
+  * Saves data to a browser cookie as a key-value pair, which can be restored later using gbox.dataLoad. Only
   * works if user has cookies enabled.
   * @param {String} k The key which identifies the value you are storing.
   * @param {String} v The value you wish to store. Needs to be a string!
@@ -750,12 +750,12 @@ var gbox={
   * // (from Capman)
   * gbox.dataSave("capman-hiscore",maingame.hud.getNumberValue("score","value"));
   */
-	dataSave:function(k,v,d) { 
+	dataSave:function(k,v,d) {
 		var date = new Date();
 		date.setTime(date.getTime()+((d?d:365*10)*24*60*60*1000));
 		document.cookie =this._systemcookie+"~"+k+"="+v+"; expires="+date.toGMTString()+"; path=/";
 	},
-  
+
   /**
   * Loads data from a browser cookie. Send it a key and it returns a value (if available). Only works if user has cookies enabled.
   * @param {String} k The key which identifies the value you are loading.
@@ -785,13 +785,13 @@ var gbox={
   * @param {String} k The key which identifies the value you are clearing.
   */
 	dataClear:function(k) { this.dataSave(k,"",-1) },
-  
+
   /**
   * Gets the current camera object.
   * @returns {Object} The camera object.
   */
 	getCamera:function() { return this._camera; },
-  
+
   /**
   * Sets the y value of the current camera object.
   * @param {Integer} y The camera object's new y value.
@@ -809,13 +809,13 @@ var gbox={
   * @param {Integer} x The camera object's new x value.
   * @param {Object} viewdata An object containing parameters h and w, which are a bounding box that the camera is
   * not supposed to leave. For example, to use your map as a bounding area for the camera, pass along {w: map.w, h: map.h}.
-  */  
+  */
 	setCameraX:function(x,viewdata) {
 		this._camera.x=x;
 		if (this._camera.x+this._camera.w>viewdata.w) this._camera.x=viewdata.w-this._screenw;
 		if (this._camera.x<0) this._camera.x=0;
 	},
-  
+
   /**
   * Centers the camera.
   * @param {Object} data An object containing x and y parameters -- typically the object you wish to center the camera on.
@@ -835,10 +835,10 @@ var gbox={
   * @returns {Array} An array of group names.
   * @example
   * grouplist = gbox.getGroups();
-  * grouplist; // => ["background", "player", "enemy", "game"]	
+  * grouplist; // => ["background", "player", "enemy", "game"]
   */
   getGroups:function() { return this._groups; },
-  
+
   /**
   * Defines the names of each group in the game along with their rendering order.
   * @param {Array} g An array of strings of group names, in the order in which the groups should be rendered. So
@@ -854,17 +854,17 @@ var gbox={
 				this._renderorder[i]=g[i];
 			}
 	},
-  
+
   /**
-  * A method of setting the render order of groups independently of gbox.setGroups. Sets gbox._renderorder, 
+  * A method of setting the render order of groups independently of gbox.setGroups. Sets gbox._renderorder,
   * which by default is equivalent to gbox._groups. However, gbox._renderorder is what ultimately determines
-  * the rendering order of groups. If you need to change your rendering order on the fly, use this function 
+  * the rendering order of groups. If you need to change your rendering order on the fly, use this function
   * by passing it a reordered array of group names.
   * @param {Array} g An array of strings of group names, in the order in which the groups should be rendered. So
   * g[0] will contain the first group to render, g[1] the second group to render, etc.
   */
 	setRenderOrder:function(g) { this._renderorder=g; },
-  
+
   /**
   * If a group is disabled, this will enable the group.
   * @param {String} gid The id of the group.
@@ -876,22 +876,22 @@ var gbox={
   * @param {String} gid The id of the group.
   */
 	stopGroup:function(gid){this._groupplay[gid]=false;},
-  
+
   /**
   * Toggles a group between enabled and disabled status.
   * @param {String} gid The id of the group.
   */
 	toggleGroup:function(gid){this._groupplay[gid]=!this._groupplay[gid];},
-  
+
   /**
-  * Turns off all groups except for the one specified. 
+  * Turns off all groups except for the one specified.
   * @param {String} gid The id of the group.
   */
 	soloGroup:function(gid) {
 		for (var i=0;i<this._groups.length;i++)
 			if (this._groups[i]==gid) this.playGroup(this._groups[i]); else this.stopGroup(this._groups[i]);
 	},
-  
+
   /**
   * Enables all groups, toggling any groups that are currently disabled.
   */
@@ -910,7 +910,7 @@ var gbox={
 	playGroups:function(gid){for (var i=0;i<gid.length;i++)this.playGroup(gid[i])},
 	stopGroups:function(gid){for (var i=0;i<gid.length;i++)this.stopGroup(gid[i])},
 	toggleGroups:function(gid){for (var i=0;i<gid.length;i++)this.toggleGroup(gid[i])},
-  
+
   /**
   * Given a group and an id for a particular object instance, this returns the instance requested.
   * <b>NOTE:</b> this does not return a copy of the object you've requested! Any modifications you make
@@ -922,7 +922,7 @@ var gbox={
   * // Find the player and reduce health by half.
   * playertemp = gbox.getObject('player','player_id');
   * player.health = player.health/2;
-  */ 
+  */
 	getObject:function(group,id) {return this._objects[group][id]},
 
   /**
@@ -938,18 +938,18 @@ var gbox={
   * @example
   * gbox.addImage('font', 'font.png');
   * gbox.addFont({ id: 'small', image: 'font', firstletter: ' ', tileh: 8, tilew: 8, tilerow: 255, gapx: 0, gapy: 0 });
-  */ 
+  */
 	addFont:function(data) {
 		data.tilehh=Math.floor(data.tileh/2);
 		data.tilehw=Math.floor(data.tilew/2);
 		this._fonts[data.id]=data;
 		this._fonts[data.id].firstascii=data.firstletter.charCodeAt(0);
 	},
-  
+
   /**
   * Returns a font object containing data about the font.
   * @param {String} id The id of the font, as set in gbox.addFont.
-  */   
+  */
 	getFont:function(id) {
 		return this._fonts[id];
 	},
@@ -957,16 +957,16 @@ var gbox={
   /**
   * Deletes an object, keeping a record of its group and id in gbox._garbage.
   * @param {Object} obj The object you wish to delete.
-  */  
+  */
 	trashObject:function(obj) {
 		if (!this._garbage[obj.group]) this._garbage[obj.group]={};
 		this._garbage[obj.group][obj.id]=1;
 		obj.__trashing=true;
 	},
-  
+
   /**
   * Clears the record held in gbox._garbage of what has been deleted. The "onpurge" method is called on the object before being deleted (for canvas deallocation etc.)
-  */    
+  */
 	purgeGarbage:function() {
 		for (var group in this._garbage)
 			for (var id in this._garbage[group]) {
@@ -977,28 +977,28 @@ var gbox={
 			}
 		gbox._garbage={};
 	},
-  
+
   /**
   * Deletes every object in a given group.
   * @param {String} group The group id.
-  */    
+  */
 	trashGroup:function(group) {
 		if (!this._garbage[group]) this._garbage[group]={};
 		for (var obj in this._objects[group])
 			this._garbage[group][obj]=1;
 	},
-  
+
   /**
   * Returns whether an object is due to be trashed. Useful in cases you want to check if
   * an object is marked as trash before it is actually deleted.
   * @param {Object} o The object you're checking.
   * @returns {Boolean} True if the object is marked as trash.
-  */      
+  */
 	objectIsTrash:function(o) { return o.__trashing },
-  
+
   /**
   * Creates a new game object. Generally speaking you pass a fully-defined object as the parameter (including a group, id, tileset, and so on).
-  * A group must be specified, or the program will crash. If no id is specified, then it will automatically provide 
+  * A group must be specified, or the program will crash. If no id is specified, then it will automatically provide
   * an id of 'obj-XXXX' where 'XXXX' is an automatically incrementing integer. This is where the <i>initialize</i>, <i>first</i>, and <i>blit</i>
   * functions are defined, as well.
   * @param {Object} data The object you wish to create.
@@ -1007,16 +1007,16 @@ var gbox={
   * data = {
   *   group: 'player',
   *   id: 'player_id',
-  *   tileset: 'player_tiles', 
+  *   tileset: 'player_tiles',
   *   x: 0,
   *   y: 0,
   *   initialize: function() {
-      this.x = 10;
-      this.y = 10;
-      },
+  *   this.x = 10;
+  *   this.y = 10;
+  *   },
   * };
   * gbox.addObject(data);
-  */    
+  */
 	addObject:function(data) {
 		// Extras
 		if (!data.id) {
@@ -1034,14 +1034,14 @@ var gbox={
 			this.setZindex(this._objects[data.group][data.id],data.zindex);
 		return this._objects[data.group][data.id];
 	},
-  
-   /**
+
+  /**
   * Returns whether a given group contains no objets.
   * @param {String} gid The group you're checking.
   * @returns {Boolean} True if the group contains no objects.
-  */    
+  */
 	groupIsEmpty:function(gid) { for (var i in this._objects[gid]) return false; return true; },
-  
+
   /**
   * Creates a new canvas. By default, the width and height is the current gbox._screenw and gbox._screenh,
   * but it can also be set by passing in a data object with the appropriate parameters.
@@ -1049,7 +1049,7 @@ var gbox={
   * @param {Object} data (Optional) The height and width of the new canvas, contained in data.h and data.w parameters.
   * @example
   * gbox.createCanvas('newCanvas', {w: 640, h: 480});
-  */    
+  */
 	createCanvas:function(id,data) {
 		this.deleteCanvas(id);
 		var w=(data&&data.w?data.w:this._screenw);
@@ -1069,7 +1069,7 @@ var gbox={
   * @param {String} id The id of the second canvas.
   * @example
   * gbox.swapCanvas('canvas1','canvas2');
-  */    
+  */
   swapCanvas:function(a,b) {
   	var swp=this._canvas[a];
   	this._canvas[a]=this._canvas[b];
@@ -1078,18 +1078,18 @@ var gbox={
   /**
   * Deletes a given canvas.
   * @param {String} id The id of the canvas to be deleted.
-  */  
+  */
 	deleteCanvas:function(id) {
-		if (this._canvas[id]) delete this._canvas[id];	
+		if (this._canvas[id]) delete this._canvas[id];
 	},
-  
+
   /**
   * Checks to see if an image was successfully loaded.
   * @param {String} id The id of the image.
   * @returns {Boolean} True if the image has been loaded.
-  */    
+  */
 	imageIsLoaded:function(id){ return this._images[id]&&(this._images[id].getAttribute("wasloaded"))&&this._images[id].width },
-  
+
   /**
   * Gets information about a loaded image.
   * @param {String} id The id of the image.
@@ -1099,7 +1099,7 @@ var gbox={
   * image; // => <img src=?"logo.png?_brc=5-7-2010-15-48-42" src_org=?"logo.png" id=?"logo" wasloaded=?"true">?
   */
 	getImage:function(id){return this._images[id]},
-  
+
   /**
   * Gets the buffer canvas (automatically created by gbox.initScreen).
   * @returns {Object} A DOM Canvas element, including the width and height of the canvas.
@@ -1111,14 +1111,14 @@ var gbox={
   * @returns {Object} A DOM Canvas context object.
   */
 	getBufferContext:function(){ return (gbox._fskid>=gbox._frameskip?(this._db?this.getCanvasContext("_buffer"):this._screen.getContext("2d")):null) },
-  
+
   /**
   * Gets a given canvas.
   * @param {Object} id The identifier of the canvas.
   * @returns {Object} A DOM Canvas element, including the width and height of the canvas.
   */
 	getCanvas:function(id){return this._canvas[id]},
-  
+
   /**
   * Gets the two-dimensional canvas context of a given canvas. The object it returns contains all the drawing functions for the canvas.
   * See <a href = "http://dev.w3.org/html5/spec/Overview.html#the-canvas-element">W3C</a> and
@@ -1127,7 +1127,7 @@ var gbox={
   * @returns {Object} A DOM Canvas context object.
   */
 	getCanvasContext:function(id){return this.getCanvas(id).getContext("2d");},
-  
+
   /**
   * Adds an image file to the loader, assigning it to an ID. If adding an image to an existing ID, it checks to see if the file you're
   * adding is different than the one currently assigned to the ID. If it's different, it overwrites the old image. If it's the same, then
@@ -1143,7 +1143,7 @@ var gbox={
 				delete this._images[id];
 		this._addtoloader({type:"image",id:id,filename:filename});
 	},
-  
+
   /**
   * Deletes an image currently in use. Does not delete the image file, but removes it from Akihabara's image list.
   * @param {String} id The identifier of the image.
@@ -1151,7 +1151,7 @@ var gbox={
 	deleteImage:function(id) {
 		delete this._images[id];
 	},
-  
+
   /**
   * Creates a new Akihabara tileset, adding it to the engine.
   * @param {Object} t An object containing: <ul><li>id {String}: the new id of the tileset</li>
@@ -1162,7 +1162,7 @@ var gbox={
   * <li>gapx {Integer}: x-coord gap between tile columns, in pixels</li>
   * <li>gapy {Integer}: y-coord gap between tile rows, in pixels</li></ul>
   */
-	addTiles:function(t) { 
+	addTiles:function(t) {
 		t.tilehh=Math.floor(t.tileh/2);
 		t.tilehw=Math.floor(t.tilew/2);
 		this._tiles[t.id]=t;
@@ -1180,7 +1180,7 @@ var gbox={
   * <li>gapy {Integer}: y-coord gap between tile rows, in pixels</li></ul>
   */
 	getTiles:function(t) { return this._tiles[t] },
-  
+
   /**
   * Loads the initial splash screen and debugging font, then calls gbox._waitforloaded which adds to the game all the previously
   * defined resources. Once gbox._waitforloaded is done, it calls the callback function cb.
@@ -1199,18 +1199,18 @@ var gbox={
 			gbox._minimalexpired=2;
 		this._waitforloaded();
 	},
-  
+
 	_implicitsargs:function(data) {
 		if (data.camera) {
 			data.dx-=this._camera.x;
-			data.dy-=this._camera.y;	
+			data.dy-=this._camera.y;
 		}
 		if (data.sourcecamera) {
 			data.x=this._camera.x*(data.parallaxx?data.parallaxx:1);
-			data.y=this._camera.y*(data.parallaxy?data.parallaxy:1);	
+			data.y=this._camera.y*(data.parallaxy?data.parallaxy:1);
 		}
 	},
-  
+
   /**
   * Draws a tile to a canvas context
   * @param {Object} tox The canvas context to be drawn on.
@@ -1261,7 +1261,7 @@ var gbox={
 		this._safedrawimage(tox,image, 0,0, image.width,image.height,data.dx*(data.fliph?-1:1),data.dy*(data.flipv?-1:1),image.width,image.height);
 		tox.restore();
 	},
-  
+
 	blit:function(tox,image,data) {
 		if (tox==null) return;
 		this._implicitsargs(data);
@@ -1271,8 +1271,8 @@ var gbox={
 		this._safedrawimage(tox,image,(data.x?data.x:0), (data.y?data.y:0),(data.w?data.w:data.dw),(data.h?data.h:data.dh),data.dx*(data.fliph?-1:1),data.dy*(data.flipv?-1:1),data.dw,data.dh);
 		tox.restore();
 	},
-  
-  
+
+
   /**
   * Draws a tilemap to a canvas context
   * @param {Object} tox The canvas context to be drawn on.
@@ -1287,8 +1287,8 @@ var gbox={
 			for (var x=0;x<data.map[y].length;x++)
 				if (data.map[y][x]!=null) this.blitTile(tox,{tileset:data.tileset,tile:data.map[y][x],dx:x*ts.tilew,dy:y*ts.tilew});
 	},
-  
-  
+
+
   /**
   * Draws text to a canvas context
   * @param {Object} tox The canvas context to be drawn on.
@@ -1310,7 +1310,7 @@ var gbox={
 		var tile=0;
 		this._implicitsargs(data);
 		var dx=data.dx;
-		var dy=data.dy;			
+		var dy=data.dy;
 		if (data.valign==gbox.ALIGN_BOTTOM) dy = dy+data.dh-fn.tileh;
 		else if (data.valign==gbox.ALIGN_MIDDLE) dy = dy+Math.floor(data.dh/2)-fn.tileh;
 		if (data.halign==gbox.ALIGN_RIGHT) dx = dx+data.dw-(data.text.length*fn.tilew);
@@ -1327,7 +1327,7 @@ var gbox={
 		}
 		tox.restore();
 	},
-  
+
   /**
   * Clears a rectangular area of a canvas context.
   * @param {Object} image The canvas context to be drawn on.
@@ -1343,14 +1343,14 @@ var gbox={
 		this._implicitsargs(data);
 		image.clearRect(data.x,data.y,(data.w==null?image.canvas.width:data.w),(data.h==null?image.canvas.height:data.h));
 	},
-  
+
   /**
   * Draws an image directly to the screen's current canvas context. Used internally in gbox.go(). Probably shouldn't be used otherwise.
   */
 	blitImageToScreen:function(image) {
 		this._screen.getContext("2d").drawImage(image,0,0);
 	},
-  
+
    /**
   * Draws a filled rectangle over an entire canvas context.
   * @param {Object} tox The canvas context to be filled.
@@ -1358,10 +1358,10 @@ var gbox={
   * <ul><li>alpha {Float}: the alpha value of the rectangle; defaults to 1</li>
   * <li>color {Object}: the color of the box, formatted rgb(rValue, gValue, bValue); default black</li></ul>
   */
-	blitFade:function(tox,data) { 
+	blitFade:function(tox,data) {
 		if (tox) this.blitRect(tox,{x:0,y:0,w:tox.canvas.width,h:tox.canvas.height,alpha:data.alpha,color:data.color});
 	},
-  
+
   /**
   * Draws a filled rectangle to a canvas context.
   * @param {Object} tox The canvas context to be drawn on.
@@ -1381,7 +1381,7 @@ var gbox={
 		tox.fillRect(data.x,data.y,data.w,data.h);
 		tox.restore();
 	},
-  
+
   /**
   * Calculates a box collision between two collision boxes within a given tolerance. A higher tolerance means less precise collision.
   * @param {Object} o1 A collision box you're testing for collision. Must contain:
@@ -1397,12 +1397,12 @@ var gbox={
   * @param {Integer} t The tolerance for the collision, in pixels. A value of 0 means pixel-perfect box collision. A value of 2 would mean that the
   * boxes could overlap by up to 2 pixels without being considered a collision.
   * @returns True if the two collision boxes are colliding within the given tolerance.
-  */  
+  */
 	collides:function(o1,o2,t) {
 		if (!t) t=0;
 		return !((o1.y+o1.h-1-t<o2.y+t) || (o1.y+t> o2.y+o2.h-1-t) || (o1.x+o1.w-1-t<o2.x+t) || (o1.x+t>o2.x+o2.w-1-t));
 	},
-  
+
   /**
   * Calculates a point-box collision between a point and a collision box within a given tolerance. A higher tolerance means less precise collision.
   * @param {Object} o1 A point you're testing for collision. Must contain:
@@ -1416,12 +1416,12 @@ var gbox={
   * @param {Integer} t The tolerance for the collision, in pixels. A value of 0 means pixel-perfect collision. A value of 2 would mean that the
   * point could exist within the outermost 2 pixels of the box without being considered a collision.
   * @returns True if the point is colliding with the box within the given tolerance.
-  */  
+  */
 	pixelcollides:function(o1,o2,t) {
 		if (!t) t=0;
 		return !((o1.y<o2.y+t) || (o1.y> o2.y+o2.h-1-t) || (o1.x<o2.x+t) || (o1.x>o2.x+o2.w-1-t));
 	},
-  
+
   /**
   * Determines whether an object is visible by seeing if it collides with the camera's viewport.
   * @param {Object} obj The object you're testing to see if it's visible. Must contain:
@@ -1430,15 +1430,15 @@ var gbox={
   * <li>w {Integer}: (required) the width of the object's collision box</li>
   * <li>h {Integer}: (required) the height the object's box</li></ul>
   * @returns True if the object's collision box is within the camera's viewport.
-  */  
+  */
 	objectIsVisible:function(obj) { return this.collides(obj,this._camera,0); },
-	
-	// --- 
-	// --- 
+
+	// ---
+	// ---
 	// ---  AUDIO ENGINE
-	// --- 
-	// --- 
-	
+	// ---
+	// ---
+
 	_audiochannels:{},
 	_audiomastervolume:1.0,
 	_canaudio:false,
@@ -1482,11 +1482,11 @@ var gbox={
 		}
 	},
 	_finalizeaudio:function(ob,who,donext){
-	
+
 		var cur=(who?who:this);
 		gbox.removeEventListener(cur,'ended', gbox._finalizeaudio);
 		gbox.removeEventListener(cur,'timeupdate', gbox._checkprogress);
-		
+
 		gbox.addEventListener(cur,'ended', gbox._playbackended);
 		if (donext) gbox._loaderloaded();
 	},
@@ -1501,13 +1501,13 @@ var gbox={
 	},
 	_timedfinalize:function() {
 		gbox._rawstopaudio(gbox._audio.lding);
-		gbox._finalizeaudio(null,gbox._audio.lding,true);	
+		gbox._finalizeaudio(null,gbox._audio.lding,true);
 	},
 	_checkprogress:function() {
 		if (gbox._audio.lding.currentTime>gbox._audioprefetch) gbox._timedfinalize();
 	},
 	_fakecheckprogress:function() {
-		if (gbox._audio.lding.currentTime>gbox._audioprefetch) gbox._timedfinalize(); else setTimeout(gbox._fakecheckprogress,gbox._fakecheckprogressspeed);	
+		if (gbox._audio.lding.currentTime>gbox._audioprefetch) gbox._timedfinalize(); else setTimeout(gbox._fakecheckprogress,gbox._fakecheckprogressspeed);
 	},
 	_audiofiletomime:function(f) {
 		var fsp=f.split(".");
@@ -1596,7 +1596,7 @@ var gbox={
 				else
 					this.currentTime=0;
 			else
-				gbox._audio.ast[this.getAttribute('aki_id')].play=false; 
+				gbox._audio.ast[this.getAttribute('aki_id')].play=false;
 		} else if (gbox._audiocompatmode==1) {
 			this.pause();
 			this.muted=false;
@@ -1604,7 +1604,7 @@ var gbox={
 	},
 	_updateaudio:function(a) {
 		if (this._audio.ast[a].play) {
-			this._audio.aud[a][this._audio.ast[a].cy].volume=(this._audio.ast[a].mute?this._audiomutevolume: 
+			this._audio.aud[a][this._audio.ast[a].cy].volume=(this._audio.ast[a].mute?this._audiomutevolume:
 				this._audiomastervolume*
 				(this._audio.ast[a].volume!=null?this._audio.ast[a].volume:1)*
 				((this._audio.ast[a].channel!=null)&&(this._audiochannels[this._audio.ast[a].channel]!=null)&&(this._audiochannels[this._audio.ast[a].channel].volume!=null)?this._audiochannels[this._audio.ast[a].channel].volume:1)
@@ -1645,7 +1645,7 @@ var gbox={
 				gbox._audio.qtimer=true;
 				setTimeout(gbox._dequeueaudio,gbox._audiodequeuetime);
 			} else gbox._audio.qtimer=false;
-	
+
 	},
 	getAudioIsSingleChannel:function() { return this._singlechannelaudio; },
 	setAudioIsSingleChannel:function(m) { gbox._singlechannelaudio=m },
@@ -1689,7 +1689,7 @@ var gbox={
 				this.stopAudio(a,true);
 			this._audio.ast[a].cy=(this._audio.ast[a].cy+1)%this._audio.aud[a].length;
 			ael=this._audio.aud[a][this._audio.ast[a].cy];
-			if (data) 
+			if (data)
 				for (var n in data) this._audio.ast[a][n]=data[n];
 			this._audio.ast[a].play=true;
 			this._addqueue({t:0,a:ael});
@@ -1739,14 +1739,14 @@ var gbox={
 				if (this._audio.ast[j].cy>-1&&gbox._audio.ast[j].play&&((ch=="master")||(this._audio.ast[j].channel==ch)))
 					this.stopAudio(j);
 	},
-	
+
 	setAudioUnmute:function(a) { if (this._canaudio&&this._audio.ast[a]) { this._audio.ast[a].mute=false; this._updateaudio(a); } },
 	setAudioMute:function(a) { if (this._canaudio&&this._audio.ast[a]) { this._audio.ast[a].mute=true; this._updateaudio(a); } },
 	getAudioMute:function(a) { if (this._canaudio&&this._audio.ast[a]) return this._audio.ast[a].mute; else return null},
-	
+
 	setAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) { this._audio.ast[a].volume=vol; this._updateaudio(a); } },
 	getAudioVolume:function(a,vol) { if (this._canaudio&&this._audio.ast[a]) return this._audio.ast[a].volume; else return null},
-	
+
 	setAudioPosition:function(a,p) {  if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) this._audio.aud[a][this._audio.ast[a].cy].currentTime=p;},
 	getAudioPosition:function(a) {if (this._canaudio&&this._audio.ast[a]&&this._audio.aud[a][this._audio.ast[a].cy]) if (this._audio.aud[a][this._audio.ast[a].cy].currentTime>this._positiondelay) return this._audio.aud[a][this._audio.ast[a].cy].currentTime-this._positiondelay; else return 0; else return 0},
 
@@ -1765,27 +1765,27 @@ var gbox={
 	},
 	setAudioTeam:function(a){ this._audioteam=a; },
 	setLowerAudioTeam:function(a){ this._loweraudioteam=a; },
-	
+
 	// ---
 	// ---
 	// ---  DYNAMIC SCRIPT INCLUSION
 	// ---
 	// ---
-	
+
 	addScript:function(call) {
 		gbox._addtoloader({type:"script",call:call});
 	},
-	
+
 	// ---
 	// ---
 	// ---  BUNDLES
 	// ---
 	// ---
-	
+
 	addBundle:function(call){
 		gbox._addtoloader({type:"bundle",call:call});
 	},
-	
+
 	readBundleData:function(pack,call) {
 		// Local resources first
 		if (pack.setObject) for (var i=0;i<pack.setObject.length;i++) eval("("+pack.setObject[i].object+")")[pack.setObject[i].property]=pack.setObject[i].value;
@@ -1797,26 +1797,26 @@ var gbox={
 		if (pack.addBundle) for (var i=0;i<pack.addBundle.length;i++) gbox.addBundle(pack.addBundle[i]);
 		if (pack.addScript) for (var i=0;i<pack.addScript.length;i++) gbox.addScript(pack.addScript[i]);
 		// Trigger the onLoad events in resource and loader
-		if (pack.onLoad) gbox._addtoloader({type:"exec-onl",func:pack.onLoad,call:call,pack:pack});				
-		if (call.onLoad) gbox._addtoloader({type:"exec-onl",func:call.onLoad,call:call,pack:pack});	
+		if (pack.onLoad) gbox._addtoloader({type:"exec-onl",func:pack.onLoad,call:call,pack:pack});
+		if (call.onLoad) gbox._addtoloader({type:"exec-onl",func:call.onLoad,call:call,pack:pack});
 	},
-	
-	// --- 
-	// --- 
+
+	// ---
+	// ---
 	// ---  DATA LOADER
-	// --- 
-	// --- 
+	// ---
+	// ---
 
 	_xmlhttp:null,
 	_loaderqueue:cyclelist.create(200),
 	_loadercache:cachelist.create(30),
-	
+
 	// Callback for loaded image
 	_loaderimageloaded:function() {
 		this.setAttribute('wasloaded',true);
 		this.hheight=Math.floor(this.height/2);
 		this.hwidth=Math.floor(this.width/2);
-		gbox._loaderloaded();	
+		gbox._loaderloaded();
 	},
 	// Callback for loaded bundle
 	_loaderhmlhttploading:function(){
@@ -1831,10 +1831,10 @@ var gbox={
 				gbox.readBundleData(pack,gbox._loaderqueue.getCurrent().call);
 				// Keep loading the other resources.
 				gbox._loaderloaded();
-			}	
+			}
 		}
 	},
-	
+
 	// Loader code
 	_addtoloader:function(d) { // type:xx, data:yy
 		gbox._loaderqueue.push(d);
@@ -1903,7 +1903,7 @@ var gbox={
 				}
 			}
 		}
-	
+
 	},
 	_waitforloaded:function() {
 		var aul;
@@ -1933,7 +1933,7 @@ var gbox={
 						var dw=gbox.getScreenW()/4;
 						var dh=(gbox.getImage("logo").height*dw)/gbox.getImage("logo").width;
 						gbox.blit(tox,gbox.getImage(gbox._splash.minilogo),{w:gbox.getImage("logo").width,h:gbox.getImage("logo").height,dx:(gbox.getScreenW()-dw)/2,dy:(gbox.getScreenH()-dh)/2,dw:dw,dh:dh});
-					}					
+					}
 					break;
 				}
 				default:{
@@ -1970,7 +1970,7 @@ var gbox={
 					}
 				}
 			}
-			tox.restore();		
+			tox.restore();
 			gbox.setStatBar("Loading... ("+gbox._loaderqueue.getDone()+"/"+gbox._loaderqueue.getTotal()+")");
 			setTimeout(gbox._waitforloaded,50);
 		} else {
@@ -1980,13 +1980,13 @@ var gbox={
 		}
 	},
 	clearCache:function() { this._loadercache.clear(); },
-	
-	// --- 
-	// --- 
+
+	// ---
+	// ---
 	// ---  BROWSER QUIRKS
-	// --- 
-	// --- 
-	
+	// ---
+	// ---
+
 	checkCanvasSupport:function() {
 	  return !!document.createElement('canvas').getContext;
 	},
