@@ -19,32 +19,32 @@
 
 
 		  // Game-specific
-		  
+
 		  var maingame;
 		  var tilemaps={};
 		  var dialogues={};
 		  var credits={};
 		  var noface; // Is a fake "actor" in dialogues. The text is ever in the same place.
 		  var audioserver;
-		  
+
 		  // In games like Zelda, object are alive also outside of the screen.
 		  // So, let's calculate a distance threshold from the camera
 		  function objectIsAlive(th) {
 		  	return trigo.getDistance(th,gbox.getCamera())<800;
 		  }
-		  
-		  
+
+
 
 		  function go() {
-		  
+
 		 	gbox.setGroups(["background","player","bonus","foes","walls","playerbullets","foesbullets","sparks","foreground","gamecycle"]);
 			gbox.setAudioChannels({bgmusic:{volume:0.8},sfx:{volume:1.0}});
-		 	
+
 		 	// player, walls, bullets and foes are under z-index layer
 		   	gbox.setRenderOrder(["background",gbox.ZINDEX_LAYER,"sparks","foreground","gamecycle"]);
-		  
-			maingame=gamecycle.createMaingame("gamecycle","gamecycle");	
-		  	
+
+			maingame=gamecycle.createMaingame("gamecycle","gamecycle");
+
 		  	// Title intro
 		  maingame.gameTitleIntroAnimation=function(reset) {
 			  	if (reset) {
@@ -79,12 +79,12 @@
 		  		return toys.dialogue.render(this,"intro-animation",credits.titles);
 		  	}
 		  }
-		  	
+
 		  	// Game events are decided by the map.
 		  	maingame.gameEvents=function() {
 		  		tilemaps.map.mapActions();
 		  	}
-	
+
 			// Change level
 			  maingame.changeLevel=function(level) {
 			  	// Cleanup the level
@@ -94,18 +94,18 @@
 			  	gbox.trashGroup("bonus");
 			  	gbox.trashGroup("walls");
 			  	gbox.purgeGarbage(); // Since we're starting, we can purge all now
-			  	
+
 				if (level==null)
 					level={level:"begin",x:300,y:270,introdialogue:true}; // First stage
-				
+
 				// Dialogues are emptied - will be loaded by bundles. Cache is not needed - each bundle
 				// Contains full dialogues for the floor.
 				dialogues={};
-				
+
 				// Map data is wiped too. Will be loaded by loadBundle. Other data in tilemaps is
 				// kept (i.e. quest status etc)
 				delete tilemaps.map;
-				
+
 				// Here the map is loaded. During the load time, the game is still.
 				gbox.addBundle({
 					file:"resources/tlol/bundle-map-"+level.level+".js",
@@ -120,25 +120,25 @@
 					}
 				});
 			  }
-		  
+
 		 	 // Game initialization
 	 		  maingame.initializeGame=function() {
-	 		  
+
 	 		  	// Prepare hud
 		 		maingame.hud.setWidget("weapon",{widget:"radio",value:0,tileset:"items",frames:[0],dx:10,dy:10});
 	 		  	maingame.hud.setWidget("health",{widget:"symbols",tiles:[3,2,1,0],minvalue:0,maxvalue:20,value:12-(maingame.difficulty*4),maxshown:4,tileset:"hud",emptytile:4,dx:40,dy:10,gapx:20,gapy:0});
 	 		  	maingame.hud.setWidget("cash",{widget:"label",font:"small",value:0,minvalue:0,maxvalue:100,dx:gbox.getScreenW()-60,dy:gbox.getScreenH()-24,prepad:3,padwith:" ",clear:true});
 		 		maingame.hud.setWidget("SMALLKEY",{widget:"label",font:"small",value:0,minvalue:0,maxvalue:999,dx:gbox.getScreenW()-60,dy:gbox.getScreenH()-43,prepad:3,padwith:" ",clear:true});
-		 		maingame.hud.setWidget("BOSSKEY",{widget:"bool",value:0,tileset:"hud",frame:5,dx:gbox.getScreenW()-30,dy:gbox.getScreenH()-66}); // This is shown if value is true or >0		
-				
+		 		maingame.hud.setWidget("BOSSKEY",{widget:"bool",value:0,tileset:"hud",frame:5,dx:gbox.getScreenW()-30,dy:gbox.getScreenH()-66}); // This is shown if value is true or >0
+
 		 		maingame.hud.setWidget("lblkey",{widget:"blit",value:6,tileset:"hud",dx:gbox.getScreenW()-30,dy:gbox.getScreenH()-50});
 		 		maingame.hud.setWidget("lblcoin",{widget:"blit",value:7,tileset:"hud",dx:gbox.getScreenW()-30,dy:gbox.getScreenH()-30});
-		 	
+
 				tilemaps={
 					_defaultblock:100, // The block that is over the borders (a wall)
 					queststatus:{} // Every step the player does, is marked here (opened doors, sections cleared etc)
 				};
-			
+
 				 gbox.addObject({
 					id:"bg",
 					group:"background",
@@ -147,20 +147,21 @@
 						gbox.blit(gbox.getBufferContext(),gbox.getCanvas("tileslayer"),{dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),sourcecamera:true});
 					}
 				  });
-			  
+
 				gbox.addObject({
 					id:"player",
 					group:"player",
 					tileset:"player",
+					framecountertax:60,
 					zindex:0, // Needed for zindexed objects
 					stilltimer:0, // is used to block the player while attacking (a la zelda!)
 					invultimer:0, // Custom attribute. A timer that keep invulnerable.
 					isPaused:false, // Pauses the player during dialogues, cutscenes etc.
-					
+
 					doPause:function(p) {
 						this.isPaused=p;
 					},
-					
+
 					initialize:function() {
 						toys.topview.initialize(this,{
 							haspushing:true,
@@ -181,11 +182,11 @@
 							}
 						});
 					},
-					
+
 					collisionEnabled:function() { // Disable collisions when the game is on hold, the player is dead or invulnerable
 						return !maingame.gameIsHold()&&!this.killed&&!this.invultimer&&!this.isPaused;
 					},
-					
+
 					hitByBullet:function(by) {
 						if (this.collisionEnabled()) { // If collison are enabled...
 							maingame.hud.addValue("health","value",-by.power); // Decrease power
@@ -200,7 +201,7 @@
 							return by.undestructable; // Destroy or not a bullet (decided by the bullet itself)
 						} else return true; // Bullets are ignored
 					},
-					
+
 					kill:function(by){
 						gbox.hitAudio("die");
 						this.frame=8;
@@ -209,13 +210,13 @@
 						this.killed=true;
 						maingame.playerDied({wait:50});
 					},
-					
+
 					attack:function() {
 						gbox.hitAudio("sword");
 
 						this.stilltimer=10; // Stay still for a while
 						this.frame=(this.facing==toys.FACE_UP?9:(this.facing==toys.FACE_DOWN?10:11));
-						
+
 						switch (maingame.hud.getValue("weapon","value")) {
 							case 0: { // Sword
 								toys.topview.fireBullet("playerbullets",null,{
@@ -257,25 +258,22 @@
 									angle:toys.FACES_ANGLE[this.facing],
 									spritewalls:"walls",
 									gapy:8 // Avoid wall collision on start
-								}); 
+								});
 								break;
 							}
 						}
-						
+
 					},
-					
+
 					first:function() {
 						if (this.stilltimer) this.stilltimer--;
 						if (this.invultimer) this.invultimer--;
-						
-						// Counter
-						this.counter=(this.counter+1)%60;
 						if (this.stilltimer||maingame.gameIsHold()||this.isPaused||this.killed)
 							toys.topview.controlKeys(this,{}); // Stays still. No key is moving! :)
 						else
 							toys.topview.controlKeys(this,{left:"left",right:"right",up:"up",down:"down"}); // Moves (if not attacking)
 						toys.topview.handleAccellerations(this);
-						toys.topview.handleGravity(this); // z-gravity					
+						toys.topview.handleGravity(this); // z-gravity
 						toys.topview.applyForces(this); // Apply forces
 						toys.topview.applyGravity(this); // z-gravity
 						toys.topview.tileCollision(this,tilemaps.map,"map",tilemaps._defaultblock); // tile collisions
@@ -283,7 +281,7 @@
 						toys.topview.spritewallCollision(this,{group:"walls"}); // Doors and tresaure chests are sprites that acts like a wall.
 						toys.topview.adjustZindex(this);
 						if (!this.stilltimer&&!this.killed) toys.topview.setFrame(this); // set the right animation frame (if not attacking)
-						
+
 						if (!this.stilltimer&&!this.isPaused&&!maingame.gameIsHold()&&!this.killed)
 							if (gbox.keyIsHit("a"))
 								this.attack();
@@ -297,10 +295,10 @@
 									maingame.hud.addValue("weapon","value",1);
 								}
 							}
-						
+
 					},
 					blit:function() {
-					
+
 						if ((this.invultimer%2)==0) {
 							// Shadowed object. First draws the shadow...
 							gbox.blitTile(gbox.getBufferContext(),{tileset:this.shadow.tileset,tile:this.shadow.tile,dx:this.x,dy:this.y+this.h-gbox.getTiles(this.shadow.tileset).tileh+4,camera:this.camera});
@@ -308,25 +306,26 @@
 							gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
 						}
 					}
-	
+
 			  });
-			
+
 			};
-			
+
 		// Add a bonus item. It jumps a while and then disappear.
 		maingame.addBonus=function(x,y,type,id,expire) {
 				var frames;
-				
+
 				switch (type) {
 					case "coin": {frames={ standdown:{ speed:2, frames:[0,1,2,3,4,5] }  }; break } // Rotating coin
 					case "arrow": {frames={ standdown:{ speed:3, frames:[6,7] }  }; break } // Blinking arrow icon
 					case "SMALLKEY": {frames={ standdown:{ speed:3, frames:[8,9] }  }; break } // Blinking small key
 					case "BOSSKEY": {frames={ standdown:{ speed:3, frames:[10,11] }  }; break } // Blinking small key
 				}
-				
-				
+
+
 				 gbox.addObject({
 					group:"bonus",
+					framecountertax:60,
 					questid:id,
 					tileset:"bonus",
 					zindex:0, // Needed for zindexed objects
@@ -337,22 +336,19 @@
 					expiretime:(expire==null?100:(expire==0?null:expire)),
 					unpicktime:10,
 					frames:frames, // You can specify attributes outside from the initialization. Are kept instead the default one.
-							
+
 					initialize:function() {
 						toys.topview.initialize(this,{
 							shadow:{tileset:"shadows",tile:0}
 						});
 					},
-					
+
 					first:function() {
 						if ((this.expiretime!=null)&&this.expiretime) this.expiretime--;
 						if (this.unpicktime) this.unpicktime--;
 						if (this.expiretime===0) {
 							gbox.trashObject(this);
 						} else if (objectIsAlive(this)) {
-							
-							// Counter
-							this.counter=(this.counter+1)%60;
 							toys.topview.handleAccellerations(this);
 							toys.topview.handleGravity(this); // z-gravity
 							toys.topview.applyForces(this); // Apply forces
@@ -377,7 +373,7 @@
 												maingame.startDialogue("arrowstutorial"); // Explain how to use arrows
 												tilemaps.queststatus["arrowstutorial"]=true;
 											}
-											
+
 											tilemaps.queststatus["floor2arrows"]=true; // Arrows picked
 											maingame.hud.setValue("weapon","frames",[0,1]); // Add arrows to the inventory (0: sword, 1: arrows)
 											break;
@@ -404,11 +400,11 @@
 							gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
 						}
 					}
-		
+
 				  });
-		
+
 		}
-		
+
 		// Changes a tile in the map. It also adds smoke if asked.
 		maingame.setTileInMap=function(x,y,tile,smoke) {
 			help.setTileInMap(gbox.getCanvasContext("tileslayer"),tilemaps.map,x,y,tile);
@@ -418,22 +414,22 @@
 				maingame.addSmoke({x:x*ts.tilew,y:y*ts.tilew,h:ts.tileh,w:ts.tilew,hh:ts.tilehh,hw:ts.tilehw,camera:true});
 			}
 		}
-		
+
 		// Add the "QUEST CLEAR" message
 		maingame.addQuestClear=function(msg) {
 			if (msg==null) gbox.hitAudio("default-menu-confirm"); // Switch sound
 			toys.generate.sparks.popupText(gbox.getObject("player","player"),"sparks",null,{font:"big",jump:6,text:(msg==null?"QUEST CLEAR!":msg),keep:20});
 		}
-		
+
 		// Add spreading smoke on an object
 		maingame.addSmoke=function(ob,color) {
 			// Since camera is not specified (will be into the initializator), is added on the spark instead from the created object
 			toys.generate.sparks.simple(ob,"sparks",null,{camera:true,animspeed:2,accy:-3,accx:-3,tileset:(color==null?"flame-white":color)});
 			toys.generate.sparks.simple(ob,"sparks",null,{camera:true,animspeed:2,accy:-3,accx:3,tileset:(color==null?"flame-white":color)});
 			toys.generate.sparks.simple(ob,"sparks",null,{camera:true,animspeed:2,accy:3,accx:-3,tileset:(color==null?"flame-white":color)});
-			toys.generate.sparks.simple(ob,"sparks",null,{camera:true,animspeed:2,accy:3,accx:3,tileset:(color==null?"flame-white":color)});		
+			toys.generate.sparks.simple(ob,"sparks",null,{camera:true,animspeed:2,accy:3,accx:3,tileset:(color==null?"flame-white":color)});
 		}
-		
+
 		// Add a tresaure chest
 		maingame.addChest=function(x,y,id,animated,cont,contid,expi) {
 			var td=gbox.getTiles(tilemaps.map.tileset);
@@ -448,7 +444,7 @@
 				content:cont,
 				contentid:contid,
 				expire:expi,
-						
+
 				initialize:function() {
 					toys.topview.initialize(this,{
 						shadow:{tileset:"shadows",tile:0},
@@ -457,7 +453,7 @@
 						}
 					});
 				},
-				
+
 				doPlayerAction:function(by) { // When used
 					if (this.questid!=null) tilemaps.queststatus[this.questid]=true;
 					gbox.hitAudio("explosion");
@@ -465,7 +461,7 @@
 					maingame.addBonus(this.x,this.y,this.content,this.contentid,this.expire); // Generate the content bonus
 					gbox.trashObject(this); // and disappear
 				},
-				
+
 				first:function() {
 					toys.topview.handleGravity(this); // z-gravity
 					toys.topview.applyGravity(this); // z-gravity
@@ -480,11 +476,11 @@
 						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
 					}
 				}
-	
+
 			  });
 			if (animated) maingame.addSmoke(ob);
 		}
-		
+
 		// Add a door
 		maingame.addDoor=function(id,tileset,x,y,animated,openwith) { // A door constructor. These doors opens shaking and smoking, a la Zelda
 		  	var door=toys.topview.makedoor("walls",id,tilemaps.map,{whileMoving:function(){
@@ -512,7 +508,7 @@
 				}
 			}
 		}
-		
+
 		// Starts a dialogue
 		maingame.startDialogue=function(id,pause) {
 			if ((maingame.difficulty==0)||(!dialogues[id].istutorial)) { // dialogues marked as tutorial are shown only on easy. This flag is in the dialogue itself.
@@ -535,11 +531,11 @@
 						gbox.trashObject(this); // Trash the dialogue itself.
 					}
 				}
-			
+
 				});
 			}
 		}
-		
+
 		// Add a still object. Are sprites that supports the z-index (houses, trees.) You can walk around these objects
 		maingame.addBlock=function(x,y,tileset,frame) {
 			gbox.addObject({
@@ -549,7 +545,7 @@
 				x:x,
 				y:y,
 				frame:frame,
-								
+
 				initialize:function() {
 					toys.topview.initialize(this); // Any particular initialization. Just the auto z-index
 				},
@@ -559,10 +555,10 @@
 						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
 					}
 				}
-	
+
 			  });
 		}
-		
+
 		// Add a npc (Not Playing Charachter)
 		maingame.addNpc=function(x,y,still,dialogue,questid,talking,silence) {
 			// An easy way to create an NPC.
@@ -576,25 +572,24 @@
 				myDialogue:dialogue,
 				iamTalking:false,
 				silence:silence,
+				framecountertax:12,
 				shadow:{tileset:"shadows",tile:0},
 				frames:{
 					still:{ speed:6, frames:still },
 					talking:{ speed:6, frames:(talking==null?still:talking) }
 				},
-				
+
 				doPlayerAction:function(sw) {
-					if (this.silence) toys.generate.audio.fadeOut(this,"background",null,{channel:"bgmusic"}); 
+					if (this.silence) toys.generate.audio.fadeOut(this,"background",null,{channel:"bgmusic"});
 					this.iamTalking=true; // go in talking mode
 					maingame.startDialogue(this.myDialogue); // Starts its dialogue. Is another object because of z-index
 				},
-				
+
 				initialize:function() {
 					toys.topview.initialize(this); // Any particular initialization. Just the auto z-index
 				},
-				
+
 				first:function(by) {
-					this.counter=(this.counter+1)%12;
-					
 					if (this.iamTalking) {
 						this.frame=help.decideFrame(this.counter,this.frames.talking);
 						if (!gbox.getObject("foreground","dialogue")) {// Check if the dialogue ended
@@ -607,8 +602,8 @@
 					} else
 						this.frame=help.decideFrame(this.counter,this.frames.still);
 				},
-				
-				
+
+
 				blit:function() {
 					if (gbox.objectIsVisible(this)) {
 						// Shadowed object. First draws the shadow...
@@ -617,10 +612,10 @@
 						gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
 					}
 				}
-	
+
 			  });
 		}
-		
+
 		// Add an enemy
 		maingame.addEnemy=function(id,type,x,y,cloud) {
 			var td=gbox.getTiles(tilemaps.map.tileset);
@@ -637,17 +632,17 @@
 						y:y*td.tileh,
 						switchedon:false,
 						frame:0,
-						
+
 						changeSwitch:function(sw) {
 							this.switchedon=(sw?true:false); // The switch is on
 							this.frame=(sw?1:0); // Change image
 							if (this.questid!=null) tilemaps.queststatus[this.questid]=(sw?true:false); // Mark the quest as done
 						},
-						
+
 						initialize:function() {
 							toys.topview.initialize(this); // Any particular initialization. Just the auto z-index
 						},
-						
+
 						hitByBullet:function(by) {
 							if (by._canhitswitch&&!this.switchedon) { // if is hit by bullet
 								gbox.hitAudio("default-menu-option");
@@ -655,16 +650,16 @@
 								maingame.addQuestClear(); // Say "quest clear"
 							}
 						},
-						
-						
+
+
 						blit:function() {
-							
+
 							if (gbox.objectIsVisible(this)) {
 								// Then the object. Notes that the y is y-z to have the "over the floor" effect.
 								gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
 							}
 						}
-			
+
 					  });
 					break;
 				}
@@ -673,15 +668,16 @@
 						id:id,
 						group:"foes",
 						tileset:"foe1",
+						framecountertax:60,
 						zindex:0, // Needed for zindexed objects
 						invultimer:0, // Custom attribute. A timer that keep invulnerable.
 						stilltimer:0, // Custom attribute. A timer that keep the enemy still.
 						x:x*td.tilew,
 						y:y*td.tileh,
-								
+
 						initialize:function() {
 							toys.topview.initialize(this,{
-	
+
 								health:3, // Custom attribute. Indicates the strength.
 								shadow:{tileset:"shadows",tile:0},
 								frames:{
@@ -696,7 +692,7 @@
 								}
 							});
 						},
-						
+
 						kill:function(by){
 							gbox.hitAudio("hurt");
 							toys.generate.sparks.simple(this,"sparks",null,{animspeed:2,accy:-3,tileset:"flame-blue"});
@@ -705,7 +701,7 @@
 							if (help.random(0,2)==0) maingame.addBonus(this.x,this.y,"coin"); // reward with a coin, sometime
 							gbox.trashObject(this); // Vanish!
 						},
-						
+
 						attack:function() {
 							if (gbox.objectIsVisible(this)) gbox.hitAudio("hit"); // Only visible enemies plays audio: audio heard without seeying anything is confusing.
 							this.stilltimer=10; // Stay still for a while
@@ -730,10 +726,10 @@
 								angle:toys.FACES_ANGLE[this.facing],
 								spritewalls:"walls",
 								gapy:7 // Avoid wall collision on start
-							}); 
-							
+							});
+
 						},
-						
+
 						hitByBullet:function(by) {
 							if (!this.invultimer) { // If is not invulnerable
 								this.health-=by.power; // Decrease power
@@ -747,15 +743,12 @@
 								return by.undestructable; // Destroy or not a bullet (decided by the bullet itself)
 							}
 						},
-						
+
 						first:function() {
 							if (this.stilltimer) this.stilltimer--;
 							if (this.invultimer) this.invultimer--;
-							
+
 							if (objectIsAlive(this)) {
-								
-								// Counter
-								this.counter=(this.counter+1)%60;
 								if (!this.killed) {
 									if (!this.stilltimer) toys.topview.wander(this,tilemaps.map,"map",100,{speed:1,minstep:20,steprange:150}); // tile collisions
 									if ((!this.stilltimer)&&toys.timer.randomly(this,"fire",{base:50,range:50})) this.attack(); // Fires randomly
@@ -770,7 +763,7 @@
 									if (!this.stilltimer) toys.topview.setFrame(this); // set the right animation frame (if not attacking - which has still frame)
 									var pl=gbox.getObject("player","player");
 									if (!pl.initialize&&pl.collisionEnabled()&&(toys.topview.collides(this,pl))) pl.hitByBullet({power:1}); // If colliding with the player, hit with power 1
-									
+
 								}
 							}
 						},
@@ -782,19 +775,19 @@
 								gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y+this.z,camera:this.camera,fliph:this.fliph,flipv:this.flipv});
 							}
 						}
-			
+
 					  });
 					 break;
 				}
-			}		
+			}
 			if (cloud) maingame.addSmoke(ob,"flame-blue");
 			return ob;
 		}
-		
+
 		  gbox.go();
-		  
+
 	}
-	
+
 	// BOOTSTRAP
 	gbox.onLoad(function () {
 		/*
@@ -848,7 +841,7 @@
 					{img:"_bin/right/up/hit 2.png"},
 					{img:"_bin/right/up/hit 3.png"},
 					{img:"_bin/right/up/hit 4.png"}
-				
+
 				],
 				[
 					{img:"_bin/foes_1_up.png"},
@@ -857,7 +850,7 @@
 					{img:"_bin/foes_1_down_2.png"},
 					{img:"_bin/foes_1_left.png"},
 					{img:"_bin/foes_1_left_2.png"}
-					
+
 				],
 				[
 					{img:"_bin/shadow-small.png"},
@@ -883,14 +876,14 @@
 					{img:"_bin/hud-bosskey.png"},
 					{img:"_bin/hud-smallkey.png"},
 					{img:"_bin/hud-coin.png"},
-					
+
 				],
 				[
 					{img:"_bin/smoke 1.png"},
 					{img:"_bin/smoke 2.png"},
 					{img:"_bin/smoke 3.png"},
 					{img:"_bin/smoke 4.png"},
-					
+
 					{img:"_bin/smoke 1.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:130,g:2,b:252,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:0,g:0,b:0,a:255}}]}},
 					{img:"_bin/smoke 2.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:130,g:2,b:252,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:0,g:0,b:0,a:255}}]}},
 					{img:"_bin/smoke 3.png",filter:{replace:[{from:{r:255,g:255,b:255,a:255},to:{r:85,g:0,b:145,a:255}},{from:{r:76,g:76,b:76,a:255},to:{r:0,g:0,b:0,a:255}}]}},
@@ -943,19 +936,20 @@
 		});
 	return;
 	*/
-	
+
 
 		help.akihabaraInit({title:"The Legend Of Sadness",splash:{footnotes:["Musics by: Greenleo, Graulund, Robert Jaret.","Full credits on ending title."]}});
 
 		// We are not going to use faces for dialogues
 		noface={ noone:{ x:10, y:170,box:{x:0,y:160,w:gbox.getScreenW(),h:60,alpha:0.5} } };
-		
+
 		audioserver="resources/audio/"
 
 		gbox.addBundle({file:"resources/tlol/bundle.js"}); // Audio, sprites, fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code, like in Capman.
-		
+
 		gbox.loadAll(go);
 	}, false);
 
 	</script>
 </html>
+

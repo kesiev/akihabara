@@ -16,9 +16,9 @@
 // ---
 // Copyright (c) 2010 Francesco Cottone, http://www.kesiev.com/
 // ---
-	
+
 		  // Game-specific
-		  
+
 		  var maingame;
 		  var scroller;
 		  var audioserver;
@@ -26,22 +26,22 @@
 		  var faces={};
 		  var stages={};
 		  var enemies={};
-		  
-		
-		  
+
+
+
 		  function defaultSpark(th) { // this is a little hack: this function can be used for default bullet sparks, for smaller and smarter code
 		  	toys.generate.sparks.simple(th,"sparks",null,{animspeed:2,tileset:"spark"});
 		  }
-		  
+
 		  function go() {
 		 	gbox.setGroups(["background","player","playerbullets","foes","foesbullets","sparks","foreground","gamecycle"]);
 			gbox.setAudioChannels({bgmusic:{volume:0.8},sfx:{volume:1.0}});
-		 	
+
 		 	maingame=gamecycle.createMaingame("gamecycle","gamecycle");
-		 
+
 		  // No level intro animation
 		  maingame.gameIntroAnimation=function() { return true; }
-		  
+
 		   // Title intro
 		  maingame.gameTitleIntroAnimation=function(reset) {
 			  	if (reset) {
@@ -57,11 +57,11 @@
 		  				toys.fullscreen.fadein(this,"flash",gbox.getBufferContext(),{fadespeed:0.05,color:gbox.COLOR_WHITE});
 		  			else
 		  				gbox.blitFade(gbox.getBufferContext(),{alpha:1});
-		  				
+
 		  			toys.logos.crossed(this,"crosser",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:20,speed:2,gapx:250,alpha:0.5,audioreach:"megaexplosion"});
 		  		}
 		  	},
-		  	
+
 		  // Change level
 		  maingame.changeLevel=function(level) {
 		  	if (level==null) level="stage1";
@@ -75,7 +75,7 @@
 		  	gbox.trashGroup("sparks");
 		  	gbox.trashGroup("foreground");
 		  	gbox.purgeGarbage(); // Since we're starting, we can purge all now
-			
+
 			// This object handles the script of each level. First prepares the scroller and then does the game actions.
 			gbox.addObject({
 				id:"stagehandler",
@@ -93,7 +93,7 @@
 			gbox.playAudio(stages[stages.currentstage].music);
 			this.newLife();
 		  }
-		  
+
 		  // Custom level handler. We will call this for passing from a stage to another. For
 		  // flexibility, we will check if the destination stage exists. If yes, the stage is
 		  // changed else the game ends. In your games you can just call the changeLevel, if you're
@@ -104,7 +104,7 @@
 		  	else // else... :)
 				maingame.gameIsCompleted(); // The game is completed
 		  }
-		  
+
 		    // New life
 		  maingame.newLife=function(up) {
 			toys.shmup.spawn(gbox.getObject("player","player"),{health:3,invul:50,weapon:0});
@@ -112,7 +112,7 @@
 
 			// End level animation
 		   maingame.endlevelIntroAnimation=function(reset) { return true }
-		  	
+
 		  // Game ending
 		  maingame.gameEndingIntroAnimation=function(reset){
 		  	if (reset) {
@@ -122,16 +122,16 @@
 		  		return toys.dialogue.render(this,"intro-animation",dialogues.titles);
 		  	}
 		  }
-		  
+
 		  // Game initialization
-		 
+
 		  maingame.initializeGame=function() {
 		 	// Build hud
 		 	maingame.hud.setWidget("label",{widget:"label",font:"small",value:"1UP",dx:10,dy:10,clear:true});
 		 	maingame.hud.setWidget("score",{widget:"label",font:"small",value:0,dx:30,dy:25,prepad:10,padwith:" ",clear:true});
 		 	maingame.hud.setWidget("lives",{widget:"symbols",tiles:[0],minvalue:0,value:3-maingame.difficulty,maxshown:3,tileset:"symbols",dx:10,dy:gbox.getScreenH()-23,gapx:16,gapy:0});
 
-			// Add player			
+			// Add player
 			 gbox.addObject({
 		  	id:"player",
 		  	group:"player",
@@ -139,18 +139,18 @@
 		  	weapon:0, // current weapon
 		  	invul:0, // Invulnerability timer
 		  	respawntimer:0, // respawn timer
-		  	
+
 		  	powerUp:function() {
 		  		if (this.weapon<2) {
 		  			this.weapon++;
 		  			toys.generate.sparks.popupText(this,"sparks",null,{font:"bigred",jump:6,text:"POWER LV."+(this.weapon+1),keep:10});
 		  		}
 		  	},
-		  	
+
 		  	makeInvulnerable:function(t) {
 		  		this.invul=t;
 		  	},
-			
+
 		  	fireBullet:function() {
 		  		gbox.hitAudio("laser");
 		  		if (this.weapon==0) { // single shot
@@ -163,9 +163,9 @@
 		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},acc:8,angle:4.9});
 		  			toys.shmup.fireBullet("playerbullets",null,{collidegroup:"foes",from:this,upper:true,tileset:"bulletbig",spark:function(th){defaultSpark(th)},frames:{speed:1,frames:[0]},acc:8,angle:4.7});
 				 }
-		  	
+
 		  	},
-			
+
 			initialize:function() {
 				toys.shmup.initialize(this,{
 					bounds:{x:0,y:50,w:gbox.getScreenW(),h:gbox.getScreenH()-50},
@@ -175,11 +175,11 @@
 					}
 				});
 			},
-			
+
 			collisionEnabled:function() {
 				return !maingame.gameIsHold()&&!this.killed&&!this.invul;
 			},
-			
+
 			kill:function(by){
 				/*
 				gbox.hitAudio("megaexplosion");
@@ -191,18 +191,15 @@
 	  			this.killed=true;
 	  			this.respawntimer=20;
 		  	},
-		  	
+
 		  	hitByBullet:function(by) { // ignore bullets if the ship is untouchable
 		  		if (this.collisionEnabled()) {
-		  			toys.shmup.hitByBullet(this,by); 
+		  			toys.shmup.hitByBullet(this,by);
 		  			this.makeInvulnerable(10);
 		  		} else return true;
 		  	},
-		  	
+
 		  	first:function() {
-		  	
-		  		// Counter
-		  		this.counter=(this.counter+1)%10;
 				if (!this.killed) {
 					toys.shmup.applyForces(this); // Apply forces
 					toys.shmup.controlKeys(this,{left:"left",right:"right",up:"up",down:"down"}); // Moves
@@ -222,7 +219,7 @@
 						else maingame.newLife(); // respawn
 					}
 				}
-				
+
 		  	},
 		  	blit:function() {
 		  		if (!this.killed) // show is not killed and invul is pair (so it blinks during invulnerability)
@@ -230,15 +227,15 @@
 		  	}
 
 		  });
-		  
-		
+
+
 		}
-		
-		
+
+
 		  gbox.go();
-		  
+
 	}
-	
+
 	// BOOTSTRAP
 	gbox.onLoad(function () {
 		/*
@@ -248,7 +245,7 @@
 					{img:"_bin/ship_1.png"},
 					{img:"_bin/ship_1_1.png"},
 					{img:"_bin/ship_1_2.png"},
-					
+
 					{img:"_bin/ship_1.png",filter:{color:{r:255,g:255,b:255,a:255}}}
 				],
 				[
@@ -266,7 +263,7 @@
 					{img:"_bin/explosion 3.png"},
 					{img:"_bin/explosion 4.png"},
 					{img:"_bin/explosion 5.png"},
-					{img:"_bin/explosion 6.png"}					
+					{img:"_bin/explosion 6.png"}
 				],
 				[
 					{img:"_bin/bullet_small_1.png"},
@@ -306,22 +303,23 @@
 				[
 					{img:"_bin/solitude-girl_2_1.png"},
 					{img:"_bin/solitude-girl_2_2.png"},
-					{img:"_bin/solitude-evil.png"},	
+					{img:"_bin/solitude-evil.png"},
 				]
-				
-				
+
+
 			]
 		});
 	return;*/
-	
+
 		help.akihabaraInit({title:"Solitude",splash:{footnotes:["Musics by: AndyExpandy, Rich Vreeland, NE7.","Full credits on ending title."]}});
-		
+
 		audioserver="resources/audio/";
 		gbox.addBundle({file:"resources/solitude/bundle.js"}); // Audio, sprites, fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code, like in Capman.
 		// Have a look to the resource file. Solitude implements some sort of "resource unpacking" before using them.
-		
+
 		gbox.loadAll(go);
 	}, false);
 
 	</script>
 </html>
+

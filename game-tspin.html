@@ -16,25 +16,25 @@
 
 
 		  // Game-specific
-		
+
 		  var maingame;
 		  var mainmenu;
-		  
+
 		  function go() {
-		  
+
 		  	gbox.setGroups(["background","field","sparks","gamecycle"]);
 		  	gbox.setAudioChannels({bgmusic:{volume:0.8},sfx:{volume:1.0}});
 
 		  	maingame=gamecycle.createMaingame("gamecycle","gamecycle");
 		  	maingame.selectedoptions=[]; // Cache the previous selected options
-		  	
+
 		  	mainmenu={labels:[],id:[],submenu:[]};
 
 		  	for (var i in block.gamemodes) {
 		  		mainmenu.labels.push(saveme(block.gamemodes[i].year+" "+block.gamemodes[i].label+(block.gamemodes[i].notes?" ("+block.gamemodes[i].notes.length+")":"")));
 		  		mainmenu.id.push(i);
 		  	}
-		  	
+
 		  	// The full game cycle is handled by the engine
 		  	maingame.gameIntroAnimation=function(reset) { return true; }
 		  	maingame.levelIntroAnimation=function(reset) { return true; }
@@ -65,7 +65,7 @@
 
 
 
-		  	
+
 		  	maingame.gameMenu=function(reset) {
 		  		if (reset) {
 		  			toys.resetToy(this,"mode");
@@ -108,19 +108,19 @@
 		  			return false;
 		  		}
 		  	},
-		  
+
 		 	 maingame.initializeGame=function() {
 		 			gbox.addObject({
 						group:"field",
 						gameended:false,
 						myblock:null,
-						
+
 						initialize:function() {
 							this.myblock=block.createNew(["default",block.gamemodes[maingame.gamemode].modes[maingame.submode].id]);
 							block.setgraphics(this.myblock,{x:120,y:45,surfaceid:"tsurface"});
 							block.begin(this.myblock);
 						},
-						
+
 						first:function(){
 							gbox.blitFade(gbox.getBufferContext(),{alpha:1});
 							block.kgboxtovkbd(this.myblock);
@@ -129,18 +129,18 @@
 								this.gameended=true;
 							}
 						},
-						
+
 						blit:function() {
 							block.fieldtoscreen(this.myblock);
 						}
-						
+
 		  			});
 		  	}
-		 	
+
 		  	gbox.go();
-		  
+
 		}
-	
+
 	// BOOTSTRAP
 	gbox.onLoad(function () {
 		/*
@@ -153,7 +153,7 @@
 			]
 		});
 	return;*/
-	
+
 
 		help.akihabaraInit({title:"T-Spin"});
 
@@ -166,10 +166,10 @@
 		gbox.addAudio("hold1",[audioserver+"coin.mp3",audioserver+"coin.ogg"],{channel:"sfx"});
 		gbox.addAudio("gameover1",[audioserver+"bigexplosion.mp3",audioserver+"bigexplosion.ogg"],{channel:"sfx"});
 		gbox.addAudio("move1",[audioserver+"voice_narrator.mp3",audioserver+"voice_narrator.ogg"],{channel:"sfx"});
-		
+
 		gbox.addImage("logo","resources/tspin/logo.png");
 		gbox.addImage("wp","resources/tspin/wp.png");
-		
+
 		gbox.addImage("miscblits","resources/tspin/miscblits.png");
 		gbox.addImage("text","resources/tspin/text2.png");
 		gbox.addImage("brick-tgm","resources/tspin/tgm-blocks.png");
@@ -186,7 +186,7 @@
 		gbox.addImage("smbrick-nes","resources/tspin/nes-blocks-small.png");
 		gbox.addImage("brick-world","resources/tspin/world-blocks.png");
 		gbox.addImage("smbrick-world","resources/tspin/world-blocks-small.png");
-		
+
 		gbox.addImage("hanabi0","resources/tspin/hanabi_blue.png");
 		gbox.addImage("hanabi1","resources/tspin/hanabi_green.png");
 		gbox.addImage("hanabi2","resources/tspin/hanabi_orange.png");
@@ -194,32 +194,32 @@
 		gbox.addImage("hanabi4","resources/tspin/hanabi_red.png");
 		gbox.addImage("hanabi5","resources/tspin/hanabi_waterblue.png");
 		gbox.addImage("hanabi6","resources/tspin/hanabi_yellow.png");
-		
+
 		gbox.addImage("fields","resources/tspin/fields.png");
 		gbox.addImage("spark-tds","resources/tspin/tds-spark.png");
 		gbox.addImage("lock-tds","resources/tspin/perase5.png");
 		gbox.addImage("field-tds","resources/tspin/field-tds.png");
-		
+
 		gbox.addImage("font-small","resources/leavemealone/font.png");
 		gbox.addImage("font","resources/tspin/font.png");
 		gbox.addImage("digits","resources/tspin/digits.png");
 		gbox.addImage("break","resources/tspin/break.png");
 		gbox.addImage("grade","resources/tspin/grade.png");
 		gbox.addImage("medal","resources/tspin/medal.png");
-		
+
 		gbox.addImage("back-01","resources/tspin/back-01.png");
 		gbox.addImage("back-02","resources/tspin/back-02.png");
 		gbox.addImage("back-03","resources/tspin/back-03.png");
-		
+
 		gbox.addFont({id:"small",image:"font-small",firstletter:" ",tileh:8,tilew:8,tilerow:255,gapx:0,gapy:0});
 		gbox.addFont({id:"small-gray",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:32,gapx:0,gapy:0});
 		gbox.addFont({id:"small-blue",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:32,gapx:0,gapy:24});
 		gbox.addFont({id:"small-red",image:"font",firstletter:" ",tileh:8,tilew:8,tilerow:32,gapx:0,gapy:48});
-		
+
 		gbox.addFont({id:"small-digitgray",image:"digits",firstletter:"0",tileh:9,tilew:6,tilerow:32,gapx:132,gapy:90});
 		gbox.addFont({id:"big-digitgray",image:"digits",firstletter:"0",tileh:16,tilew:12,tilerow:32,gapx:0,gapy:161});
 		gbox.addFont({id:"blbig-digitgray",image:"digits",firstletter:"0",tileh:16,tilew:12,tilerow:32,gapx:0,gapy:241});
-	
+
 		gbox.addTiles({id:"fields",image:"fields",tileh:183,tilew:96,tilerow:10,gapx:0,gapy:0}); // the set of fields models
 		gbox.addTiles({id:"field-tds",image:"field-tds",tileh:172,tilew:102,tilerow:1,gapx:0,gapy:0}); // TDS field
 		gbox.addTiles({id:"small-lbl",image:"miscblits",tileh:6,tilew:25,tilerow:6,gapx:129,gapy:113}); // Small labels
@@ -237,7 +237,7 @@
 		gbox.addTiles({id:"spark5",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:322}); // spark
 		gbox.addTiles({id:"spark6",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:344}); // spark
 		gbox.addTiles({id:"spark7",image:"miscblits",tileh:32,tilew:32,tilerow:6,gapx:0,gapy:386}); // spark
-		
+
 		gbox.addTiles({id:"hanabi0",image:"hanabi0",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
 		gbox.addTiles({id:"hanabi1",image:"hanabi1",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
 		gbox.addTiles({id:"hanabi2",image:"hanabi2",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
@@ -246,17 +246,17 @@
 		gbox.addTiles({id:"hanabi5",image:"hanabi5",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
 		gbox.addTiles({id:"hanabi6",image:"hanabi6",tileh:96,tilew:96,tilerow:6,gapx:0,gapy:0}); // hanabi
 
-		
+
 		gbox.addTiles({id:"text1",image:"text",tileh:50,tilew:100,tilerow:3,gapx:0,gapy:0}); // Misc text
 		gbox.addTiles({id:"clear",image:"miscblits",tileh:18,tilew:92,tilerow:3,gapx:204,gapy:232}); // The clear sign
-		
+
 		gbox.addTiles({id:"medal",image:"medal",tileh:12,tilew:15,tilerow:7,gapx:0,gapy:0}); // Medals symbols
 		gbox.addTiles({id:"grade",image:"grade",tileh:24,tilew:90,tilerow:6,gapx:0,gapy:0}); // Grades symbols
 		gbox.addTiles({id:"blgrade",image:"grade",tileh:24,tilew:90,tilerow:6,gapx:0,gapy:216}); // Blinking Grades symbols
 		gbox.addTiles({id:"grade-gm",image:"grade",tileh:32,tilew:90,tilerow:1,gapx:450,gapy:148}); // Grades symbols
 		gbox.addTiles({id:"blgrade-gm",image:"grade",tileh:32,tilew:90,tilerow:1,gapx:450,gapy:364}); // Grades symbols
-		
-		
+
+
 		gbox.addTiles({id:"brick-tgm",image:"brick-tgm",tileh:8,tilew:8,tilerow:10,gapx:0,gapy:0}); // TGM brick set
 		gbox.addTiles({id:"smbrick-tgm",image:"smbrick-tgm",tileh:4,tilew:4,tilerow:10,gapx:0,gapy:0}); // TGM small brick set
 		gbox.addTiles({id:"brick-world",image:"brick-world",tileh:8,tilew:8,tilerow:10,gapx:0,gapy:0}); // TGM WORLD brick set
@@ -273,7 +273,7 @@
 		gbox.addTiles({id:"smbrick-nes",image:"smbrick-nes",tileh:4,tilew:4,tilerow:8,gapx:0,gapy:0}); // TDS small brick set
 
 		gbox.addTiles({id:"head-tgm",image:"miscblits",tileh:33,tilew:101,tilerow:10,gapx:0,gapy:129}); // TGM header
-		
+
 		// Loads external Javascript (like putting these on "<script>" tag, but handled by the resource loader.
 
 		// Loads the "block" engine: a feature rich puzzle-game engine in JS
@@ -282,7 +282,7 @@
 
 		// Uncomment the following line for debugging setups
 		//gbox.addScript({file:"resources/tspin/data/extra/dbg-setups.js",onLoad:function(a){console.log("Enabling debug mode.")}});
-		
+
 		// Basic rotation library
 		gbox.addScript({file:"resources/tspin/data/rot-classic.js"});
 		gbox.addScript({file:"resources/tspin/data/rot-srs.js"});
@@ -299,7 +299,7 @@
 		gbox.addScript({file:"resources/tspin/data/sim-nes.js"});
 		gbox.addScript({file:"resources/tspin/data/sim-tgm.js"});
 		gbox.addScript({file:"resources/tspin/data/sim-tgm2.js"});
-		gbox.addScript({file:"resources/tspin/data/sim-tgm3.js"});		
+		gbox.addScript({file:"resources/tspin/data/sim-tgm3.js"});
 		gbox.addScript({file:"resources/tspin/data/sim-tds.js"});
 
 		gbox.loadAll(go);
@@ -307,3 +307,4 @@
 
 	</script>
 </html>
+
