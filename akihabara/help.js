@@ -106,7 +106,7 @@ var help={
 	* @param {Object} th The object whose counter is being defined.
 	*/
 	defineCounter:function(th) {
-		return th.counter = (th.counter ? (th.counter+1)%(th.framecountertax || 60) : 1);
+		return th.counter = (th.counter ? (th.counter+1)%(th.framecountertax || 10) : 1);
 	},
 
 	/**
