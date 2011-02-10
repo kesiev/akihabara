@@ -91,8 +91,7 @@ var help={
 		return min+Math.floor(Math.random()*range);
 	},
 
-
-	 /**
+	/**
 	* Determines which frame of a given animation to display. Will loop an animation.
 	* @param {Integer} cnt A global frame counter.
 	* @param {Object} anim An object with parameters speed (the animation speed) and frames (the array representing the animation sequence).
@@ -100,6 +99,14 @@ var help={
 	*/
 	decideFrame:function(cnt,anim) {
 		return anim.frames[Math.floor(cnt/anim.speed)%anim.frames.length];
+	},
+
+	/**
+	* Sets a default counter if the object don't have one based on a multiply with framecountertax or a default value.
+	* @param {Object} th The object whose counter is being defined.
+	*/
+	defineCounter:function(th) {
+		return th.counter = (th.counter ? (th.counter+1)%(th.framecountertax || 60) : 1);
 	},
 
 	/**

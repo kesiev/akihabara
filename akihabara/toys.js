@@ -342,15 +342,7 @@ var toys={
 				if (th.haspushing&&(th.toucheddown||th.touchedup||th.touchedleft||th.touchedright)) pref="pushing"; else pref="moving";
 			if (th.flipside)
 				th.fliph=(th.facing==toys.FACE_RIGHT);
-			th.frame=help.decideFrame(this.defineCounter(th),th.frames[pref+toys.FACES[th.facing]]);
-		},
-
-		/**
-		* Sets a default counter if the object don't have one
-		* @param {Object} th The object whose counter is being defined.
-		*/
-		defineCounter:function(th) {
-			return th.counter = (th.counter ? (th.counter+1)%60 : 1);
+			th.frame=help.decideFrame(help.defineCounter(th),th.frames[pref+toys.FACES[th.facing]]);
 		},
 
 		/**
@@ -897,7 +889,7 @@ var toys={
 		*/
 		setFrame:function(th) {
 			if (th.hittimer) th.hittimer--;
-			th.frame=help.decideFrame(th.counter,(th.hittimer?th.frames.hit:th.frames.still));
+			th.frame=help.decideFrame(help.defineCounter(th), (th.hittimer?th.frames.hit:th.frames.still));
 		},
 
 		/**
@@ -1037,7 +1029,6 @@ var toys={
 				if (!this.ended) {
 					if (!this.waitframes&&!this.doframes&&((this.line.waitfor==null)||this.line.waitfor(this))) {
 						this.scriptline++;
-						this.everycnt=-1;
 						if (this.script[this.scriptline]==null)
 							this.ended=true;
 						else {
@@ -1436,13 +1427,13 @@ var toys={
 		setFrame:function(th) {
 			if (th.touchedfloor)
 				if (th.pushing!=toys.PUSH_NONE)
-					th.frame=help.decideFrame(th.counter,th.frames.walking);
+					th.frame=help.decideFrame(help.defineCounter(th),th.frames.walking);
 				else
-					th.frame=help.decideFrame(th.counter,th.frames.still);
+					th.frame=help.decideFrame(help.defineCounter(th),th.frames.still);
 			else if (th.accy>0)
-				th.frame=help.decideFrame(th.counter,th.frames.falling);
+				th.frame=help.decideFrame(help.defineCounter(th),th.frames.falling);
 			else
-				th.frame=help.decideFrame(th.counter,th.frames.jumping);
+				th.frame=help.decideFrame(help.defineCounter(th),th.frames.jumping);
 		},
 
 		/**
