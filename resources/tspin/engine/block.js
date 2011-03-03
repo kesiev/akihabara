@@ -351,6 +351,10 @@ var block={
 		if (setup.linecleardelay!=null) th.config.timing.linecleardelay=this.convertframes(th,setup.linecleardelay);
 		if (setup.forcedlinesevery!=null) th.config.score.forcedlinesevery=setup.forcedlinesevery;
 		if (setup.levelcap!=null) th.config.score.levelcap=setup.levelcap;
+		if (setup.music!=null) {
+			gbox.stopChannel("bgmusic");
+			gbox.playAudio(setup.music);
+		}
 		if (setup.big!=null) {
 			th.config.field.big=setup.big;
 			this.makebigset(th,th.config.field.big);
@@ -1630,6 +1634,7 @@ var block={
 	// --- GAME ENDING
 	
 	stopgame:function(th,withanimation) {
+		gbox.stopChannel("bgmusic");
 		th.running=false;
 		th.beforequitting=block.convertmsec(th,1000);
 		if (th.beforequitting<10) th.beforequitting=10;

@@ -2,7 +2,7 @@
 
 block.roads.gameboy=[ 
 	block.defaults.readygo(),
-	{setup:{gravity:fpc2g(53)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,10]]}]},
+	{setup:{music:"classicslow",gravity:fpc2g(53)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,1]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(49)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,20]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(45)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,30]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(41)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,40]]}]},
@@ -12,7 +12,7 @@ block.roads.gameboy=[
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(22)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,80]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(17)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,90]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(11)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,100]]}]},
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(10)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,110]]}]},
+	{setup:{music:"classicfast",nextstagenumber:true,nextbackground:true,gravity:fpc2g(10)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,110]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(9)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,120]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(8)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,130]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(7)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,140]]}]},
@@ -22,7 +22,7 @@ block.roads.gameboy=[
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(5)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,180]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(4)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,190]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(4)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,200]]}]},
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(3)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,210]]}]},
+	{setup:{music:"classicfaster",nextstagenumber:true,nextbackground:true,gravity:fpc2g(3)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,210]]}]},
 	block.defaults.playforever()
 ];
 

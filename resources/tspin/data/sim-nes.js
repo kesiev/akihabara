@@ -3,7 +3,7 @@
 
 block.roads.nes=[ 
 	block.defaults.readygo(),
-	{setup:{gravity:fpc2g(48)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,10]]}]},
+	{setup:{music:"classicslow",gravity:fpc2g(48)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,10]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(43)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,20]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(38)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,30]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(33)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,40]]}]},
@@ -12,7 +12,7 @@ block.roads.nes=[
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(18)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,70]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(13)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,80]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(8)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,90]]}]},
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(6)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,100]]}]},
+	{setup:{music:"classicfast",nextstagenumber:true,nextbackground:true,gravity:fpc2g(6)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,100]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(5)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,110]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(5)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,120]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(5)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,130]]}]},
@@ -22,7 +22,7 @@ block.roads.nes=[
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(3)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,170]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(3)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,180]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(3)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,190]]}]},
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(2)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,200]]}]},
+	{setup:{music:"classicfaster",nextstagenumber:true,nextbackground:true,gravity:fpc2g(2)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,200]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(2)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,210]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(2)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,220]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(2)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,230]]}]},
@@ -32,7 +32,7 @@ block.roads.nes=[
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(2)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,270]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(2)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,280]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(2)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,290]]}]},
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:fpc2g(1)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,300]]}]},
+	{setup:{music:"classicevil",nextstagenumber:true,nextbackground:true,gravity:fpc2g(1)},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,300]]}]},
 	block.defaults.playforever()
 ];
 

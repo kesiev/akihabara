@@ -9,21 +9,21 @@ block.nextmodels.zeldacustom={bagscount:7,bagscount:0,history:0,starting:"",trie
 
 block.roads.tetrisworlds=[ // Classic Tetris Worlds parameters - http://www.tetrisconcept.net/wiki/Tetris_Worlds
 	block.defaults.readygo(),
-	{setup:{gravity:0.01667},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,10]]}]},
+	{setup:{music:"classicslow",gravity:0.01667},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,10]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.021017},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,20]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.026977},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,30]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.035256},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,40]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.04693},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,50]]}]},
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.06361},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,60]]}]},
+	{setup:{music:"classicfast",nextstagenumber:true,nextbackground:true,gravity:0.06361},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,60]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.0879},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,70]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.1236},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,80]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.1775},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,90]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.2598},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,100]]}]},
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.388},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,110]]}]},
+	{setup:{music:"classicfaster",nextstagenumber:true,nextbackground:true,gravity:0.388},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,110]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.59},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,120]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:0.92},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,130]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:1.46},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,140]]}]},
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:2.36},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,150]]}]},
+	{setup:{music:"classicevil",nextstagenumber:true,nextbackground:true,gravity:2.36},nextstage:[{condition:[["onlock","or","overall","lines",">=",null,150]]}]},
 	block.defaults.playforever()
 ];
 

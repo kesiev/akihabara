@@ -8,28 +8,28 @@ block.nextmodels.tgm3={bag:"0123456",bagscount:0,history:4,starting:"4545",tries
 
 block.roads.tgm3master=[
 	block.defaults.readygo({forcedlinesevery:100,levelcap:999}), // Level is capped to 999, but - since we are checking boosted levels - we go more fare. A torikan will stop the game at 999
-	{setup:{gravity:tgmg2g(4),are:25,das:14,initialdas:14,lockdelay:30,linecleardelay:25},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,30]]}]},
+	{setup:{music:"classicslow",gravity:tgmg2g(4),are:25,das:14,initialdas:14,lockdelay:30,linecleardelay:25},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,30]]}]},
 	{setup:{gravity:tgmg2g(6)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,35]]}]},
 	{setup:{gravity:tgmg2g(8)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,40]]}]},
-	{setup:{gravity:tgmg2g(10)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,50]]}]},
+	{setup:{music:"classicfast",gravity:tgmg2g(10)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,50]]}]},
 	{setup:{gravity:tgmg2g(12)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,60]]}]},
 	{setup:{gravity:tgmg2g(16)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,70]]}]},
 	{setup:{gravity:tgmg2g(32)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,80]]}]},
 	{setup:{gravity:tgmg2g(48)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,90]]}]},
 	{setup:{gravity:tgmg2g(64)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,100]]}]}, // In level based stages, 100th "boostedlevel" is reachable only with line clears.
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:tgmg2g(80)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,120]]}]},
+	{setup:{music:"classicfaster",nextstagenumber:true,nextbackground:true,gravity:tgmg2g(80)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,120]]}]},
 	{setup:{gravity:tgmg2g(96)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,140]]}]},
 	{setup:{gravity:tgmg2g(112)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,160]]}]},
 	{setup:{gravity:tgmg2g(128)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,170]]}]},
 	{setup:{gravity:tgmg2g(144)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,200]]}]},
-	{setup:{nextstagenumber:true,nextbackground:true,gravity:tgmg2g(4)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,220]]}]},
+	{setup:{music:"classicslow",nextstagenumber:true,nextbackground:true,gravity:tgmg2g(4)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,220]]}]},
 	{setup:{gravity:tgmg2g(32)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,230]]}]},
 	{setup:{gravity:tgmg2g(64)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,233]]}]},
-	{setup:{gravity:tgmg2g(128)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,236]]}]},
+	{setup:{music:"classicfast",gravity:tgmg2g(128)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,236]]}]},
 	{setup:{gravity:tgmg2g(160)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,239]]}]},
-	{setup:{gravity:tgmg2g(192)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,243]]}]},
+	{setup:{music:"classicfaster",gravity:tgmg2g(192)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,243]]}]},
 	{setup:{gravity:tgmg2g(224)},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,247]]}]},
-	{setup:{gravity:1},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,251]]}]},
+	{setup:{music:"classicevil",gravity:1},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,251]]}]},
 	{setup:{gravity:2},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,300]]}]},
 	{setup:{nextstagenumber:true,nextbackground:true,gravity:3},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,360]]}]},
 	{setup:{gravity:4},nextstage:[{condition:[["onlock","or","global","boostedlevel",">=",null,400]]}]},
@@ -87,7 +87,7 @@ block.roads.debugtgm3master=[
 
 block.roads.tgm3shirase=[
 	block.defaults.readygo({forcedlinesevery:100,levelcap:1300}), // Level is capped to 1300, but - since we are checking boosted levels - we go more fare. A torikan will stop the game at 999
-	{setup:{gravity:20,are:10,das:8,initialdas:8,lockdelay:18,linecleardelay:4},nextstage:[{condition:[["onlock","or","global","level",">=",null,100]]}]},
+	{setup:{music:"classicevil",gravity:20,are:10,das:8,initialdas:8,lockdelay:18,linecleardelay:4},nextstage:[{condition:[["onlock","or","global","level",">=",null,100]]}]},
 	{setup:{are:10,das:6,initialdas:6,lockdelay:18,linecleardelay:5},nextstage:[{condition:[["onlock","or","global","level",">=",null,200]]}]},
 	{setup:{are:10,das:6,initialdas:6,lockdelay:17,linecleardelay:6},nextstage:[{condition:[["onlock","or","global","level",">=",null,300]]}]},
 	{setup:{are:4,das:6,initialdas:6,lockdelay:15,linecleardelay:0},nextstage:[{condition:[["onlock","or","global","level",">=",null,500]]}]},
