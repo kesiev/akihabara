@@ -473,11 +473,11 @@ var help={
 				cap.audioteam=3; // Quite low performance on playback responsiveness.
 			} else if (navigator.userAgent.match(/Firefox/i)) {
 				cap.audioteam=1; // Testing smaller audioteam
-				cap.audiopositiondelay=0.3; // Ogg playback is slower 0.3 between MP3 playback. Don't know why :)
-				cap.audiocreatemode=1; // Firefox is stalling while downloading lot of things
+				// cap.audiopositiondelay=0.3; // Firefox 4 fixed delayed position reporting! Yay!
+				// cap.audiocreatemode=1; // Firefox 4 fixed the uncompatibility with cloning audio elements! Yay! Yay!
 			} else if (navigator.userAgent.match(/Minefield/i)) {
 				cap.audioteam=1; // Testing smaller audioteam
-				cap.audiocreatemode=1; // Firefox is stalling while downloading lot of things
+				// cap.audiocreatemode=1; // Firefox 4 fixed the uncompatibility with cloning audio elements! Yay! Yay!
 				// Minefield has fixed the 0.3 delay!
 			} else if (navigator.userAgent.match(/khtml/i)&&navigator.userAgent.match(/konqueror/i)) {
 				// Note that audio is not supported in applewebkit mode :(
