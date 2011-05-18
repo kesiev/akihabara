@@ -35,7 +35,7 @@ function go() {
 
     // Change level
     maingame.changeLevel=function(level) {
-        if (level==null) level="stage1"; // First stage
+        if (level === null) level="stage1"; // First stage
         currentstage=level;
         maingame.hud.setValue("stage","value",currentstage); // Level name on the hud!
         gbox.createCanvas("tileslayer",{w:tilemaps[currentstage].w,h:tilemaps[currentstage].h});
@@ -50,8 +50,12 @@ function go() {
         gbox.purgeGarbage(); // Since we're starting, we can purge all now
     
         // Apply some common tilemap handlers to the map. Are the same for all the stages.
-        tilemaps[currentstage].tileIsSolidCeil=function(obj,t){ return (obj.group=="foes"?false:t==0) };
-        tilemaps[currentstage].tileIsSolidFloor=function(obj,t){ return t==0 };
+        tilemaps[currentstage].tileIsSolidCeil=function(obj,t){
+            return (obj.group === "foes"?false:t === 0);
+        };
+        tilemaps[currentstage].tileIsSolidFloor=function(obj,t){
+            return t === 0;
+        };
 
         // Add the stage objects, according to the configured mapobjects
         var current;
@@ -68,40 +72,39 @@ function go() {
         }
         toys.resetToy(maingame,"gametimer"); // Start the timer
         gbox.hitAudio("ingame"); // Start the music
-    }
-
-// Title intro
-maingame.gameTitleIntroAnimation=function(reset) {
-  	if (reset) {
-  		gbox.playAudio("default-music");
-  		toys.resetToy(this,"bouncer");
-  	} else {
-  		gbox.blitFade(gbox.getBufferContext(),{alpha:1});
-  		toys.logos.bounce(this,"bouncer",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:-gbox.getImage("logo").height,accy:0,audiobounce:"hit",floory:gbox.getScreenHH()});
-  	}
-  },
-  
-// End level animation
-maingame.endlevelIntroAnimation=function(reset) {
-  	 if (reset) {
-  		 toys.resetToy(this,"framecounter");
-  		 toys.resetToy(this,"aftercounter");
-  	} else {
-  		gbox.blitText(gbox.getBufferContext(),{font:"big",text:"STAGE CLEAR!",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
-
-  		if (this.hud.getValue("time","value")) { // If there is time left...
-  		
-  			if (toys.timer.every(this,"framecounter",2)) { // Every 2 frames...
-  				gbox.hitAudio("beep");
-  				this.hud.addValue("time","value",-1); // for every second...
-  				this.hud.addValue("score","value",10); // Give 10 points to player 1
-  			}
-  			return false; // Keep here for more bonuses
-  			
-  		} else return toys.timer.after(this,"aftercounter",15); // If there isn't more time, quit after 10 frames
-  		
-  	}
-  },
+    };
+    
+    // Title intro
+    maingame.gameTitleIntroAnimation=function(reset) {
+        if (reset) {
+            gbox.playAudio("default-music");
+            toys.resetToy(this,"bouncer");
+        } else {
+            gbox.blitFade(gbox.getBufferContext(),{alpha:1});
+            toys.logos.bounce(this,"bouncer",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:-gbox.getImage("logo").height,accy:0,audiobounce:"hit",floory:gbox.getScreenHH()});
+        }
+    };
+    
+    // End level animation
+    maingame.endlevelIntroAnimation=function(reset) {
+        if (reset) {
+            toys.resetToy(this,"framecounter");
+            toys.resetToy(this,"aftercounter");
+        } else {
+            gbox.blitText(gbox.getBufferContext(),{font:"big",text:"STAGE CLEAR!",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
+            
+            if (this.hud.getValue("time","value")) { // If there is time left...
+                if (toys.timer.every(this,"framecounter",2)) { // Every 2 frames...
+                    gbox.hitAudio("beep");
+                    this.hud.addValue("time","value",-1); // for every second...
+                    this.hud.addValue("score","value",10); // Give 10 points to player 1
+                }
+                return false; // Keep here for more bonuses
+            } else { 
+                return toys.timer.after(this,"aftercounter",15); // If there isn't more time, quit after 10 frames
+            }
+        }
+    };
 
 // Games conditions
 maingame.gameEvents=function() {
@@ -119,7 +122,7 @@ maingame.gameEvents=function() {
 
 // Game is over when...
 maingame.gameIsOver=function() {
-  return maingame.hud.getValue("lives","value")==0;
+  return maingame.hud.getValue("lives","value") === 0;
 }
 
 // Custom method
