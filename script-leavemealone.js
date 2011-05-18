@@ -61,7 +61,7 @@ go  =  function () {
 
         // Add the stage objects,  according to the configured mapobjects
         var current;
-        for (var i = 0; i< mapobjects[currentstage].items.length; i = i + 1) {
+        for (var i = 0; i < mapobjects[currentstage].items.length; i = i + 1) {
             current = mapobjects[currentstage].items[i];
             switch (current.objecttype) {
                 case "player": 
@@ -84,7 +84,7 @@ go  =  function () {
         }
         else {
             gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
-            toys.logos.bounce(this, "bouncer", {image: "logo", x: gbox.getScreenHW()-gbox.getImage("logo").hwidth, y: -gbox.getImage("logo").height, accy: 0, audiobounce: "hit", floory: gbox.getScreenHH()});
+            toys.logos.bounce(this, "bouncer", {image: "logo", x: gbox.getScreenHW() - gbox.getImage("logo").hwidth, y: -gbox.getImage("logo").height, accy: 0, audiobounce: "hit", floory: gbox.getScreenHH()});
         }
     };
     
@@ -162,7 +162,7 @@ go  =  function () {
 				first: function () {
 					if (gbox.objectIsVisible(this)) {
 						// Counter
-						this.counter = (this.counter+1)%10;
+						this.counter = (this.counter + 1 ) % 10;
 
 						toys.platformer.applyGravity(this); // Apply gravity
 						toys.platformer.auto.horizontalBounce(this); // Bounces horizontally if hit the sideways walls
@@ -184,13 +184,13 @@ go  =  function () {
 						if (pl.collisionEnabled()) {
 							if (help.isSquished(this, pl)) {
 								gbox.hitAudio("hit");
-								pl.multiplier++;
+								pl.multiplier = pl.multiplier + 1;
 								var mp = help.multiplier(pl.multiplier);
-								maingame.hud.addValue("score", "value", this.score*mp);
+								maingame.hud.addValue("score", "value", this.score * mp);
 								gbox.trashObject(this);
 								toys.platformer.bounce(pl, {jumpsize: 10});
 								toys.generate.sparks.bounceDie(this, "sparks", null, {jump: 6, flipv: true});
-								toys.generate.sparks.popupText(this, "sparks", null, {font: "big", jump: 6, text: this.score+(mp>1?"x"+mp: "")+" pts.", keep: 10});
+								toys.generate.sparks.popupText(this, "sparks", null, {font: "big", jump: 6, text: this.score + (mp > 1 ? "x" + mp: "") + " pts.", keep: 10});
 							}
                             else if (gbox.collides(this, pl, 2)) {
 								pl.kill(this);
@@ -213,7 +213,7 @@ go  =  function () {
         // Build hud
         maingame.hud.setWidget("label", {widget: "label", font: "small", value: "1UP", dx: 10, dy: 10, clear: true});
         maingame.hud.setWidget("score", {widget: "label", font: "small", value: 0, dx: 30, dy: 25, prepad: 10, padwith: " ", clear: true});
-        maingame.hud.setWidget("lives", {widget: "symbols", minvalue: 0, value: 3-maingame.difficulty, maxshown: 3, tileset: "tiledfont", tiles: [10], dx: 42, dy: 10, gapx: 8, gapy: 0});
+        maingame.hud.setWidget("lives", {widget: "symbols", minvalue: 0, value: 3 - maingame.difficulty, maxshown: 3, tileset: "tiledfont", tiles: [10], dx: 42, dy: 10, gapx: 8, gapy: 0});
         maingame.hud.setWidget("timelabel", {widget: "label", font: "small", value: "TIME", dx: 0, dy: 10, dw: gbox.getScreenW(), halign: gbox.ALIGN_CENTER, clear: true});
         maingame.hud.setWidget("time", {widget: "label", font: "big", value: 30, dx: 0, dy: 20, dw: gbox.getScreenW(), halign: gbox.ALIGN_CENTER, prepad: 2, padwith: "0", clear: true});
         maingame.hud.setWidget("stage", {widget: "label", font: "small", value: "", postpad: 7, padwith: " ", dx: 0, dy: gbox.getScreenH()-8, clear: true});
@@ -250,7 +250,7 @@ go  =  function () {
             
             first: function () {
                 // Counter
-                this.counter = (this.counter+1)%10;
+                this.counter = (this.counter + 1 ) % 10;
                 if (!this.killed) {
                     toys.platformer.applyGravity(this); // Apply gravity
                     toys.platformer.horizontalKeys(this, {left: "left", right: "right"}); // Moves horizontally
