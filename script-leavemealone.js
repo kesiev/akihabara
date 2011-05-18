@@ -8,259 +8,276 @@ var audioserver;
 var currentstage;       // The stage that is currently playing
 
 go  =  function () {
-    gbox.setGroups(["background","player","foes","sparks","gamecycle"]);
-    gbox.setAudioChannels({bgmusic:{volume:0.8},sfx:{volume:1.0}});
+    gbox.setGroups(["background", "player", "foes", "sparks", "gamecycle"]);
+    gbox.setAudioChannels({bgmusic:{volume:0.8}, sfx:{volume:1.0}});
     
-    maingame = gamecycle.createMaingame("gamecycle","gamecycle");
+    maingame = gamecycle.createMaingame("gamecycle", "gamecycle");
 
     // Game intro
-    maingame.gameIntroAnimation = function(reset){
+    maingame.gameIntroAnimation = function (reset) {
         if (reset) {
-            toys.resetToy(this,"intro-animation");
+            toys.resetToy(this, "intro-animation");
         } else {
-            gbox.blitFade(gbox.getBufferContext(),{alpha:1});
-            return toys.dialogue.render(this,"intro-animation",dialogues.intro);
+            gbox.blitFade(gbox.getBufferContext(), {alpha:1});
+            return toys.dialogue.render(this, "intro-animation", dialogues.intro);
         }
     };
 
     // Game ending
-    maingame.gameEndingIntroAnimation = function(reset){
+    maingame.gameEndingIntroAnimation = function (reset) {
         if (reset) {
-            toys.resetToy(this,"intro-animation");
-            maingame.hud.hideWidgets(["stage","time","timelabel"]); // Hides the timer and the stage label for the ending
+            toys.resetToy(this, "intro-animation");
+            maingame.hud.hideWidgets(["stage", "time", "timelabel"]); // Hides the timer and the stage label for the ending
         } else {
-            gbox.blitFade(gbox.getBufferContext(),{alpha:1});
-            return toys.dialogue.render(this,"intro-animation",dialogues.ending);
+            gbox.blitFade(gbox.getBufferContext(), {alpha:1});
+            return toys.dialogue.render(this, "intro-animation", dialogues.ending);
         }
     };
 
     // Change level
     maingame.changeLevel = function(level) {
-        if (level  ===  null) level = "stage1"; // First stage
+        if (level  ===  null) {
+            level = "stage1"; // First stage
+        }
         currentstage = level;
-        maingame.hud.setValue("stage","value",currentstage); // Level name on the hud!
-        gbox.createCanvas("tileslayer",{w:tilemaps[currentstage].w,h:tilemaps[currentstage].h});
-        gbox.blitTilemap(gbox.getCanvasContext("tileslayer"),tilemaps[currentstage]);
+        maingame.hud.setValue("stage", "value", currentstage); // Level name on the hud!
+        gbox.createCanvas("tileslayer", {w:tilemaps[currentstage].w, h:tilemaps[currentstage].h});
+        gbox.blitTilemap(gbox.getCanvasContext("tileslayer"), tilemaps[currentstage]);
         this.newLife();
     };
 
     // New life
-    maingame.newLife = function(up) {
+    maingame.newLife = function (up) {
         // Cleanup the level.
         gbox.trashGroup("foes");
-        gbox.purgeGarbage(); // Since we're starting, we can purge all now
+        gbox.purgeGarbage(); // Since we're starting,  we can purge all now
     
         // Apply some common tilemap handlers to the map. Are the same for all the stages.
-        tilemaps[currentstage].tileIsSolidCeil = function(obj,t){
+        tilemaps[currentstage].tileIsSolidCeil = function (obj, t) {
             return (obj.group  ===  "foes"?false:t  ===  0);
         };
-        tilemaps[currentstage].tileIsSolidFloor = function(obj,t){
+        tilemaps[currentstage].tileIsSolidFloor = function (obj, t) {
             return t  ===  0;
         };
 
-        // Add the stage objects, according to the configured mapobjects
+        // Add the stage objects,  according to the configured mapobjects
         var current;
-        for (var i = 0;i<mapobjects[currentstage].items.length;i++) {
+        for (var i = 0; i< mapobjects[currentstage].items.length; i = i + 1) {
             current = mapobjects[currentstage].items[i];
             switch (current.objecttype) {
                 case "player":
-                    toys.platformer.spawn(gbox.getObject("player","player"),help.mergeWithModel(current,{accx:0,accy:0})); // Apply to the defined object the model with no acceleration. Notes that the "objecttype" parameter is also merged to the object but ignored.
+                    toys.platformer.spawn(gbox.getObject("player", "player"), help.mergeWithModel(current, {accx:0, accy:0})); // Apply to the defined object the model with no acceleration. Notes that the "objecttype" parameter is also merged to the object but ignored.
                     break;
-                default: // All the other objects are enemies. Depending on the ID, different enemies are spawn.
-                    maingame.addEnemy(current.objecttype,current); // Data are directly taken from the resources data.
+                default: // All the other objects are enemies. Depending on the ID,  different enemies are spawn.
+                    maingame.addEnemy(current.objecttype, current); // Data are directly taken from the resources data.
                     break;
             }
         }
-        toys.resetToy(maingame,"gametimer"); // Start the timer
+        toys.resetToy(maingame, "gametimer"); // Start the timer
         gbox.hitAudio("ingame"); // Start the music
     };
     
     // Title intro
-    maingame.gameTitleIntroAnimation = function(reset) {
+    maingame.gameTitleIntroAnimation = function (reset) {
         if (reset) {
             gbox.playAudio("default-music");
-            toys.resetToy(this,"bouncer");
+            toys.resetToy(this, "bouncer");
         } else {
-            gbox.blitFade(gbox.getBufferContext(),{alpha:1});
-            toys.logos.bounce(this,"bouncer",{image:"logo",x:gbox.getScreenHW()-gbox.getImage("logo").hwidth,y:-gbox.getImage("logo").height,accy:0,audiobounce:"hit",floory:gbox.getScreenHH()});
+            gbox.blitFade(gbox.getBufferContext(), {alpha:1});
+            toys.logos.bounce(this, "bouncer", {image:"logo", x:gbox.getScreenHW()-gbox.getImage("logo").hwidth, y:-gbox.getImage("logo").height, accy:0, audiobounce:"hit", floory:gbox.getScreenHH()});
         }
     };
     
     // End level animation
-    maingame.endlevelIntroAnimation = function(reset) {
+    maingame.endlevelIntroAnimation = function (reset) {
         if (reset) {
-            toys.resetToy(this,"framecounter");
-            toys.resetToy(this,"aftercounter");
+            toys.resetToy(this, "framecounter");
+            toys.resetToy(this, "aftercounter");
         } else {
-            gbox.blitText(gbox.getBufferContext(),{font:"big",text:"STAGE CLEAR!",valign:gbox.ALIGN_MIDDLE,halign:gbox.ALIGN_CENTER,dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH()});
+            gbox.blitText(gbox.getBufferContext(), {font:"big", text:"STAGE CLEAR!", valign:gbox.ALIGN_MIDDLE, halign:gbox.ALIGN_CENTER, dx:0, dy:0, dw:gbox.getScreenW(), dh:gbox.getScreenH()});
             
-            if (this.hud.getValue("time","value")) { // If there is time left...
-                if (toys.timer.every(this,"framecounter",2)) { // Every 2 frames...
+            if (this.hud.getValue("time", "value")) { // If there is time left...
+                if (toys.timer.every(this, "framecounter", 2)) { // Every 2 frames...
                     gbox.hitAudio("beep");
-                    this.hud.addValue("time","value",-1); // for every second...
-                    this.hud.addValue("score","value",10); // Give 10 points to player 1
+                    this.hud.addValue("time", "value", -1); // for every second...
+                    this.hud.addValue("score", "value", 10); // Give 10 points to player 1
                 }
                 return false; // Keep here for more bonuses
             } else { 
-                return toys.timer.after(this,"aftercounter",15); // If there isn't more time, quit after 10 frames
+                return toys.timer.after(this, "aftercounter", 15); // If there isn't more time,  quit after 10 frames
             }
         }
     };
     
     // Games conditions
-    maingame.gameEvents = function() {
+    maingame.gameEvents = function () {
         // Tick the timer
-        if (toys.timer.real(this,"gametimer",{countdown:30,critical:5,audiocritical:"beep"}))
-            gbox.getObject("player","player").kill(); // time is up
-        else
-            maingame.hud.setValue("time","value",toys.getToyValue(this,"gametimer","time")); // Updates timer
-        if (gbox.groupIsEmpty("foes"))
-            if (mapmeta[currentstage].nextLevel)
+        if (toys.timer.real(this, "gametimer", {countdown:30, critical:5, audiocritical:"beep"})) {
+            gbox.getObject("player", "player").kill(); // time is up
+        }
+        else {
+            maingame.hud.setValue("time", "value", toys.getToyValue(this, "gametimer", "time")); // Updates timer
+        }
+        if (gbox.groupIsEmpty("foes")) {
+            if (mapmeta[currentstage].nextLevel) {
                 maingame.gotoLevel(mapmeta[currentstage].nextLevel);
-            else
+            }
+            else {
                 maingame.gameIsCompleted();
+            }
+        }
     };
     
     // Game is over when...
-    maingame.gameIsOver = function() {
-        return maingame.hud.getValue("lives","value")  ===  0;
+    maingame.gameIsOver = function () {
+        return maingame.hud.getValue("lives", "value")  ===  0;
     };
     
     // Custom method
-    maingame.addEnemy = function(type,data) {
+    maingame.addEnemy = function (type, data) {
         switch (type) {
             case "squid":
                 gbox.addObject({
-                group:"foes",
-                tileset:"enemy-goo",
-                score:100,
-                initialize:function() {
-                    toys.platformer.initialize(this,{
+                group:"foes", 
+                tileset:"enemy-goo", 
+                score:100, 
+                initialize:function () {
+                    toys.platformer.initialize(this, {
                         frames:{
-                            still:{ speed:1, frames:[0] },
-                            walking:{ speed:4, frames:[0,1] },
-                            jumping:{ speed:1, frames:[0] },
-                            falling:{ speed:1, frames:[0] },
-                            die: { speed:1,frames:[0] }
-                        },
-                        x:data.x,
-                        y:data.y,
-                        jumpaccy:10,
+                            still:{ speed:1,  frames:[0] }, 
+                            walking:{ speed:4,  frames:[0, 1] }, 
+                            jumping:{ speed:1,  frames:[0] }, 
+                            falling:{ speed:1,  frames:[0] }, 
+                            die: { speed:1, frames:[0] }
+                        }, 
+                        x:data.x, 
+                        y:data.y, 
+                        jumpaccy:10, 
                         side:data.side
 					});
-				},
-				first:function() {
+				}, 
+				first:function () {
 					if (gbox.objectIsVisible(this)) {
 						// Counter
 						this.counter = (this.counter+1)%10;
 
 						toys.platformer.applyGravity(this); // Apply gravity
 						toys.platformer.auto.horizontalBounce(this); // Bounces horizontally if hit the sideways walls
-						if (this.touchedfloor) // If touching the floor...
-							toys.platformer.auto.goomba(this,{moveWhileFalling:true,speed:2}); // goomba movement
-						else // Else...
+						if (this.touchedfloor) { // If touching the floor...
+							toys.platformer.auto.goomba(this, {moveWhileFalling:true, speed:2}); // goomba movement
+						}
+						else {
 							this.accx = 0; // Stay still (i.e. jump only vertically)
-						toys.platformer.auto.dontFall(this,tilemaps[currentstage],"map"); // prevent from falling from current platform
-						toys.platformer.verticalTileCollision(this,tilemaps[currentstage],"map"); // vertical tile collision (i.e. floor)
-						toys.platformer.horizontalTileCollision(this,tilemaps[currentstage],"map"); // horizontal tile collision (i.e. walls)
-						if (toys.platformer.canJump(this)&&toys.timer.randomly(this,"jumper",{base:50,range:50})) this.accy = -this.jumpaccy; // Jump randomly (the toy is resetted the first call)
+						}
+						toys.platformer.auto.dontFall(this, tilemaps[currentstage], "map"); // prevent from falling from current platform
+						toys.platformer.verticalTileCollision(this, tilemaps[currentstage], "map"); // vertical tile collision (i.e. floor)
+						toys.platformer.horizontalTileCollision(this, tilemaps[currentstage], "map"); // horizontal tile collision (i.e. walls)
+						if (toys.platformer.canJump(this) && toys.timer.randomly(this, "jumper", {base:50, range:50})) {
+                            this.accy = -this.jumpaccy; // Jump randomly (the toy is resetted the first call)
+						}
 						toys.platformer.handleAccellerations(this); // gravity/attrito
 						toys.platformer.setFrame(this); // set the right animation frame
-						var pl = gbox.getObject("player","player");
-						if (pl.collisionEnabled())
-							if (help.isSquished(this,pl)) {
+						var pl = gbox.getObject("player", "player");
+						if (pl.collisionEnabled()) {
+							if (help.isSquished(this, pl)) {
 								gbox.hitAudio("hit");
 								pl.multiplier++;
 								var mp = help.multiplier(pl.multiplier);
-								maingame.hud.addValue("score","value",this.score*mp);
+								maingame.hud.addValue("score", "value", this.score*mp);
 								gbox.trashObject(this);
-								toys.platformer.bounce(pl,{jumpsize:10});
-								toys.generate.sparks.bounceDie(this,"sparks",null,{jump:6,flipv:true});
-								toys.generate.sparks.popupText(this,"sparks",null,{font:"big",jump:6,text:this.score+(mp>1?"x"+mp:"")+" pts.",keep:10});
-							} else
-								if (gbox.collides(this,pl,2))
-									pl.kill(this);
+								toys.platformer.bounce(pl, {jumpsize:10});
+								toys.generate.sparks.bounceDie(this, "sparks", null, {jump:6, flipv:true});
+								toys.generate.sparks.popupText(this, "sparks", null, {font:"big", jump:6, text:this.score+(mp>1?"x"+mp:"")+" pts.", keep:10});
+							}
+                            else if (gbox.collides(this, pl, 2)) {
+								pl.kill(this);
+							}
+						}
 					}
 					
-				},
-				blit:function() {
-                    if (gbox.objectIsVisible(this))
-                        gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
+				}, 
+				blit:function () {
+                    if (gbox.objectIsVisible(this)) {
+                        gbox.blitTile(gbox.getBufferContext(), {tileset:this.tileset, tile:this.frame, dx:this.x, dy:this.y, camera:this.camera, fliph:this.side, flipv:this.flipv});
+                    }
                 }
             });
             break;
         }
     };
     
-    maingame.initializeGame = function() {
+    maingame.initializeGame = function () {
         // Build hud
-        maingame.hud.setWidget("label",{widget:"label",font:"small",value:"1UP",dx:10,dy:10,clear:true});
-        maingame.hud.setWidget("score",{widget:"label",font:"small",value:0,dx:30,dy:25,prepad:10,padwith:" ",clear:true});
-        maingame.hud.setWidget("lives",{widget:"symbols",minvalue:0,value:3-maingame.difficulty,maxshown:3,tileset:"tiledfont",tiles:[10],dx:42,dy:10,gapx:8,gapy:0});
-        maingame.hud.setWidget("timelabel",{widget:"label",font:"small",value:"TIME",dx:0,dy:10,dw:gbox.getScreenW(),halign:gbox.ALIGN_CENTER,clear:true});
-        maingame.hud.setWidget("time",{widget:"label",font:"big",value:30,dx:0,dy:20,dw:gbox.getScreenW(),halign:gbox.ALIGN_CENTER,prepad:2,padwith:"0",clear:true});
-        maingame.hud.setWidget("stage",{widget:"label",font:"small",value:"",postpad:7,padwith:" ",dx:0,dy:gbox.getScreenH()-8,clear:true});
+        maingame.hud.setWidget("label", {widget:"label", font:"small", value:"1UP", dx:10, dy:10, clear:true});
+        maingame.hud.setWidget("score", {widget:"label", font:"small", value:0, dx:30, dy:25, prepad:10, padwith:" ", clear:true});
+        maingame.hud.setWidget("lives", {widget:"symbols", minvalue:0, value:3-maingame.difficulty, maxshown:3, tileset:"tiledfont", tiles:[10], dx:42, dy:10, gapx:8, gapy:0});
+        maingame.hud.setWidget("timelabel", {widget:"label", font:"small", value:"TIME", dx:0, dy:10, dw:gbox.getScreenW(), halign:gbox.ALIGN_CENTER, clear:true});
+        maingame.hud.setWidget("time", {widget:"label", font:"big", value:30, dx:0, dy:20, dw:gbox.getScreenW(), halign:gbox.ALIGN_CENTER, prepad:2, padwith:"0", clear:true});
+        maingame.hud.setWidget("stage", {widget:"label", font:"small", value:"", postpad:7, padwith:" ", dx:0, dy:gbox.getScreenH()-8, clear:true});
         
         gbox.addObject({
-            id:"player",
-            group:"player",
-            tileset:"player",
-            multiplier:0,
+            id:"player", 
+            group:"player", 
+            tileset:"player", 
+            multiplier:0, 
             
-            initialize:function() {
-                toys.platformer.initialize(this,{
+            initialize:function () {
+                toys.platformer.initialize(this, {
                     frames:{
-                        still:{ speed:1, frames:[0] },
-                        walking:{ speed:2, frames:[1,2,3,2,1] },
-                        jumping:{ speed:1, frames:[4] },
-                        falling:{ speed:1, frames:[5] },
-                        die:{speed:1,frames:[6] }
+                        still:{ speed:1,  frames:[0] }, 
+                        walking:{ speed:2,  frames:[1, 2, 3, 2, 1] }, 
+                        jumping:{ speed:1,  frames:[4] }, 
+                        falling:{ speed:1,  frames:[5] }, 
+                        die:{speed:1, frames:[6] }
                     }
                 });
-            },
+            }, 
             
-            collisionEnabled:function() {
-                return !maingame.gameIsHold()&&!this.killed;
-            },
+            collisionEnabled:function () {
+                return !maingame.gameIsHold() && !this.killed;
+            }, 
             
-            kill:function(by){
+            kill:function (by) {
                 this.killed = true;
                 gbox.hitAudio("die");
-                maingame.hud.addValue("lives","value",-1); // Decreases lives
-                toys.generate.sparks.bounceDie(this,"sparks",null,{jump:6,flipv:false});
+                maingame.hud.addValue("lives", "value", -1); // Decreases lives
+                toys.generate.sparks.bounceDie(this, "sparks", null, {jump:6, flipv:false});
                 maingame.playerDied({wait:50});
-            },
+            }, 
             
-            first:function() {
+            first:function () {
                 // Counter
                 this.counter = (this.counter+1)%10;
                 if (!this.killed) {
                     toys.platformer.applyGravity(this); // Apply gravity
-                    toys.platformer.horizontalKeys(this,{left:"left",right:"right"}); // Moves horizontally
-                    toys.platformer.verticalTileCollision(this,tilemaps[currentstage],"map"); // vertical tile collision (i.e. floor)
-                    toys.platformer.horizontalTileCollision(this,tilemaps[currentstage],"map"); // horizontal tile collision (i.e. walls)
-                    toys.platformer.jumpKeys(this,{jump:"a",audiojump:"jump"}); // handle jumping
+                    toys.platformer.horizontalKeys(this, {left:"left", right:"right"}); // Moves horizontally
+                    toys.platformer.verticalTileCollision(this, tilemaps[currentstage], "map"); // vertical tile collision (i.e. floor)
+                    toys.platformer.horizontalTileCollision(this, tilemaps[currentstage], "map"); // horizontal tile collision (i.e. walls)
+                    toys.platformer.jumpKeys(this, {jump:"a", audiojump:"jump"}); // handle jumping
                     toys.platformer.handleAccellerations(this); // gravity/attrito
                     toys.platformer.setSide(this); // set horizontal side
                     toys.platformer.setFrame(this); // set the right animation frame
                     // Multiplier reset
-                    if (this.touchedfloor) this.multiplier = 0;
+                    if (this.touchedfloor) {
+                        this.multiplier = 0;
+                    }
                 }
-            },
+            }, 
             
-            blit:function() {
-                if (!this.killed)
-                    gbox.blitTile(gbox.getBufferContext(),{tileset:this.tileset,tile:this.frame,dx:this.x,dy:this.y,camera:this.camera,fliph:this.side,flipv:this.flipv});
+            blit:function () {
+                if (!this.killed) {
+                    gbox.blitTile(gbox.getBufferContext(), {tileset:this.tileset, tile:this.frame, dx:this.x, dy:this.y, camera:this.camera, fliph:this.side, flipv:this.flipv});
+                }
             }
         });
         
         gbox.addObject({
-            id:"bg",
-            group:"background",
-            blit:function() {
-                gbox.centerCamera(gbox.getObject("player","player"),{w:tilemaps[currentstage].w,h:tilemaps[currentstage].h});
-                gbox.blit(gbox.getBufferContext(),gbox.getImage("bg"),{dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),sourcecamera:true,parallaxx:0.5,parallaxy:0.5});
-                gbox.blit(gbox.getBufferContext(),gbox.getCanvas("tileslayer"),{dx:0,dy:0,dw:gbox.getScreenW(),dh:gbox.getScreenH(),sourcecamera:true});
+            id:"bg", 
+            group:"background", 
+            blit:function () {
+                gbox.centerCamera(gbox.getObject("player", "player"), {w:tilemaps[currentstage].w, h:tilemaps[currentstage].h});
+                gbox.blit(gbox.getBufferContext(), gbox.getImage("bg"), {dx:0, dy:0, dw:gbox.getScreenW(), dh:gbox.getScreenH(), sourcecamera:true, parallaxx:0.5, parallaxy:0.5});
+                gbox.blit(gbox.getBufferContext(), gbox.getCanvas("tileslayer"), {dx:0, dy:0, dw:gbox.getScreenW(), dh:gbox.getScreenH(), sourcecamera:true});
             }
         });  
     };
@@ -271,10 +288,10 @@ go  =  function () {
 // BOOTSTRAP
 gbox.onLoad(function () {
     // Put additional licenses here!
-    help.akihabaraInit({title:"Leave Me Alone",splash:{footnotes:["Music by: Greenleo, Smiletron.","Full credits on ending title."]}});
+    help.akihabaraInit({title:"Leave Me Alone", splash:{footnotes:["Music by: Greenleo,  Smiletron.", "Full credits on ending title."]}});
     
     audioserver = "resources/audio/";
-    gbox.addBundle({file:"resources/leavemealone/bundle.js"}); // Audio, sprites, fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code, like in Capman.
+    gbox.addBundle({file:"resources/leavemealone/bundle.js"}); // Audio,  sprites,  fonts etc. are loaded here now. Cleaner code! Btw you can still load resources from the code,  like in Capman.
     
     gbox.loadAll(go);
-}, false);
+},  false);
