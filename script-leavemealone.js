@@ -12,7 +12,9 @@ go  =  function () {
     maingame.gameIntroAnimation = function (reset) {
         if (reset) {
             toys.resetToy(this, "intro-animation");
-        } else {
+            return false;
+        }
+        else {
             gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
             return toys.dialogue.render(this, "intro-animation", dialogues.intro);
         }
@@ -23,7 +25,9 @@ go  =  function () {
         if (reset) {
             toys.resetToy(this, "intro-animation");
             maingame.hud.hideWidgets(["stage", "time", "timelabel"]); // Hides the timer and the stage label for the ending
-        } else {
+            return false;
+        }
+        else {
             gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
             return toys.dialogue.render(this, "intro-animation", dialogues.ending);
         }
@@ -77,7 +81,8 @@ go  =  function () {
         if (reset) {
             gbox.playAudio("default-music");
             toys.resetToy(this, "bouncer");
-        } else {
+        }
+        else {
             gbox.blitFade(gbox.getBufferContext(), {alpha: 1});
             toys.logos.bounce(this, "bouncer", {image: "logo", x: gbox.getScreenHW()-gbox.getImage("logo").hwidth, y: -gbox.getImage("logo").height, accy: 0, audiobounce: "hit", floory: gbox.getScreenHH()});
         }
@@ -88,7 +93,9 @@ go  =  function () {
         if (reset) {
             toys.resetToy(this, "framecounter");
             toys.resetToy(this, "aftercounter");
-        } else {
+            return false;
+        }
+        else {
             gbox.blitText(gbox.getBufferContext(), {font: "big", text: "STAGE CLEAR!", valign: gbox.ALIGN_MIDDLE, halign: gbox.ALIGN_CENTER, dx: 0, dy: 0, dw: gbox.getScreenW(), dh: gbox.getScreenH()});
             
             if (this.hud.getValue("time", "value")) { // If there is time left...
@@ -98,7 +105,8 @@ go  =  function () {
                     this.hud.addValue("score", "value", 10); // Give 10 points to player 1
                 }
                 return false; // Keep here for more bonuses
-            } else { 
+            }
+            else { 
                 return toys.timer.after(this, "aftercounter", 15); // If there isn't more time,  quit after 10 frames
             }
         }
