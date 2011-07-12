@@ -1193,7 +1193,7 @@ var gbox={
 		// Set the callback function, which is called after the resources are loaded.
 		if (!this._cb) this._cb = cb;
 		// Default stuff
-		this.addImage("_dbf",_relpath+"akihabara/debugfont.png");
+		this.addImage("_dbf",this._relpath+"akihabara/debugfont.png");
 		if (this._splash.background) this.addImage("_splash",this._splash.background);
 		gbox.addFont({id:"_dbf",image:"_dbf",firstletter:" ",tileh:5,tilew:4,tilerow:16,gapx:0,gapy:0});
 		if (!gbox._splash.minimalTime)
