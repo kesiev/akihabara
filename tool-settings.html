@@ -12,7 +12,7 @@
 		 .settingsbox P * { font-size:15px }
 		 .settingsbox UL { list-style-type: none; padding: 5px;margin: 0; }
 		 .settingsbox LI { line-height:40px; font-size:15px }
-		 .settingsbox .keymap { background-color:white;position:absolute;left:250px; width:300px;padding-left:5px }
+		 .settingsbox .keymap { background-color:white;position:absolute;left:250px; width:400px;padding-left:5px }
 		 .settingsbox .selector { position:absolute;left:250px; width:300px;padding:5px;margin:5px 0px 0px 0px; }
 		 
 		 .gameboxkeyboard { background-color:#debebe }
@@ -24,7 +24,7 @@
 	</style>
 	<title>Akihabara setup</title>
 </head>
-<body onkeydown="return keycustomized(event)" onkeypress="return false" onkeyup="return false" onload="loaddata()">
+<body onkeydown="return dokeycustomized(event)" onkeypress="return false" onkeyup="return false" onload="loaddata()">
 	<h1>Akihabara setup</h1>
 	<div class="settingsbox gameboxkeyboard">
 		<h2>Gamebox buttons setup</h2>
@@ -110,8 +110,25 @@
 				case 13: { strkey="Wiimote A button"; break; }
 			}
 		}
+		if (device.iswiiu) {
+			switch (id) {
+				case 9002: { strkey="WiiU Gamepad D-Pad/Analog left"; break; }
+				case 9003: { strkey="WiiU Gamepad D-Pad/Analog right"; break; }
+				case 9000: { strkey="WiiU Gamepad D-Pad/Analog up"; break; }
+				case 9001: { strkey="WiiU Gamepad D-Pad/Analog down"; break; }
+				case 9100: { strkey="WiiU Gamepad A button"; break; }
+				case 9101: { strkey="WiiU Gamepad B button"; break; }
+				case 9102: { strkey="WiiU Gamepad X button"; break; }
+				case 9103: { strkey="WiiU Gamepad Y button"; break; }
+				case 9104: { strkey="WiiU Gamepad ZL button"; break; }
+				case 9105: { strkey="WiiU Gamepad ZR button"; break; }
+				case 9106: { strkey="WiiU Gamepad L button"; break; }
+				case 9107: { strkey="WiiU Gamepad R button"; break; }
+				case 9108: { strkey="WiiU Gamepad + button"; break; }
+				case 9109: { strkey="WiiU Gamepad - button"; break; }
+			}
+		}
 		return "key "+id+(strkey?" ("+strkey+")":"");
-
 	}
 
 	function updatescreen() {
@@ -145,12 +162,14 @@
 	}
 
 	function loaddata() {
-		defaults.keyboardkeymap=help.cloneObject(gbox._keymap);
 		device=help.akihabaraInit({hardwareonly:true});
 		defaults.defaultkeymap=help.cloneObject(gbox._keymap);
 		gbox._loadsettings();
+		defaults.keyboardkeymap=help.cloneObject(gbox._keymap);
 		if (device.iswii)
 			pjq("extra").innerHTML="<div style='margin-top:10px'><input type=button value='Set USB keyboard default' onclick='setusbkeyboarddefault()'><\/div>";
+		if (device.iswiiu)
+			pjq("extra").innerHTML="<p>Only few button are usable on WiiU because most of them are doing something on the browser and default actions are not cancellable for now. For now only the A, R, + and - buttons seems usable.</p><div style='margin-top:10px'><input type=button value='Set single button controls' onclick='setsinglebuttonscontrols()'><\/div>";
 		updatescreen();
 	}
 	
@@ -162,10 +181,21 @@
 		cancelcustomize();
 		customizing=p;
 		pjq(customizing.input).style.backgroundColor="#cefede";
+		if (gbox._controlscallback) {
+			customizing.timer=setInterval(function(){
+			gbox._controlscallback(gbox);
+			for (var a in gbox._keyboard)
+				if (gbox._keyboard[a]>0) {
+					keycustomized({fake:true,keyCode:a*1});
+					break;
+				}
+			},gbox._mspf);
+		}
 	}
 	
 	function cancelcustomize() {
 		if (customizing) {
+			if (customizing.timer) clearTimeout(customizing.timer);
 			pjq(customizing.input).style.backgroundColor="";
 			updatescreen();
 			customizing=null;
@@ -178,6 +208,11 @@
 			cancelcustomize();
 			return false;
 		}
+	}
+
+	function dokeycustomized(e){
+		if (!gbox._controlscallback) keycustomized(e);
+		return false;
 	}
 	
 	function resetdefaults() {
@@ -196,6 +231,15 @@
 	function setusbkeyboarddefault() {
 		if (confirm("Set the USB keyboard default input settings?")) {
 			gbox._keymap=help.cloneObject(defaults.keyboardkeymap);
+			updatescreen();
+		}
+	}
+
+	function setsinglebuttonscontrols() {
+		if (confirm("Set the WiiU single button default input settings?")) {
+			gbox._keymap.a=9100;
+			gbox._keymap.b=9100;
+			gbox._keymap.c=9100;
 			updatescreen();
 		}
 	}
