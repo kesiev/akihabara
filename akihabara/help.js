@@ -453,7 +453,9 @@ var help={
 	*/
 	getDeviceConfig:function() {
 		var cap;
-		if (navigator.userAgent.match(/nintendo wii/i))
+		if (navigator.userAgent.match(/nintendo wiiu/i)&&window.wiiu)
+			cap={iswiiu:true,height:598}
+		else if (navigator.userAgent.match(/nintendo wii/i))
 			cap={iswii:true,height:window.innerHeight,doublebuffering:true} // Simulated double buffering has been resumed. Canvas on Opera for Wii has a strange sprite blinking effect - usually browsers render frames once ended and this is an exception.
 		else if (navigator.userAgent.match(/iPhone/i)||navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/Android/i))
 			cap={touch:true,width:320};
@@ -528,7 +530,49 @@ var help={
 				b:172,
 				c:13
 			};
-			document.onkeypress= function(e){ if (e.preventDefault) e.preventDefault(); return false};
+			document.onkeypress= gbox._prevent;
+		}
+		if (device.iswiiu) {
+			gbox._keymap={
+				left:9002,
+				right:9003,
+				up:9000,
+				down:9001,
+				a:9100,
+				b:9107,
+				c:9108
+			};
+			gbox._controlscallback=function(gbox) {
+				var state = window.wiiu.gamepad.update();
+		        if( !state.isEnabled || !state.isDataValid ) return;
+		        var h=state.hold& 0x7f86fffc;
+		        var map={
+			        9000:((h&0x00000200)||(h&0x10000000)||(h&0x01000000)), // up
+			        9001:((h&0x00000100)||(h&0x00800000)||(h&0x08000000)), // down
+			        9002:((h&0x00000800)||(h&0x40000000)||(h&0x04000000)), // left
+			        9003:((h&0x00000400)||(h&0x20000000)||(h&0x02000000)), // right
+			        9100:(h&0x00008000), // A
+			        9101:(h&0x00004000), // B
+			        9102:(h&0x00002000), // X
+			        9103:(h&0x00001000), // Y
+			        9104:(h&0x00000080), // ZL
+			        9105:(h&0x00000040), // ZR
+			        9106:(h&0x00000020), // L
+			        9107:(h&0x00000010), // R
+			        9108:(h&0x00000008), //+
+			        9109:(h&0x00000004) // -			        
+			     }
+			    if (!gbox._oldmap) gbox._oldmap={};
+		        for (var a in map)
+		        	if (map[a]&&!gbox._oldmap[a]) gbox._keyboard[a]=1; else
+		        	if (!map[a]&&gbox._oldmap[a]) gbox._keyboard[a]=-1;
+		        gbox._oldmap=map;
+			}
+			document.onkeypress= gbox._prevent;
+			var meta=document.createElement("meta");
+			meta.setAttribute("name","viewport");
+			meta.setAttribute("content","width=1280 height=598 user-scalable=no");
+			document.getElementsByTagName("head")[0].appendChild(meta);
 		}
 		if (!data.splash||(data.splash.minilogo==null)) gbox.setSplashSettings({minilogo:"logo"});
 		if (!data.splash||(data.splash.background==null)) gbox.setSplashSettings({background:"akihabara/splash.png"});
