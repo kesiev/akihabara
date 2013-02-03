@@ -266,6 +266,7 @@ var gbox={
 	_forcedidle:0,
 	_gamewaiting:0,
 	_canlog:false,
+	_controlscallback:null,
 	_splash:{
 		gaugeLittleColor:"rgb(255,240,0)",
 		gaugeLittleBackColor:"rgb(255,255,255)",
@@ -291,14 +292,21 @@ var gbox={
 		try { if ((sh>0)&&(sw>0)&&(sx<img.width)&&(sy<img.height)) tox.drawImage(img, sx,sy,sw,sh,dx,dy,dw,dh); } catch(e){}
 	},
 	_keydown:function(e){
-		if (e.preventDefault) e.preventDefault();
 		var key=(e.fake||window.event?e.keyCode:e.which);
 		if (!gbox._keyboard[key]) gbox._keyboard[key]=1;
+		return gbox._prevent(e);
 	},
 	_keyup:function(e){
-		if (e.preventDefault) e.preventDefault();
 		var key=(e.fake||window.event?e.keyCode:e.which);
 		gbox._keyboard[key]=-1;
+		return gbox._prevent(e);
+	},
+	_prevent:function(e) {
+		if (e.preventDefault) e.preventDefault();
+		if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+		if (e.stopPropagation) e.stopPropagation();
+		e.returnValue=false;
+		return false;
 	},
 	_resetkeys:function() {
 		for (var key in gbox._keymap)
@@ -405,8 +413,13 @@ var gbox={
 		document.body.appendChild(container);
 
 		this.createCanvas("_buffer");
-		gbox.addEventListener(window,'keydown', this._keydown);
-		gbox.addEventListener(window,'keyup', this._keyup);
+		if (gbox._controlscallback) {
+			gbox.addEventListener(window,'keydown', this._prevent);
+			gbox.addEventListener(window,'keyup', this._prevent);
+		} else {
+			gbox.addEventListener(window,'keydown', this._keydown);
+			gbox.addEventListener(window,'keyup', this._keyup);
+		}
 		if (this._statbar) {
 			this._statbar=document.createElement("div");
 			if (this._border) this._statbar.style.border="1px solid black";
@@ -419,14 +432,14 @@ var gbox={
 		}
 		// Keyboard support on devices that needs focus (like iPad) - actually is not working for a bug on WebKit's "focus" command.
 		this._keyboardpicker=document.createElement("input");
-		this._keyboardpicker.onclick=function(evt) { gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
+		this._keyboardpicker.onclick=function(evt) { gbox._hidekeyboardpicker();return gbox._prevent(evt)};
 		this._hidekeyboardpicker(this._keyboardpicker);
 		
 		gbox._box.appendChild(this._keyboardpicker);
-		gbox._screen.ontouchstart=function(evt) { gbox._screenposition=gbox._domgetabsposition(gbox._screen);if (evt.touches[0].pageY-gbox._screenposition.y<30) gbox._showkeyboardpicker();else gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
-		gbox._screen.ontouchend=function(evt) {evt.preventDefault();evt.stopPropagation();};
-		gbox._screen.ontouchmove=function(evt) { evt.preventDefault();evt.stopPropagation();};
-		gbox._screen.onmousedown=function(evt) {gbox._screenposition=gbox._domgetabsposition(gbox._screen);if (evt.pageY-gbox._screenposition.y<30)  gbox._showkeyboardpicker(); else gbox._hidekeyboardpicker();evt.preventDefault();evt.stopPropagation();};
+		gbox._screen.ontouchstart=function(evt) { gbox._screenposition=gbox._domgetabsposition(gbox._screen);if (evt.touches[0].pageY-gbox._screenposition.y<30) gbox._showkeyboardpicker();else gbox._hidekeyboardpicker();return gbox._prevent(evt)};
+		gbox._screen.ontouchend=gbox._prevent;
+		gbox._screen.ontouchmove=gbox._prevent;
+		gbox._screen.onmousedown=function(evt) {gbox._screenposition=gbox._domgetabsposition(gbox._screen);if (evt.pageY-gbox._screenposition.y<30)  gbox._showkeyboardpicker(); else gbox._hidekeyboardpicker();return gbox._prevent(evt)};
 		
 		var d=new Date();
 		gbox._sessioncache=d.getDate()+"-"+d.getMonth()+"-"+d.getFullYear()+"-"+d.getHours()+"-"+d.getMinutes()+"-"+d.getSeconds();
@@ -590,6 +603,7 @@ var gbox={
 		} else {
 			gbox._gamewaiting=3;
 			gbox._framestart=new Date().getTime();
+			if (gbox._controlscallback) gbox._controlscallback(gbox);
 			var gr="";
 			for (var g=0;g<gbox._renderorder.length;g++)
 				if (gbox._groupplay[gbox._renderorder[g]])
